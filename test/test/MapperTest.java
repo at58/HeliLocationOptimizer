@@ -34,13 +34,38 @@ class MapperTest {
     // arrange
     List<String[]> input = new ArrayList<>(List.of(
         new String[] {"x-Koordinate", "y-Koordinate", "Ort", "Unfallzahlen p.a."},
-        new String[] {"16", "109", "Schwalbach", "26"}
+        new String[] {"16", "109", "Wetzlar", "26"}
     ));
     List<Location> expected = new ArrayList<>();
-    expected.add(new Location("Schwalbach", 16, 109, 26));
+    expected.add(new Location("Wetzlar", 16, 109, 26));
     // act
     List<Location> actual = Mapper.mapToLocationObjects(input);
     // assert
     assertEquals(expected.size(), actual.size());
+
+    for (int i = 0; i < expected.size(); i++) {
+      assertArrayEquals(expected.get(i).toStringArray(), actual.get(i).toStringArray());
+    }
   }
+
+  @Test
+  void mapToLocationObjectsTest_3() {
+    // arrange
+    List<String[]> input = new ArrayList<>(List.of(
+        new String[] {"Ort", "Unfallzahlen p.a.", "y-Koordinate", "x-Koordinate"},
+        new String[] {"Wetzlar", "26", "109", "16"}
+    ));
+    List<Location> expected = new ArrayList<>();
+    expected.add(new Location("Wetzlar", 16, 109, 26));
+    // act
+    List<Location> actual = Mapper.mapToLocationObjects(input);
+    // assert
+    assertEquals(expected.size(), actual.size());
+
+    for (int i = 0; i < expected.size(); i++) {
+      assertArrayEquals(expected.get(i).toStringArray(), actual.get(i).toStringArray());
+    }
+  }
+
+
 }
