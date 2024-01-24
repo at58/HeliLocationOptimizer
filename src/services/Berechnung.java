@@ -1,4 +1,4 @@
-package services_algorithm;
+package services;
 
 public class Berechnung {
 }
