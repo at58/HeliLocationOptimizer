@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 public class Mapper {
 
   public static List<Location> mapToLocationObjects(List<String[]> tupleList) {
-    // Ort, x, y, Unfallzahlen
     List<Location> locationList = new ArrayList<>();
 
     // the first tuple is the legend of the input, converted to lower-case due to easier processing.
@@ -17,13 +16,14 @@ public class Mapper {
                              .map(String::toLowerCase)
                              .map(c -> c.replaceAll("-", " "))
                              .toArray(String[]::new);
+    // Ort, x, y, Unfallzahlen
     String[] legend = new String[] {"ort", "x koordinate", "y koordinate", "unfallzahl"};
     int[] legendIndexes = new int[columns.length];
 
     for (int i = 0; i < legendIndexes.length; i++) {
       String ref = legend[i];
-      Pattern pattern = Pattern.compile(".*" + "["+ ref + "]" + ".*");
-      for (int j = i; j < columns.length; j++) {
+      Pattern pattern = Pattern.compile(".*" + ref + ".*");
+      for (int j = 0; j < columns.length; j++) {
         if (columns[j].matches(pattern.pattern())) {
           legendIndexes[i] = j;
           break;
@@ -39,7 +39,6 @@ public class Mapper {
       Location location = new Location(locationName, x, y, accidents);
       locationList.add(location);
     }
-
     return locationList;
   }
 }
