@@ -1,6 +1,6 @@
 package core;
 
-public class Location {
+public final class Location {
 
   private final String name;
   private final Coordinate coordinate;
