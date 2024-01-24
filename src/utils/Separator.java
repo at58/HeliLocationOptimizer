@@ -2,17 +2,17 @@ package utils;
 
 public enum Separator {
 
-  COMMA(","),
-  SEMICOLON(";"),
-  COLON(":");
+  COMMA(','),
+  SEMICOLON(';'),
+  COLON(':');
 
-  private final String separator;
+  private final char separator;
 
-  Separator(String c) {
+  Separator(char c) {
     this.separator = c;
   }
 
-  public String getCharacter() {
+  public char getCharacter() {
     return this.separator;
   }
 }
