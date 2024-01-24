@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public final class Helicopter {
+public final class Helicopter implements Item {
 
   private final int id;
   private int speed;
@@ -18,12 +18,13 @@ public final class Helicopter {
     this.locationHelicopterMap = new HashMap<>();
   }
 
-  public void setHeliCoordinates(int x, int y) {
-    this.coordinate = new Coordinate(x, y);
+  @Override
+  public Coordinate getCoordinate() {
+    return this.coordinate;
   }
 
-  public Coordinate getHelicopterCoordinates() {
-    return this.coordinate;
+  public void setHeliCoordinates(int x, int y) {
+    this.coordinate = new Coordinate(x, y);
   }
 
   public void addLocation(Location location, int distance) {

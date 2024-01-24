@@ -1,6 +1,6 @@
 package core;
 
-public final class Location {
+public final class Location implements Item {
 
   private final String name;
   private final Coordinate coordinate;
@@ -12,18 +12,25 @@ public final class Location {
     this.accidents = accidents;
   }
 
-  public String getName() {
-
-    return name;
-  }
-
+  @Override
   public Coordinate getCoordinate() {
-
     return coordinate;
   }
 
-  public int getAccidents() {
+  public String getName() {
+    return name;
+  }
 
+  public int getAccidents() {
     return accidents;
+  }
+
+  public String[] toStringArray() {
+
+    return new String[] {
+        this.name,
+        String.valueOf(this.coordinate.x()),
+        String.valueOf(this.coordinate.y()), String.valueOf(this.accidents)
+    };
   }
 }
