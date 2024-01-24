@@ -26,4 +26,13 @@ public final class Location {
 
     return accidents;
   }
+
+  public String[] toStringArray() {
+
+    return new String[] {
+        this.name,
+        String.valueOf(this.coordinate.x()),
+        String.valueOf(this.coordinate.y()), String.valueOf(this.accidents)
+    };
+  }
 }
