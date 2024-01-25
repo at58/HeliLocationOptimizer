@@ -1,15 +1,13 @@
 package services.importer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import utils.Separator;
-import utils.StringUtil;
+import utils.StringUtils;
 import utils.log.Logger;
 
 public class CsvParser implements Parser <String, List<String[]>> {
@@ -28,18 +26,28 @@ public class CsvParser implements Parser <String, List<String[]>> {
       String line;
       while ((line = reader.readLine()) != null) {
         line = line.strip();
-        if (!line.isBlank() && !StringUtil.containsOnly(line, separator.getCharacter())) {
-          lineCounter++;
+        if (lineCounter <= 1) {
+          if (!line.isBlank() && !StringUtils.containsOnly(line, separator.getCharacter())) {
+            lineCounter++;
+          }
         }
         String[] tuple = line.split(String.valueOf(separator.getCharacter()));
-        tupleList.add(tuple);
+        if (StringUtils.isValideTuple(tuple, 4)) {
+          tupleList.add(tuple);
+        }
       }
       if (lineCounter <= 1) {
-        throw new IOException("The csv located in "
+        throw new IOException("The csv file located in "
                                   + path
                                   + " is completely empty or contains no data except of the header.");
       }
+      if (tupleList.size() <= 1) {
+        throw new IOException("The csv file located in "
+                                  + path
+                                  + " consist of less than one valid tuple.");
+      }
     } catch (IOException e) {
+      e.printStackTrace();
       Logger.log(e.getMessage());
       throw e;
     }
