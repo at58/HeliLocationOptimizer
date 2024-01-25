@@ -6,9 +6,9 @@ import core.Location;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import services.mapper.Mapper;
+import services.mapper.LocationMapper;
 
-class MapperTest {
+class LocationMapperTest {
 
   @Test
   void mapToLocationObjectsTest_1() {
@@ -20,7 +20,7 @@ class MapperTest {
     List<Location> expected = new ArrayList<>();
     expected.add(new Location("Schwalbach", 16, 109, 26));
     // act
-    List<Location> actual = Mapper.mapToLocationObjects(input);
+    List<Location> actual = LocationMapper.mapToLocationObjects(input);
     // assert
     assertEquals(expected.size(), actual.size());
 
@@ -39,7 +39,7 @@ class MapperTest {
     List<Location> expected = new ArrayList<>();
     expected.add(new Location("Wetzlar", 16, 109, 26));
     // act
-    List<Location> actual = Mapper.mapToLocationObjects(input);
+    List<Location> actual = LocationMapper.mapToLocationObjects(input);
     // assert
     assertEquals(expected.size(), actual.size());
 
@@ -58,7 +58,7 @@ class MapperTest {
     List<Location> expected = new ArrayList<>();
     expected.add(new Location("Wetzlar", 16, 109, 26));
     // act
-    List<Location> actual = Mapper.mapToLocationObjects(input);
+    List<Location> actual = LocationMapper.mapToLocationObjects(input);
     // assert
     assertEquals(expected.size(), actual.size());
 

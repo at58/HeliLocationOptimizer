@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class Mapper {
+public class LocationMapper {
 
   public static List<Location> mapToLocationObjects(List<String[]> tupleList) {
     List<Location> locationList = new ArrayList<>();
