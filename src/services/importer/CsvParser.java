@@ -47,7 +47,7 @@ public class CsvParser implements Parser <String, List<String[]>> {
                                   + " consist of less than one valid tuple.");
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      // e.printStackTrace();
       Logger.log(e.getMessage());
       throw e;
     }

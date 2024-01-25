@@ -48,6 +48,7 @@ public class ParserTest {
     } catch (IOException ignored) {}
 
     // assert
+    assertNotNull(actual);
     assertEquals(expected.size(), actual.size());
 
     for (int i = 0; i < actual.size(); i++) {
@@ -68,7 +69,7 @@ public class ParserTest {
   @Test
   void exceptionTest_OnlyHeader() {
     // arrange
-    String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/header.csv";
+    String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/onlyHeader.csv";
     // act
     Executable executable = () -> csvParser.parse(path, null);
     // assert
@@ -91,6 +92,44 @@ public class ParserTest {
     } catch (IOException ignored) {}
     // assert
     assertDoesNotThrow(executable);
+    assertNotNull(actual);
+
+    for (int i = 0; i < actual.size(); i++) {
+      assertArrayEquals(expected.get(i), actual.get(i));
+    }
+  }
+
+  @Test
+  void csvParserTest_InconsistentTuples() {
+    // arrange
+    String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/inconsistentCsv.csv";
+    List<String[]> expected = List.of(
+        new String[] {"Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a."},
+        new String[] {"Musterstadt", "260", "80", "239"},
+        new String[] {"DorfB", "80", "40", "55"},
+        new String[] {"MittelstadtC", "200", "100", "500"},
+        new String[] {"KleinstadtD", "90", "75", "80"},
+        new String[] {"DorfE", "75", "60", "30"},
+        new String[] {"KleinstadtG", "95", "70", "90"},
+        new String[] {"OrtH", "110", "55", "120"},
+        new String[] {"StadtI", "130", "85", "200"},
+        new String[] {"StadtK", "160", "75", "180"},
+        new String[] {"KleinstadtL", "85", "65", "50"},
+//        new String[] {"DorfM", "60", "30", "15"}, // this tuple is invalid in the underlying csv file
+        new String[] {"MittelstadtN", "250", "120", "800"},
+        new String[] {"OrtO", "100", "50", "100"},
+        new String[] {"DorfP", "55", "35", "20"},
+        new String[] {"StadtQ", "140", "95", "220"},
+        new String[] {"MetropoleR", "350", "180", "1200"}
+    );
+    // act
+    List<String[]> actual = null;
+    try {
+      actual = csvParser.parse(path, Separator.SEMICOLON);
+    } catch (IOException ignored) {}
+    // assert
+    assertNotNull(actual);
+    assertEquals(expected.size(), actual.size());
 
     for (int i = 0; i < actual.size(); i++) {
       assertArrayEquals(expected.get(i), actual.get(i));
