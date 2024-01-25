@@ -1,10 +1,8 @@
 package test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import services.importer.CsvParser;
@@ -25,7 +23,7 @@ public class ParserTest {
         new String[] {"Musterstadt", "260", "80", "239"},
         new String[] {"StadtA", "120", "65", "150"},
         new String[] {"DorfB", "80", "40", "55"},
-        new String[] {"GroßstadtC", "200", "100", "500"},
+        new String[] {"MittelstadtC", "200", "100", "500"},
         new String[] {"KleinstadtD", "90", "75", "80"},
         new String[] {"DorfE", "75", "60", "30"},
         new String[] {"MetropoleF", "300", "150", "1000"},
@@ -36,7 +34,7 @@ public class ParserTest {
         new String[] {"StadtK", "160", "75", "180"},
         new String[] {"KleinstadtL", "85", "65", "50"},
         new String[] {"DorfM", "60", "30", "15"},
-        new String[] {"GroßstadtN", "250", "120", "800"},
+        new String[] {"MittelstadtN", "250", "120", "800"},
         new String[] {"OrtO", "100", "50", "100"},
         new String[] {"DorfP", "55", "35", "20"},
         new String[] {"StadtQ", "140", "95", "220"},
@@ -58,12 +56,44 @@ public class ParserTest {
   }
 
   @Test
-  void exceptionTest_EmptyCsv(){
+  void exceptionTest_EmptyCsv() {
     // arrange
     String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/emptyCsv.csv";
     // act
     Executable executable = () -> csvParser.parse(path, null);
     // assert
     assertThrows(IOException.class, executable);
+  }
+
+  @Test
+  void exceptionTest_OnlyHeader() {
+    // arrange
+    String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/header.csv";
+    // act
+    Executable executable = () -> csvParser.parse(path, null);
+    // assert
+    assertThrows(IOException.class, executable);
+  }
+
+  @Test
+  void exceptionTest_OneTuple() {
+    // arrange
+    String path = "C:/Users/toy/IdeaProjects/HeliLocationOptimizer/test/resources/oneTuple.csv";
+    List<String[]> expected = List.of(
+        new String[] {"Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a."},
+        new String[] {"Musterstadt", "260", "80", "239"}
+    );
+    // act
+    Executable executable = () -> csvParser.parse(path, null);
+    List<String[]> actual = null;
+    try {
+      actual = csvParser.parse(path, Separator.SEMICOLON);
+    } catch (IOException ignored) {}
+    // assert
+    assertDoesNotThrow(executable);
+
+    for (int i = 0; i < actual.size(); i++) {
+      assertArrayEquals(expected.get(i), actual.get(i));
+    }
   }
 }
