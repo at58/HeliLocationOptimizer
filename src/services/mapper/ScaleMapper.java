@@ -3,6 +3,8 @@ package services.mapper;
 import core.Coordinate;
 import core.Location;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,42 +12,61 @@ import java.util.Map;
 public class ScaleMapper {
 
   /**
-   * scales the range of the locations to the axes of the map.
+   * Scales the range of the locations to the axes of the map. The number of partitions is a fix
+   * number of 10.
    *
    * @param locationList the list of all locations.
-   * @param screen the size of the screen.
-   * @param partitions the number of axis separations.
-   * @return Map of String-key consisting of the axis with the conversion key and the array of intervals
+   * @return Map of String-key consisting of the axis with the conversion key and the list of intervals
    */
-  public static Map<String, int[]> specifyAxisScales(List<Location> locationList,
-                                         Dimension screen,
-                                         int partitions) {
+  public static Map<String, List<Integer>> specifyAxisScales(List<Location> locationList) {
 
-    Map<String, int[]> axisScales;
-    if (partitions < 2) {
-      throw new IllegalArgumentException("Die Anzahl der Partitionen ist kleiner als 2");
-    } else {
-      axisScales = new HashMap<>();
-      int[][] ranges = determineAxisRanges(locationList);
-      int x_range = ranges[0][1] - ranges[0][0];
-      int y_range = ranges[1][1] - ranges[1][0];
-      int x_axis = (int) screen.getWidth() - 100;
-      int y_axis = (int) screen.getHeight() - 100;
-      double x_conversionKey = (double) x_range / x_axis;
-      double y_conversionKey = (double) y_range / y_axis;
-      int x_interval = (int) ((x_range / partitions) * x_conversionKey);
-      int y_interval = (int) ((y_range / partitions) * y_conversionKey);
+    Map<String, List<Integer>> axisScales;
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-      int[] x_scale = new int[partitions + 1];
-      int[] y_scale = new int[partitions + 1];
+    axisScales = new HashMap<>();
+    int[][] ranges = determineAxisRanges(locationList);
+    int x_range = ranges[0][1];
+    System.out.println("x_range: " + x_range);
+    int y_range = ranges[1][1];
+    System.out.println("y-range: " + y_range);
+    int x_axis = (int) (screen.getWidth() * 0.6);
+    System.out.println("x-axis: " + x_axis);
+    int y_axis = (int) (screen.getHeight() * 0.8);
+    System.out.println("y-axis: " + y_axis);
+    double x_conversionKey = (double) x_range / x_axis;
+    System.out.println("x conversion: " + x_conversionKey);
+    double y_conversionKey = (double) y_range / y_axis;
+    System.out.println("y conversion: " + y_conversionKey);
+    int x_interval = (x_axis / 10) + 1;
+    int y_interval = (y_axis / 10) + 1;
 
-      for (int i = 1; i <= partitions ; i++) {
-        x_scale[i] = i * x_interval;
-        y_scale[i] = i * y_interval;
-      }
-      axisScales.put("x-Axis/1:" + x_conversionKey, x_scale);
-      axisScales.put("y-Axis/1:" + y_conversionKey, y_scale);
+    List<Integer> x_scales = new ArrayList<>();
+    List<Integer> y_scales = new ArrayList<>();
+
+    int x_steps = (int) (x_interval * x_conversionKey);
+    int y_steps = (int) (y_interval * y_conversionKey);
+    System.out.println("y_intervall: " + y_interval + "\nx_intervall: " + x_interval);
+    System.out.println("y_steps: " + y_steps + "\nx_steps: " + x_steps);
+
+    int nextXPosition = x_steps;
+    int nextYPosition = y_steps;
+
+    while (nextYPosition <= (y_range + y_steps)) {
+      y_scales.add(nextYPosition);
+      nextYPosition += y_steps;
     }
+    while (nextXPosition <= (x_range + x_steps)) {
+      x_scales.add(nextXPosition);
+      nextXPosition += x_steps;
+    }
+
+    System.out.println("\nX-SCALES:");
+    x_scales.forEach(System.out::println);
+    System.out.println("\nY-SCALES:");
+    y_scales.forEach(System.out::println);
+
+    axisScales.put("x-Axis/1:" + x_conversionKey, x_scales);
+    axisScales.put("y-Axis/1:" + y_conversionKey, y_scales);
 
     return axisScales;
   }
@@ -63,7 +84,8 @@ public class ScaleMapper {
       int x = coordinate.x();
       if (x < x_min) {
         x_min = x;
-      } else if (x > x_max) {
+      }
+      if (x > x_max) {
         x_max = x;
       }
 
