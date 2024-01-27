@@ -1,15 +1,36 @@
 package test;
 
+import core.Axis;
+import core.Dimension;
 import core.Location;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import services.mapper.ScaleMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ScaleMapperTest {
+
+  private Axis x_Axis;
+  private Axis y_Axis;
+
+  private void specifyAxis(Set<Axis> keySet) {
+    List<Axis> keyList = new ArrayList<>(keySet);
+    if (keyList.get(0).getDimension() == Dimension.X) {
+      x_Axis = keyList.get(0);
+      y_Axis = keyList.get(1);
+    } else {
+      x_Axis = keyList.get(1);
+      y_Axis = keyList.get(0);
+    }
+  }
+
+  private Axis getX_Axis() {return this.x_Axis;}
+
+  private Axis getY_Axis() {return this.y_Axis;}
 
   @Test
   void axisRangeTest() {
@@ -22,7 +43,7 @@ public class ScaleMapperTest {
     );
     int[][] expected = new int[][] {{5, 105}, {12, 65}};
     // act
-    int[][] actual = ScaleMapper.determineAxisRanges(locationList);
+    int[][] actual = ScaleMapper.determineAxisDimensions(locationList);
     // assert
     assertArrayEquals(expected, actual);
   }
@@ -38,18 +59,18 @@ public class ScaleMapperTest {
     );
     Integer[] expected_xScale = new Integer[] {12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132};
     Integer[] expected_yScale = new Integer[] {6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66};
+
     // act
-    Map<String, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
-    List<String> keyList = new ArrayList<>(actual.keySet());
+    Map<Axis, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
+    specifyAxis(actual.keySet());
+
     // assert x scale
-    String xKey = keyList.get(0).startsWith("x") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_xScale = actual.get(xKey);
+    List<Integer> actual_xScale = actual.get(getX_Axis());
     Integer[] actual_xScaleArray = actual_xScale.toArray(Integer[]::new);
     assertArrayEquals(expected_xScale, actual_xScaleArray);
 
     // assert y sale
-    String yKey = keyList.get(0).startsWith("y") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_yScale = actual.get(yKey);
+    List<Integer> actual_yScale = actual.get(getY_Axis());
     Integer[] actual_yScaleArray = actual_yScale.toArray(Integer[]::new);
     assertArrayEquals(expected_yScale, actual_yScaleArray);
   }
@@ -68,18 +89,18 @@ public class ScaleMapperTest {
     );
     Integer[] expected_xScale = new Integer[] {42, 84, 126, 168, 210, 252, 294, 336, 378, 420, 462};
     Integer[] expected_yScale = new Integer[] {39, 78, 117, 156, 195, 234, 273, 312, 351, 390, 429};
+
     // act
-    Map<String, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
-    List<String> keyList = new ArrayList<>(actual.keySet());
+    Map<Axis, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
+    specifyAxis(actual.keySet());
+
     // assert x scale
-    String xKey = keyList.get(0).startsWith("x") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_xScale = actual.get(xKey);
+    List<Integer> actual_xScale = actual.get(getX_Axis());
     Integer[] actual_xScaleArray = actual_xScale.toArray(Integer[]::new);
     assertArrayEquals(expected_xScale, actual_xScaleArray);
 
     // assert y sale
-    String yKey = keyList.get(0).startsWith("y") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_yScale = actual.get(yKey);
+    List<Integer> actual_yScale = actual.get(getY_Axis());
     Integer[] actual_yScaleArray = actual_yScale.toArray(Integer[]::new);
     assertArrayEquals(expected_yScale, actual_yScaleArray);
   }
@@ -94,18 +115,18 @@ public class ScaleMapperTest {
     );
     Integer[] expected_xScale = new Integer[] {151, 302, 453, 604, 755, 906, 1057, 1208, 1359, 1510};
     Integer[] expected_yScale = new Integer[] {120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320};
+
     // act
-    Map<String, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
-    List<String> keyList = new ArrayList<>(actual.keySet());
+    Map<Axis, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
+    specifyAxis(actual.keySet());
+
     // assert x scale
-    String xKey = keyList.get(0).startsWith("x") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_xScale = actual.get(xKey);
+    List<Integer> actual_xScale = actual.get(getX_Axis());
     Integer[] actual_xScaleArray = actual_xScale.toArray(Integer[]::new);
     assertArrayEquals(expected_xScale, actual_xScaleArray);
 
     // assert y sale
-    String yKey = keyList.get(0).startsWith("y") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_yScale = actual.get(yKey);
+    List<Integer> actual_yScale = actual.get(getY_Axis());
     Integer[] actual_yScaleArray = actual_yScale.toArray(Integer[]::new);
     assertArrayEquals(expected_yScale, actual_yScaleArray);
   }
@@ -120,18 +141,18 @@ public class ScaleMapperTest {
     );
     Integer[] expected_xScale = new Integer[] {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22};
     Integer[] expected_yScale = new Integer[] {120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320};
+
     // act
-    Map<String, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
-    List<String> keyList = new ArrayList<>(actual.keySet());
+    Map<Axis, List<Integer>> actual = ScaleMapper.specifyAxisScales(locationList);
+    specifyAxis(actual.keySet());
+
     // assert x scale
-    String xKey = keyList.get(0).startsWith("x") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_xScale = actual.get(xKey);
+    List<Integer> actual_xScale = actual.get(getX_Axis());
     Integer[] actual_xScaleArray = actual_xScale.toArray(Integer[]::new);
     assertArrayEquals(expected_xScale, actual_xScaleArray);
 
     // assert y sale
-    String yKey = keyList.get(0).startsWith("y") ? keyList.get(0) : keyList.get(1);
-    List<Integer> actual_yScale = actual.get(yKey);
+    List<Integer> actual_yScale = actual.get(getY_Axis());
     Integer[] actual_yScaleArray = actual_yScale.toArray(Integer[]::new);
     assertArrayEquals(expected_yScale, actual_yScaleArray);
   }
