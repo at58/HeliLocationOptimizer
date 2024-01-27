@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Logger {
 
@@ -12,7 +13,11 @@ public final class Logger {
   private static Writer writer;
 
   public static void log(String message) {
-    logMessages.add("- " + message);
+    if (Objects.isNull(message)) {
+      logMessages.add("- Null-Pointer exception occurred.");
+    } else {
+      logMessages.add("- " + message);
+    }
     exportToLogFile();
   }
 
