@@ -2,18 +2,18 @@ package test;
 
 import org.junit.jupiter.api.Test;
 import utils.Separator;
-import utils.StringUtils;
+import utils.ParserUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StringUtilsTest {
+public class ParserUtilsTest {
 
   @Test
   void containsOnlyTest() {
     // arrange
     String foo = "; ; ;";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertTrue(actual);
   }
@@ -23,7 +23,7 @@ public class StringUtilsTest {
     // arrange
     String foo = ";;;";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertTrue(actual);
   }
@@ -33,7 +33,7 @@ public class StringUtilsTest {
     // arrange
     String foo = ";; ;    ";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertTrue(actual);
   }
@@ -43,7 +43,7 @@ public class StringUtilsTest {
     // arrange
     String foo = "a; b; c;";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertFalse(actual);
   }
@@ -53,7 +53,7 @@ public class StringUtilsTest {
     // arrange
     String foo = "   ";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertFalse(actual);
   }
@@ -63,7 +63,7 @@ public class StringUtilsTest {
     // arrange
     String foo = "";
     // act
-    boolean actual = StringUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
+    boolean actual = ParserUtils.containsOnly(foo, Separator.SEMICOLON.getCharacter());
     // assert
     assertFalse(actual);
   }
