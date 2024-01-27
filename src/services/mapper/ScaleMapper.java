@@ -1,5 +1,6 @@
 package services.mapper;
 
+import core.Axis;
 import core.Coordinate;
 import core.Location;
 import java.awt.Dimension;
@@ -18,27 +19,27 @@ public class ScaleMapper {
    * @param locationList the list of all locations.
    * @return Map of String-key consisting of the axis with the conversion key and the list of intervals
    */
-  public static Map<String, List<Integer>> specifyAxisScales(List<Location> locationList) {
+  public static Map<Axis, List<Integer>> specifyAxisScales(List<Location> locationList) {
 
-    Map<String, List<Integer>> axisScales;
+    Map<Axis, List<Integer>> axisScales = new HashMap<>();
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-    axisScales = new HashMap<>();
-    int[][] ranges = determineAxisRanges(locationList);
+    int[][] ranges = determineAxisDimensions(locationList);
     int x_range = ranges[0][1];
-    System.out.println("x_range: " + x_range);
     int y_range = ranges[1][1];
-    System.out.println("y-range: " + y_range);
     int x_axis = (int) (screen.getWidth() * 0.6);
-    System.out.println("x-axis: " + x_axis);
     int y_axis = (int) (screen.getHeight() * 0.8);
-    System.out.println("y-axis: " + y_axis);
     double x_conversionKey = (double) x_range / x_axis;
-    System.out.println("x conversion: " + x_conversionKey);
     double y_conversionKey = (double) y_range / y_axis;
-    System.out.println("y conversion: " + y_conversionKey);
     int x_interval = (x_axis / 10) + 1;
     int y_interval = (y_axis / 10) + 1;
+
+    System.out.println("x_range: " + x_range);
+    System.out.println("y-range: " + y_range);
+    System.out.println("x-axis: " + x_axis);
+    System.out.println("y-axis: " + y_axis);
+    System.out.println("x conversion: " + x_conversionKey);
+    System.out.println("y conversion: " + y_conversionKey);
 
     List<Integer> x_scales = new ArrayList<>();
     List<Integer> y_scales = new ArrayList<>();
@@ -65,13 +66,17 @@ public class ScaleMapper {
     System.out.println("\nY-SCALES:");
     y_scales.forEach(System.out::println);
 
-    axisScales.put("x-Axis/1:" + x_conversionKey, x_scales);
-    axisScales.put("y-Axis/1:" + y_conversionKey, y_scales);
+    Axis xAxis = new Axis(core.Dimension.X);
+    xAxis.setScale(x_conversionKey);
+    Axis yAxis = new Axis(core.Dimension.Y);
+    yAxis.setScale(y_conversionKey);
+    axisScales.put(xAxis, x_scales);
+    axisScales.put(yAxis, y_scales);
 
     return axisScales;
   }
 
-  public static int[][] determineAxisRanges(List<Location> locationList) {
+  public static int[][] determineAxisDimensions(List<Location> locationList) {
 
     int x_min = Integer.MAX_VALUE;
     int x_max = 0;

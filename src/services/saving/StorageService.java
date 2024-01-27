@@ -1,6 +1,5 @@
 package services.saving;
 
-import java.awt.Font;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -15,7 +14,6 @@ public class StorageService {
     int result = fileChooser.showSaveDialog(null);
 
     if (result == JFileChooser.APPROVE_OPTION) {
-      // Holen Sie die ausgewählte Datei
       selectedFile = fileChooser.getSelectedFile();
     }
     return selectedFile;
