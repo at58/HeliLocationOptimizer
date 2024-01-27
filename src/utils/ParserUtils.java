@@ -1,6 +1,6 @@
 package utils;
 
-public class StringUtils {
+public class ParserUtils {
 
   /**
    * Checks if a string is consist of characters except white-spaces and the specified separation

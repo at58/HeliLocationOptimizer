@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import utils.Separator;
-import utils.StringUtils;
+import utils.ParserUtils;
 import utils.log.Logger;
 
 public class CsvParser implements Parser <String, List<String[]>> {
@@ -27,12 +27,12 @@ public class CsvParser implements Parser <String, List<String[]>> {
       while ((line = reader.readLine()) != null) {
         line = line.strip();
         if (lineCounter <= 1) {
-          if (!line.isBlank() && !StringUtils.containsOnly(line, separator.getCharacter())) {
+          if (!line.isBlank() && !ParserUtils.containsOnly(line, separator.getCharacter())) {
             lineCounter++;
           }
         }
         String[] tuple = line.split(String.valueOf(separator.getCharacter()));
-        if (StringUtils.isValideTuple(tuple, 4)) {
+        if (ParserUtils.isValideTuple(tuple, 4)) {
           tupleList.add(tuple);
         }
       }

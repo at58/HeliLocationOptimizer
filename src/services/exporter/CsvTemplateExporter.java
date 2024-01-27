@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import services.saving.StorageService;
 import utils.log.Logger;
 
@@ -14,11 +15,14 @@ public class CsvTemplateExporter {
     File storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv");
 
     try {
+      if (Objects.isNull(storageTarget)) {
+        throw new NullPointerException();
+      }
       FileWriter writer = new FileWriter(storageTarget);
       List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a.");
       writeLine(writer, header);
       writer.close();
-    } catch (IOException e) {
+    } catch (NullPointerException | IOException e) {
       Logger.log(e.getMessage());
     }
     return storageTarget.getAbsolutePath();
