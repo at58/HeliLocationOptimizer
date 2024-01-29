@@ -19,7 +19,7 @@ public class CsvTemplateExporter {
         throw new NullPointerException();
       }
       FileWriter writer = new FileWriter(storageTarget);
-      List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a.");
+      List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl pro Jahr");
       writeLine(writer, header);
       writer.close();
     } catch (NullPointerException | IOException e) {
