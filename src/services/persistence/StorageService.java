@@ -1,4 +1,4 @@
-package services.saving;
+package services.persistence;
 
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -15,6 +15,7 @@ public class StorageService {
 
     if (result == JFileChooser.APPROVE_OPTION) {
       selectedFile = fileChooser.getSelectedFile();
+      LoadingService.setStoragePath(selectedFile);
     }
     return selectedFile;
   }
