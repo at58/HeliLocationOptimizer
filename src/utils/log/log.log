@@ -1,2 +1,3 @@
-- Null-Pointer exception occurred.
-- Null-Pointer exception occurred.
+- C:\Users\toy\Desktop\Ski_Gebiet_Daten.csv (Der Prozess kann nicht auf die Datei zugreifen, da sie von einem anderen Prozess verwendet wird)
+- The csv file located in C:\Users\toy\Desktop\Ski_Gebiet_Daten.csv is completely empty or contains no data except of the header.
+- The csv file located in C:\Users\toy\Desktop\Ski_Gebiet_Daten.csv is completely empty or contains no data except of the header.

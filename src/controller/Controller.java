@@ -1,7 +1,12 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import services.exporter.CsvTemplateExporter;
 import services.importer.CsvParser;
+import services.persistence.LoadingService;
+import utils.Separator;
+import utils.log.Logger;
 
 public class Controller {
 
@@ -16,7 +21,13 @@ public class Controller {
   }
 
   public static void uploadCSV() {
-    // TODO (Ahmet): implement
+
+    File file = LoadingService.getPath();
+    try {
+      csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
+    } catch (IOException e) {
+      Logger.log(e.getMessage());
+    }
   }
 
   public static void downloadCsvTemplate() {

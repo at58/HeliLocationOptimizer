@@ -75,7 +75,7 @@ public final class GUI extends JFrame {
     dataTab.add(btnCalc);
 
     JButton btnImport = new JButton("CSV importieren");
-    btnImport.setFont(consolas14);
+    btnImport.setFont(consolas16);
     btnImport.setBackground(Color.WHITE);
     btnImport.setForeground(Color.BLACK);
     btnImport.setSelected(true);
@@ -86,7 +86,7 @@ public final class GUI extends JFrame {
     dataTab.add(btnImport);
 
     JButton btnGetTemplate = new JButton("Vorlage herunterladen");
-    btnGetTemplate.setFont(consolas14);
+    btnGetTemplate.setFont(consolas16);
     btnGetTemplate.setBackground(Color.WHITE);
     btnGetTemplate.setForeground(Color.BLACK);
     btnGetTemplate.addActionListener(action -> Controller.downloadCsvTemplate());
@@ -96,13 +96,13 @@ public final class GUI extends JFrame {
     btnGetTemplate.setToolTipText("Struktur-Vorlage als CSV-Datei herunterladen.");
     dataTab.add(btnGetTemplate);
 
-    JButton btnSaveSolution = new JButton("Ergebnisdetails herunterladen");
-    btnSaveSolution.setFont(consolas14);
-    btnSaveSolution.setBackground(Color.YELLOW);
+    JButton btnSaveSolution = new JButton("<html>Ergebnisdetails<br>herunterladen");
+    btnSaveSolution.setFont(consolas16);
+    btnSaveSolution.setBackground(Color.WHITE);
     btnSaveSolution.setForeground(Color.BLACK);
     btnSaveSolution.setSelected(true);
     btnSaveSolution.addActionListener(action -> Controller.calculate());
-    btnSaveSolution.setBounds(width-295 , height-780, 270, 60);
+    btnSaveSolution.setBounds(width-270 , height-780, 220, 60);
     btnSaveSolution.setVisible(true);
     btnSaveSolution.setToolTipText("");
     btnSaveSolution.setToolTipText("Details der berechneten Optimierung als CSV herunterladen");
