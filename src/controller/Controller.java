@@ -1,5 +1,6 @@
 package controller;
 
+import gui.Button;
 import java.io.File;
 import java.io.IOException;
 import services.exporter.CsvTemplateExporter;
@@ -12,16 +13,18 @@ public class Controller {
 
   private static CsvParser csvParser = new CsvParser();
 
-  public static void calculate() {
+  public static void calculate(Button button) {
+    button.setSelected(true);
+
     // TODO (Ahmet): implement
+
   }
 
   public static void closeApp() {
     System.exit(0);
   }
 
-  public static void uploadCSV() {
-
+  public static void importCSV() {
     File file = LoadingService.getPath();
     try {
       csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
@@ -30,7 +33,11 @@ public class Controller {
     }
   }
 
-  public static void downloadCsvTemplate() {
+  public static void exportCsvTemplate() {
     CsvTemplateExporter.export();
+  }
+
+  public static void exportSolution() {
+    // TODO (Ahmet): implement
   }
 }

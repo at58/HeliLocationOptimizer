@@ -17,6 +17,7 @@ public class LoadingService {
     } else {
       fileChooser = new JFileChooser(System.getProperty("user.home" + File.separator + "Desktop"));
     }
+    fileChooser.setDialogTitle("CSV Importieren");
     // fileChooser.setSelectedFile(new File(defaultFileName));
     int result = fileChooser.showOpenDialog(null);
 

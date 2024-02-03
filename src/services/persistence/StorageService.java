@@ -11,6 +11,7 @@ public class StorageService {
     JFileChooser fileChooser = new JFileChooser(
         System.getProperty("user.home") + File.separator + "Desktop");
     fileChooser.setSelectedFile(new File(defaultFileName));
+    fileChooser.setDialogTitle("Vorlage speichern");
     int result = fileChooser.showSaveDialog(null);
 
     if (result == JFileChooser.APPROVE_OPTION) {
