@@ -7,7 +7,7 @@ public class TableDataMapper {
 
   public static Object[][] mapToTableModel(List<String[]> csvTuples) {
 
-    Object[][] result = new Object[csvTuples.size()][4];
+    Object[][] result = new Object[csvTuples.size() - 1][4];
     for (int i = 1; i < csvTuples.size(); i++) {
       Object[] modelTuple = new Object[4];
       String[] csvTuple = csvTuples.get(i);
