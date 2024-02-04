@@ -20,7 +20,7 @@ public class CsvTemplateExporter {
     try {
       storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv");
       FileWriter writer = new FileWriter(storageTarget);
-      List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a.");
+      List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl pro Jahr");
       writeLine(writer, header);
       writer.close();
     } catch (DialogCancelledException | IOException e) {
