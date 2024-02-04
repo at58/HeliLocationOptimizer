@@ -59,7 +59,10 @@ public class DataPanel extends JPanel {
             this.txtY_Coordinate,
             this.txtAccidents
         };
-    Arrays.stream(txtTupleInputs).forEach(inputPanel::add);
+    Arrays.stream(txtTupleInputs).forEach(field -> {
+      field.setFont(Font.CONSOLAS18.getFont());
+      inputPanel.add(field);
+    });
     add(inputPanel);
 
     JPanel confirmInputPanel = new JPanel(new BorderLayout());
