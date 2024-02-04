@@ -34,7 +34,7 @@ public class DataPanel extends JPanel {
     headerLabel.setFont(Font.CONSOLAS16.getFont());
     add(headerLabel);
 
-    this.tablePanel = new TablePanel();
+    this.tablePanel = TablePanel.getInstance();
     add(this.tablePanel);
 
     JPanel inputPanel = new JPanel();
@@ -73,7 +73,7 @@ public class DataPanel extends JPanel {
          new Point(),
          new Dimension(),
          action -> {
-           Controller.addTupleToTable(this.tablePanel, this.txtTupleInputs);
+           Controller.addTupleToTable(this.txtTupleInputs);
            Arrays.stream(txtTupleInputs).forEach(t -> t.setText(""));
          }
          );

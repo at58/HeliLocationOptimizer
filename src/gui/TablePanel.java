@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,6 +14,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class TablePanel extends JPanel {
 
+  /* Singleton instance */
+  private static TablePanel tablePanel;
+
   private JTable table;
   private DefaultTableModel tableModel;
   private final String[] columns = { "Ort", "X - Koordinate", "Y - Koordinate", "Unfallzahl pro Jahr" };
@@ -21,7 +25,14 @@ public class TablePanel extends JPanel {
   private int row = -1;
   private int col = -1;
 
-  public TablePanel() {
+  public static TablePanel getInstance() {
+    if (Objects.isNull(tablePanel)) {
+      tablePanel = new TablePanel();
+    }
+    return tablePanel;
+  }
+
+  private TablePanel() {
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBackground(Color.LIGHT_GRAY);

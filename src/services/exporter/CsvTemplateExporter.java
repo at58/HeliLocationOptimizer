@@ -5,27 +5,34 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import javax.swing.UnsupportedLookAndFeelException;
 import services.persistence.StorageService;
+import utils.exceptions.DialogCancelledException;
 import utils.log.Logger;
 
 public class CsvTemplateExporter {
 
   public static String export() {
 
-    File storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv");
+    String storageLocation;
+    File storageTarget = null;
 
     try {
-      if (Objects.isNull(storageTarget)) {
-        throw new NullPointerException();
-      }
+      storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv");
       FileWriter writer = new FileWriter(storageTarget);
       List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl p.a.");
       writeLine(writer, header);
       writer.close();
-    } catch (NullPointerException | IOException e) {
+    } catch (DialogCancelledException | IOException e) {
       Logger.log(e.getMessage());
+    } finally {
+      if (Objects.isNull(storageTarget)) {
+        storageLocation = "";
+      } else {
+        storageLocation = storageTarget.getAbsolutePath();
+      }
     }
-    return storageTarget.getAbsolutePath();
+    return storageLocation;
   }
 
   private static void writeLine(FileWriter writer, List<String> data) throws IOException {

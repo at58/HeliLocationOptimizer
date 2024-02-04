@@ -1,1 +1,2 @@
-- Null-Pointer exception occurred.
+- Das Dialogfenster zum Speichern der CSV-Vorlage wurde abgebrochen.
+- The csv file located in C:\Users\toy\Desktop\Ski_Gebiet_Daten3.csv is completely empty or contains no data except of the header.

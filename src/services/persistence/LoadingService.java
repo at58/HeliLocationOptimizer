@@ -3,6 +3,7 @@ package services.persistence;
 import java.io.File;
 import java.util.Objects;
 import javax.swing.JFileChooser;
+import utils.DialogUtils;
 
 public class LoadingService {
 
@@ -18,7 +19,7 @@ public class LoadingService {
       fileChooser = new JFileChooser(System.getProperty("user.home" + File.separator + "Desktop"));
     }
     fileChooser.setDialogTitle("CSV Importieren");
-    // fileChooser.setSelectedFile(new File(defaultFileName));
+    fileChooser.setFileFilter(DialogUtils.getCsvFilter());
     int result = fileChooser.showOpenDialog(null);
 
     if (result == JFileChooser.APPROVE_OPTION) {
@@ -28,6 +29,7 @@ public class LoadingService {
   }
 
   static void setStoragePath(File path) {
+    // TODO (Ahmet): Check if it is possible to avoid the omission of the file name
     storagePath = path.getAbsolutePath().replace(path.getName(), "");
   }
 }
