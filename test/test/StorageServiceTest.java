@@ -2,7 +2,7 @@ package test;
 
 import java.io.File;
 import org.junit.jupiter.api.Test;
-import services.saving.StorageService;
+import services.persistence.StorageService;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StorageServiceTest {

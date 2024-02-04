@@ -2,49 +2,70 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.ToolTipManager;
 
 /**
- * Test GUI
+ * Interactive GUI of the application.
  */
 public final class GUI extends JFrame {
 
-  private final Font consolas14 = new Font("consolas", Font.BOLD, 14);
-  private final Font consolas16 = new Font("consolas", Font.BOLD, 16);
+  public GUI(Dimension dimension) {
 
-  private final Toolkit tk = Toolkit.getDefaultToolkit();
-
-  public GUI() {
     setTitle("Helicopter Location Optimizer");
-    Dimension dimension = tk.getScreenSize();
-    int widht = (int) dimension.getWidth();
+    int width = (int) dimension.getWidth();
     int height = (int) dimension.getHeight() - 50;
-    setSize(widht, height);
-    setLocation((int) (dimension.getWidth() - widht)/2,5);
+    setSize(width, height);
+    setLocation((int) (dimension.getWidth() - width)/2,5);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setResizable(true);
+
+    ToolTipManager manager = ToolTipManager.sharedInstance();
+    manager.setInitialDelay(500);
+    manager.setDismissDelay(5000);
+    manager.setReshowDelay(1);
 
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setBackground(Color.ORANGE);
-    tabbedPane.setFont(consolas16);
+    tabbedPane.setBackground(Color.WHITE);
+    tabbedPane.setFont(Font.CONSOLAS20.getFont());
 
-    JPanel tab1 = new JPanel();
-    tab1.add(new JLabel("Elemente von Tab 1..."));
-    tabbedPane.addTab("Karte", tab1);
+    JPanel mapTab = new JPanel();
+    mapTab.add(new JLabel("Elemente von Tab 1..."));
 
-    JPanel tab2 = new JPanel();
-    tab2.add(new JLabel("Elemente von Tab 2..."));
-    tabbedPane.addTab("Daten", tab2);
+    JPanel dataTab = new JPanel(new GridBagLayout());
+
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    // Zweite Zeile
+    InputPane inputPane = new InputPane(new Point(1, 1));
+    gbc = new GridBagConstraints(); // Zurücksetzen der GridBagConstraints
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weightx = 1.0; // Horizontales Gewicht für die zweite Zeile
+    gbc.weighty = 1.0; // Vertikales Gewicht für die zweite Zeile
+    gbc.fill = GridBagConstraints.BOTH; // Füllt den verfügbaren Platz in beiden Richtungen
+    dataTab.add(inputPane, gbc);
+
+    // Erste Zeile mit mehr Platz
+    ControlPane controlPane = new ControlPane(new Point(150, 40));
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weightx = 1.0; // Horizontales Gewicht für die erste Zeile
+    gbc.weighty = 0.6; // Vertikales Gewicht für die erste Zeile
+    gbc.fill = GridBagConstraints.BOTH; // Füllt den verfügbaren Platz in beiden Richtungen
+    dataTab.add(controlPane, gbc);
+
+    tabbedPane.addTab("Daten", dataTab);
+    tabbedPane.addTab("Karte", mapTab);
 
     add(tabbedPane);
     setVisible(true);
-  }
-
-  public static void main(String[] args) {
-    GUI gui = new GUI();
   }
 }

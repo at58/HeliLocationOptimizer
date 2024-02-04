@@ -13,7 +13,7 @@ import utils.log.Logger;
 public class CsvParser implements Parser <String, List<String[]>> {
 
   @Override
-  public List<String[]> parse(String path, Separator separator) throws IOException {
+  public List<String[]> parse(String path, Separator separator) {
 
     if (Objects.isNull(separator)) {
       separator = Separator.SEMICOLON;
@@ -49,7 +49,6 @@ public class CsvParser implements Parser <String, List<String[]>> {
     } catch (IOException e) {
       // e.printStackTrace();
       Logger.log(e.getMessage());
-      throw e;
     }
     return tupleList;
   }
