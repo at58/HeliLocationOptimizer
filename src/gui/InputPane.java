@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,8 +37,8 @@ public class InputPane extends JPanel {
     txtHeliSpeed.setFont(Font.CONSOLAS20.getFont());
     add(txtHeliSpeed);
 
-    DataTable dataTable = new DataTable();
-    dataTable.setBounds(650, 10, 800, 350);
-    add(dataTable);
+    DataPanel dataPanel = new DataPanel();
+    dataPanel.setBounds(625, 20, 800, 400);
+    add(dataPanel);
   }
 }

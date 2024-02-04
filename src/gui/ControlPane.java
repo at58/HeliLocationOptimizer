@@ -13,7 +13,7 @@ public class ControlPane extends JPanel {
     setLayout(null);
 
     JLabel lblTopic = new JLabel("Aktionen:");
-    lblTopic.setBounds(50,25,350,50);
+    lblTopic.setBounds(50,40,350,50);
     lblTopic.setFont(Font.CONSOLAS20.getFont());
     add(lblTopic);
 

@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import javax.swing.JFrame;
@@ -11,7 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
 
 /**
- * Test GUI
+ * Interactive GUI of the application.
  */
 public final class GUI extends JFrame {
 
@@ -37,14 +39,28 @@ public final class GUI extends JFrame {
     JPanel mapTab = new JPanel();
     mapTab.add(new JLabel("Elemente von Tab 1..."));
 
-    JPanel dataTab = new JPanel();
-    dataTab.setLayout(new GridLayout(2,1));
+    JPanel dataTab = new JPanel(new GridBagLayout());
 
-    ControlPane controlPane = new ControlPane(new Point(100,100));
-    InputPane inputPane = new InputPane(new Point(1,1));
+    GridBagConstraints gbc = new GridBagConstraints();
 
-    dataTab.add(inputPane);
-    dataTab.add(controlPane);
+    // Zweite Zeile
+    InputPane inputPane = new InputPane(new Point(1, 1));
+    gbc = new GridBagConstraints(); // Zurücksetzen der GridBagConstraints
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weightx = 1.0; // Horizontales Gewicht für die zweite Zeile
+    gbc.weighty = 1.0; // Vertikales Gewicht für die zweite Zeile
+    gbc.fill = GridBagConstraints.BOTH; // Füllt den verfügbaren Platz in beiden Richtungen
+    dataTab.add(inputPane, gbc);
+
+    // Erste Zeile mit mehr Platz
+    ControlPane controlPane = new ControlPane(new Point(150, 40));
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weightx = 1.0; // Horizontales Gewicht für die erste Zeile
+    gbc.weighty = 0.6; // Vertikales Gewicht für die erste Zeile
+    gbc.fill = GridBagConstraints.BOTH; // Füllt den verfügbaren Platz in beiden Richtungen
+    dataTab.add(controlPane, gbc);
 
     tabbedPane.addTab("Daten", dataTab);
     tabbedPane.addTab("Karte", mapTab);
