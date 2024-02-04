@@ -1,8 +1,8 @@
 package services.mapper;
 
-import core.Axis;
-import core.Coordinate;
-import core.Location;
+import domain.Axis;
+import domain.Coordinate;
+import domain.Location;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -66,9 +66,9 @@ public class ScaleMapper {
     System.out.println("\nY-SCALES:");
     y_scales.forEach(System.out::println);
 
-    Axis xAxis = new Axis(core.Dimension.X);
+    Axis xAxis = new Axis(domain.Dimension.X);
     xAxis.setScale(x_conversionKey);
-    Axis yAxis = new Axis(core.Dimension.Y);
+    Axis yAxis = new Axis(domain.Dimension.Y);
     yAxis.setScale(y_conversionKey);
     axisScales.put(xAxis, x_scales);
     axisScales.put(yAxis, y_scales);

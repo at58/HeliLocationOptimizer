@@ -2,7 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import core.Location;
+import domain.Location;
 import org.junit.jupiter.api.Test;
 
 public class LocationTest {
