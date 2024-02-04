@@ -1,5 +1,6 @@
 package controller;
 
+import domain.RawData;
 import gui.Button;
 import gui.TablePanel;
 import java.io.File;
@@ -34,6 +35,7 @@ public class Controller {
     try {
       file = LoadingService.getPath();
       List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
+      RawData.rebase(input);
       loadCsvToTableModel(TableDataMapper.mapToTableModel(input));
     } catch (NullPointerException e) {
       Logger.log(e.getMessage());

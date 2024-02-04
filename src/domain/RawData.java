@@ -12,7 +12,7 @@ public class RawData {
 
   private RawData() {}
 
-  public void create(String[] tuple) {
+  public static void create(String[] tuple) {
     if (tuple.length != 4) {
       // do nothing.
     } else {
@@ -20,19 +20,19 @@ public class RawData {
     }
   }
 
-  public List<String[]> read() {
+  public static List<String[]> read() {
     return data;
   }
 
-  public void update(String[] tuple, int index) {
+  public static void update(String[] tuple, int index) {
     data.set(index, tuple);
   }
 
-  public void delete(int index) {
+  public static void delete(int index) {
     data.remove(index);
   }
 
-  public void rebase(List<String[]> newDataBase) {
+  public static void rebase(List<String[]> newDataBase) {
     data = new ArrayList<>(newDataBase);
   }
 }
