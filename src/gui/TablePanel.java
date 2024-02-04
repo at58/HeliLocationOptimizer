@@ -13,8 +13,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class TablePanel extends JPanel {
 
-  private final JTable table;
-  private final DefaultTableModel tableModel;
+  private JTable table;
+  private DefaultTableModel tableModel;
+  private final String[] columns = { "Ort", "X - Koordinate", "Y - Koordinate", "Unfallzahl pro Jahr" };
   private Object[][] tuples;
   private boolean editLock = false;
   private int row = -1;
@@ -53,9 +54,7 @@ public class TablePanel extends JPanel {
         {"Stadt G", 50, 30, 10}
     };
 
-
-    String[] columns = { "Ort", "X - Koordinate", "Y - Koordinate", "Unfallzahl pro Jahr" };
-    tableModel = new DefaultTableModel(data, columns);
+    tableModel = new DefaultTableModel(tuples, this.columns);
     tableModel.addTableModelListener(action -> System.out.println("Table model changed"));
 
     table = new JTable(tableModel);
@@ -93,7 +92,16 @@ public class TablePanel extends JPanel {
     add(scrollPane, BorderLayout.CENTER);
   }
 
-  public void setTuples(Object[][] tuples) {
-    this.tuples = tuples;
+  public DefaultTableModel getTableModel() {
+    return this.tableModel;
+  }
+
+  public void updateTuples(Object[] newTuple) {
+    this.tableModel.addRow(newTuple);
+    tableModel.fireTableDataChanged();
+  }
+
+  public Object[][] getTuples() {
+    return this.tuples;
   }
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,9 +45,13 @@ public class DataPanel extends JPanel {
     add(emptyPanel);
 
     this.txtLocation = new JTextField();
+    this.txtLocation.setToolTipText("Eingabe des Ortsnamen");
     this.txtX_Coordinate = new JTextField();
+    this.txtX_Coordinate.setToolTipText("Eingabe der X - Koordinate");
     this.txtY_Coordinate = new JTextField();
+    this.txtY_Coordinate.setToolTipText("Eingabe Y - Koordinate");
     this.txtAccidents = new JTextField();
+    this.txtAccidents.setToolTipText("Eingabe der Unfallzahl pro Jahr");
     txtTupleInputs = new JTextField[]
         {
             this.txtLocation,
@@ -67,7 +72,10 @@ public class DataPanel extends JPanel {
          "Den eingegebenen Datensatz hinzufuegen.",
          new Point(),
          new Dimension(),
-         action -> System.out.println("Add")
+         action -> {
+           Controller.addTupleToTable(this.tablePanel, this.txtTupleInputs);
+           Arrays.stream(txtTupleInputs).forEach(t -> t.setText(""));
+         }
          );
     confirmInputPanel.add(btnConfirmInput, BorderLayout.EAST);
     add(confirmInputPanel);
