@@ -43,9 +43,7 @@ public class ParserTest {
 
     // act
     List<String[]> actual = null;
-    try {
-      actual = csvParser.parse(path, Separator.SEMICOLON);
-    } catch (IOException ignored) {}
+    actual = csvParser.parse(path, Separator.SEMICOLON);
 
     // assert
     assertNotNull(actual);
@@ -87,9 +85,7 @@ public class ParserTest {
     // act
     Executable executable = () -> csvParser.parse(path, null);
     List<String[]> actual = null;
-    try {
-      actual = csvParser.parse(path, Separator.SEMICOLON);
-    } catch (IOException ignored) {}
+    actual = csvParser.parse(path, Separator.SEMICOLON);
     // assert
     assertDoesNotThrow(executable);
     assertNotNull(actual);
@@ -124,9 +120,7 @@ public class ParserTest {
     );
     // act
     List<String[]> actual = null;
-    try {
-      actual = csvParser.parse(path, Separator.SEMICOLON);
-    } catch (IOException ignored) {}
+    actual = csvParser.parse(path, Separator.SEMICOLON);
     // assert
     assertNotNull(actual);
     assertEquals(expected.size(), actual.size());

@@ -1,6 +1,6 @@
 package services.calculations;
 
-import core.Coordinate;
+import domain.Coordinate;
 
 public class Euclid {
 

@@ -1,4 +1,4 @@
-package core;
+package domain;
 
 public final class Location implements Item {
 
