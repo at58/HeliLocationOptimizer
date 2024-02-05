@@ -3,7 +3,7 @@ package test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import core.Coordinate;
+import domain.Coordinate;
 import services.calculations.Euclid;
 import utils.MathUtils;
 

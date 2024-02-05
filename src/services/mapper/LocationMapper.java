@@ -1,6 +1,6 @@
 package services.mapper;
 
-import core.Location;
+import domain.Location;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

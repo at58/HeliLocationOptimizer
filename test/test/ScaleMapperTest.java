@@ -1,8 +1,8 @@
 package test;
 
-import core.Axis;
-import core.Dimension;
-import core.Location;
+import domain.Axis;
+import domain.Dimension;
+import domain.Location;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

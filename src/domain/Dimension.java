@@ -1,4 +1,4 @@
-package core;
+package domain;
 
 public enum Dimension {
 

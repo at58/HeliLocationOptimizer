@@ -4,13 +4,14 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 import services.persistence.LoadingService;
 import services.persistence.StorageService;
+import utils.exceptions.DialogCancelledException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoadingServiceTest {
 
   @Test
-  void LoadingLocationTest() {
+  void LoadingLocationTest() throws DialogCancelledException {
     // Arrange
     File storageLocation = StorageService.getStorageLocation("Ortsdaten.csv");
     String expected = storageLocation.getAbsolutePath().replaceAll("\\\\", "/");
