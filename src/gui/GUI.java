@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,7 +40,7 @@ public final class GUI extends JFrame {
 
     JPanel dataTab = new JPanel(new GridBagLayout());
 
-    GridBagConstraints gbc = new GridBagConstraints();
+    GridBagConstraints gbc;
 
     // Obere Hälfte des Data Frames
     InputPane inputPane = new InputPane(new Point(1, 1));
