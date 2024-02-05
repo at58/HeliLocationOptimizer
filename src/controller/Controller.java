@@ -2,6 +2,7 @@ package controller;
 
 import gui.Button;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import services.exporter.CsvTemplateExporter;
 import services.importer.CsvParser;
@@ -16,6 +17,17 @@ public class Controller {
 
   public static void calculate(Button button) {
     button.setSelected(true);
+
+    // TODO (Ahmet): This is a temporary implementation for control purposes. Delete after implementation.
+    List<String[]> dataModel = TableController.getTableData();
+    dataModel.forEach(d -> {
+      Arrays.stream(d).forEach(e -> {
+        System.out.print(e);
+        System.out.print(", ");
+      });
+      System.out.println();
+    });
+    System.out.println("\n-----------------------------\n");
 
     // TODO (Ahmet): implement
 

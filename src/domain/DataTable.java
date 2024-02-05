@@ -34,7 +34,14 @@ public class DataTable {
     return this.tableModel;
   }
 
+  /**
+   * Inserts all tuples into the table model. If there is already data exists, all data will be
+   * replaced by the tuples come from uploading a csv file.
+   *
+   * @param tuples the uploaded tuples.
+   */
   public void pushDataBase(Object[][] tuples) {
+    tableModel.setRowCount(0);
     this.tuples = tuples;
     Arrays.stream(tuples).forEach(tableModel::addRow);
     refresh();
