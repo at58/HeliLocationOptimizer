@@ -3,12 +3,14 @@ package test;
 import java.io.File;
 import org.junit.jupiter.api.Test;
 import services.persistence.StorageService;
+import utils.exceptions.DialogCancelledException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StorageServiceTest {
 
   @Test
-  void storageLocationTest() {
+  void storageLocationTest() throws DialogCancelledException {
     // arrange
     String expected = "C:\\Users\\toy\\Desktop\\Ortsdaten.csv";
     // act
@@ -18,7 +20,7 @@ public class StorageServiceTest {
   }
 
   @Test
-  void storageLocationTest_2() {
+  void storageLocationTest_2() throws DialogCancelledException {
     // arrange
     String expected = "C:\\Users\\toy\\Downloads\\Beispiel.csv";
     // act
