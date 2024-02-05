@@ -1,0 +1,3 @@
+- Null-Pointer exception occurred.
+- Cannot invoke "java.io.File.getAbsolutePath()" because "file" is null
+- Cannot invoke "java.io.File.getAbsolutePath()" because "file" is null
