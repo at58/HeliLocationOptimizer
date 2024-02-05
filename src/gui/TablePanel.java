@@ -1,5 +1,7 @@
 package gui;
 
+import controller.TableController;
+import domain.DataTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -10,17 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public class TablePanel extends JPanel {
 
   /* Singleton instance */
   private static TablePanel tablePanel;
-
-  private JTable table;
-  private DefaultTableModel tableModel;
-  private final String[] columns = { "Ort", "X - Koordinate", "Y - Koordinate", "Unfallzahl pro Jahr" };
-  private Object[][] tuples;
+  private final JTable table;
   private boolean editLock = false;
   private int row = -1;
   private int col = -1;
@@ -37,39 +34,33 @@ public class TablePanel extends JPanel {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBackground(Color.LIGHT_GRAY);
 
-    // Tuples of the table
-    tuples = new Object[][] {};
-
     // Test tuples
-    Object[][] data = {
-        {"Stadt A", 50, 30, 10},
-        {"Stadt B", 50, 30, 10},
-        {"Stadt C", 50, 30, 10},
-        {"Stadt D", 50, 30, 10},
-        {"Stadt E", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt F", 50, 30, 10},
-        {"Stadt G", 50, 30, 10}
-    };
+//    Object[][] data = {
+//        {"Stadt A", 50, 30, 10},
+//        {"Stadt B", 50, 30, 10},
+//        {"Stadt C", 50, 30, 10},
+//        {"Stadt D", 50, 30, 10},
+//        {"Stadt E", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt F", 50, 30, 10},
+//        {"Stadt G", 50, 30, 10}
+//    };
 
-    tableModel = new DefaultTableModel(tuples, this.columns);
-    tableModel.addTableModelListener(action -> System.out.println("Table model changed"));
-
-    table = new JTable(tableModel);
-    table.setFillsViewportHeight(true); // TODO (Ahmet): check
+    table = new JTable(TableController.getTableModel());
+    table.setFillsViewportHeight(true); // TODO (Ahmet): check if necessary
     table.setFont(Font.CONSOLAS14.getFont());
     table.addMouseListener(new MouseAdapter() {
       @Override
@@ -79,12 +70,10 @@ public class TablePanel extends JPanel {
           int c = table.columnAtPoint(e.getPoint());
           if (r == row && c == col) {
             editLock = true;
-            // System.out.println("LOCK");
           } else {
             row = r;
             col = c;
             editLock = false;
-            // System.out.println("UNLOCK");
           }
         }
         if (SwingUtilities.isRightMouseButton(e) && !editLock) {
@@ -93,7 +82,7 @@ public class TablePanel extends JPanel {
 
           if (row >= 0 && col >= 0) {
             // remove the row from table
-            tableModel.removeRow(row);
+            TableController.delete(row);
           }
         }
       }
@@ -101,18 +90,5 @@ public class TablePanel extends JPanel {
 
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
-  }
-
-  public DefaultTableModel getTableModel() {
-    return this.tableModel;
-  }
-
-  public void updateTuples(Object[] newTuple) {
-    this.tableModel.addRow(newTuple);
-    tableModel.fireTableDataChanged();
-  }
-
-  public Object[][] getTuples() {
-    return this.tuples;
   }
 }
