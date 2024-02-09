@@ -18,6 +18,7 @@ public class TableController {
     if (newTuple != null) {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
+      Controller.hideErrorMsg();
     }
   }
 
@@ -36,7 +37,7 @@ public class TableController {
 
   public static List<String[]> getTableData() {
 
-    Vector<Vector> dataVector =  dataTable.pullDataBase();
+    Vector dataVector =  dataTable.pullDataBase();
     return TableDataMapper.mapToStringArrayList(dataVector);
   }
 }

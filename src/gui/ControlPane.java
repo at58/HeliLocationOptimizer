@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 public class ControlPane extends JPanel {
 
+  private final Button btnCalc;
+
   public ControlPane(Point alignment) {
     setLayout(null);
 
@@ -61,15 +63,15 @@ public class ControlPane extends JPanel {
         action -> Controller.saveTable()
     ));
 
-    Button btnCalc = new Button("Berechnen",
+    btnCalc = new Button("Berechnen",
                                 Color.GREEN,
                                 Color.BLACK,
                                 Font.CONSOLAS20,
                                 "Ermittlung der optimalen Stationierungen.",
                                 new Point(alignment.x + 750,alignment.y + 5),
                                 new Dimension(300,60),
-                                action -> System.out.println());
-    btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
+                                action -> Controller.calculate());
+    // btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
     add(btnCalc);
 
     add(new Button(

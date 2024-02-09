@@ -5,7 +5,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Table Data Model
+ * Table Data Model.
+ * Singleton implementation.
  */
 public class DataTable {
 
@@ -55,7 +56,7 @@ public class DataTable {
     this.tableModel.removeRow(row);
   }
 
-  public Vector<Vector> pullDataBase() {
+  public Vector pullDataBase() {
     return this.tableModel.getDataVector();
   }
 

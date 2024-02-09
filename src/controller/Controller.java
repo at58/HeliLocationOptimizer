@@ -1,25 +1,34 @@
 package controller;
 
 import gui.Button;
+import gui.GUI;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import services.exporter.CsvTemplateExporter;
+import services.calculations.LocationFinder;
+import services.exporter.CsvExporter;
 import services.importer.CsvParser;
 import services.mapper.TableDataMapper;
 import services.dialog.LoadingService;
 import utils.Separator;
+import utils.exceptions.NoLocationDataException;
 import utils.log.Logger;
 
 public class Controller {
 
   private static final CsvParser csvParser = new CsvParser();
+  private static GUI gui;
 
-  public static void calculate(Button button) {
-    button.setSelected(true);
+  public static void startGUI(GUI userInterface) {
+    gui = userInterface;
+  }
+
+  public static void calculate() {
+
+    gui.hideErrorMessages();
 
     // TODO (Ahmet): This is a temporary implementation for control purposes. Delete after implementation.
-    List<String[]> dataModel = TableController.getTableData();
+    /*List<String[]> dataModel = TableController.getTableData();
     dataModel.forEach(d -> {
       Arrays.stream(d).forEach(e -> {
         System.out.print(e);
@@ -27,10 +36,20 @@ public class Controller {
       });
       System.out.println();
     });
-    System.out.println("\n-----------------------------\n");
+    System.out.println("\n-----------------------------\n");*/
 
     // TODO (Ahmet): implement
-
+    try {
+      LocationFinder.findOptimalPositions(gui.getHeliNumberFieldInput(),
+                                          gui.getSpeedFieldInput(),
+                                          TableController.getTableData());
+    } catch (IllegalArgumentException e) {
+      Logger.log(e.getMessage());
+      gui.showInputErrorMsg();
+    } catch (NoLocationDataException e) {
+      Logger.log(e.getMessage());
+      gui.showNoLocationDataMsg();
+    }
   }
 
   public static void closeApp() {
@@ -46,10 +65,11 @@ public class Controller {
     } catch (NullPointerException e) {
       Logger.log(e.getMessage());
     }
+    gui.hideErrorMessages();
   }
 
   public static void exportCsvTemplate() {
-    String storageLocation = CsvTemplateExporter.export();
+    String storageLocation = CsvExporter.exportTemplate();
   }
 
   public static void exportSolution() {
@@ -58,6 +78,10 @@ public class Controller {
 
   public static void saveTable() {
     List<String[]> tableData = TableController.getTableData();
-    String storageLocation = CsvTemplateExporter.saveTable(tableData);
+    String storageLocation = CsvExporter.saveTable(tableData);
+  }
+
+  public static void hideErrorMsg() {
+    gui.hideErrorMessages();
   }
 }
