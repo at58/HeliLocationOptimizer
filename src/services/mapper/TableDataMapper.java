@@ -2,9 +2,11 @@ package services.mapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.regex.Pattern;
 import javax.swing.JTextField;
 import utils.log.Logger;
 
@@ -25,17 +27,34 @@ public class TableDataMapper {
     return result;
   }
 
-  public static List<String[]> mapToStringArrayList(Vector<Vector> dataVector) {
+  public static List<String[]> mapToStringArrayList(Vector dataVector) {
 
     List<String[]> result = new ArrayList<>();
-    dataVector.forEach(vector -> {
-      Object[] objects = vector.toArray();
-      String[] strings = new String[objects.length];
-      for (int i = 0; i < objects.length; i++) {
-        strings[i] = String.valueOf(objects[i]);
+    Object[] outerArray = dataVector.toArray();
+    char[] dataString = Arrays.toString(outerArray).toCharArray();
+    List<Character> charList = new ArrayList<>();
+    for (char c : dataString) {
+      charList.add(c);
+    }
+    charList.remove(0);
+    charList.remove(charList.size() - 1);
+
+    StringBuilder tupleBuilder = new StringBuilder();
+    int index = 0;
+    while (index < charList.size()) {
+      char c = charList.get(index);
+      if (c != '[' && c != ']' && c != ' ') {
+        tupleBuilder.append(c);
+        index++;
+      } else if (c == ']') {
+        String[] tuple = tupleBuilder.toString().split(",");
+        result.add(tuple);
+        tupleBuilder = new StringBuilder();
+        index += 2;
+      } else {
+        index++;
       }
-      result.add(strings);
-    });
+    }
     return result;
   }
 
