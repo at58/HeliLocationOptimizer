@@ -3,21 +3,20 @@ package services.exporter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 import java.util.Objects;
 import services.dialog.StorageService;
 import utils.exceptions.DialogCancelledException;
 import utils.log.Logger;
 
-public class CsvTemplateExporter {
+public class CsvExporter {
 
   private static final List<String> header = List.of("Ort",
                                                      "x-Koordinate",
                                                      "y-Koordinate",
                                                      "Unfallzahl pro Jahr");
 
-  public static String export() {
+  public static String exportTemplate() {
 
     String storageLocation;
     File storageTarget = null;

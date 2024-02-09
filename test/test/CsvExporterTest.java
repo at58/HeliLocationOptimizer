@@ -3,11 +3,11 @@ package test;
 import java.io.File;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import services.exporter.CsvTemplateExporter;
+import services.exporter.CsvExporter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CsvTemplateExporterTest {
+public class CsvExporterTest {
 
   /**
    * This test will open a dialog window for saving files. The test result depends on the selection
@@ -18,7 +18,7 @@ public class CsvTemplateExporterTest {
     // arrange
     File file;
     // act
-    String storagedFilePath = CsvTemplateExporter.export(); // expected
+    String storagedFilePath = CsvExporter.exportTemplate(); // expected
     file = new File(storagedFilePath);
     // assert
     assertTrue(file.exists());
@@ -36,7 +36,7 @@ public class CsvTemplateExporterTest {
     Executable testExecution = new Executable() {
       @Override
       public void execute() throws Throwable {
-        CsvTemplateExporter.export();
+        CsvExporter.exportTemplate();
       }
     };
     // assert
