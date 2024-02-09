@@ -3,6 +3,7 @@ package controller;
 import domain.DataTable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ public class TableController {
 
     try {
       Arrays.stream(textFields).forEach(field -> {
-        if (field.getText().isBlank()) {
+        if (Objects.isNull(field) || field.getText().isBlank()) {
           throw new IllegalArgumentException();
         }
       });
@@ -30,7 +31,7 @@ public class TableController {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
     } catch (IllegalArgumentException e) {
-      Logger.log(e.getMessage());
+      Logger.log("Incomplete or invalid data tuple was submitted.");
     }
   }
 
