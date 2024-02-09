@@ -3,12 +3,10 @@ package controller;
 import domain.DataTable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import services.mapper.TableDataMapper;
-import utils.log.Logger;
 
 public class TableController {
 
@@ -16,22 +14,10 @@ public class TableController {
 
   public static void put(JTextField[] textFields) {
 
-    try {
-      Arrays.stream(textFields).forEach(field -> {
-        if (Objects.isNull(field) || field.getText().isBlank()) {
-          throw new IllegalArgumentException();
-        }
-      });
-      Object[] newTuple = new Object[4];
-      newTuple[0] = textFields[0].getText();
-      newTuple[1] = Integer.parseInt(textFields[1].getText());
-      newTuple[2] = Integer.parseInt(textFields[2].getText());
-      newTuple[3] = Integer.parseInt(textFields[3].getText());
-
+    Object[] newTuple = TableDataMapper.extractTextFieldContent(textFields);
+    if (newTuple != null) {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
-    } catch (IllegalArgumentException e) {
-      Logger.log("Incomplete or invalid data tuple was submitted.");
     }
   }
 

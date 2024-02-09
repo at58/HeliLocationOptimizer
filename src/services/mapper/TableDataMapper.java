@@ -3,7 +3,10 @@ package services.mapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
+import javax.swing.JTextField;
+import utils.log.Logger;
 
 public class TableDataMapper {
 
@@ -34,5 +37,26 @@ public class TableDataMapper {
       result.add(strings);
     });
     return result;
+  }
+
+  public static Object[] extractTextFieldContent(JTextField[] textFields) {
+
+    Object[] newTuple = null;
+    try {
+      Arrays.stream(textFields).forEach(field -> {
+        if (Objects.isNull(field) || field.getText().isBlank()) {
+          throw new IllegalArgumentException();
+        }
+      });
+      newTuple = new Object[4];
+      newTuple[0] = textFields[0].getText();
+      newTuple[1] = Integer.parseInt(textFields[1].getText());
+      newTuple[2] = Integer.parseInt(textFields[2].getText());
+      newTuple[3] = Integer.parseInt(textFields[3].getText());
+    } catch (IllegalArgumentException e) {
+      newTuple = null;
+      Logger.log("Incomplete or invalid data tuple was submitted.");
+    }
+    return newTuple;
   }
 }
