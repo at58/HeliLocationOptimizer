@@ -7,7 +7,7 @@ import java.util.List;
 import services.exporter.CsvTemplateExporter;
 import services.importer.CsvParser;
 import services.mapper.TableDataMapper;
-import services.persistence.LoadingService;
+import services.dialog.LoadingService;
 import utils.Separator;
 import utils.log.Logger;
 
@@ -54,5 +54,10 @@ public class Controller {
 
   public static void exportSolution() {
     // TODO (Ahmet): implement
+  }
+
+  public static void saveTable() {
+    List<String[]> tableData = TableController.getTableData();
+    String storageLocation = CsvTemplateExporter.saveTable(tableData);
   }
 }

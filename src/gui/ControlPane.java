@@ -50,6 +50,17 @@ public class ControlPane extends JPanel {
         action -> Controller.importCSV()
     ));
 
+    add(new Button(
+        "Tabelle speichern",
+        Color.WHITE,
+        Color.BLACK,
+        Font.CONSOLAS18,
+        "Aktuelle Tabellendaten speichern",
+        new Point(alignment.x + 400, alignment.y + 100),
+        new Dimension(300,60),
+        action -> Controller.saveTable()
+    ));
+
     Button btnCalc = new Button("Berechnen",
                                 Color.GREEN,
                                 Color.BLACK,

@@ -2,8 +2,8 @@ package test;
 
 import java.io.File;
 import org.junit.jupiter.api.Test;
-import services.persistence.LoadingService;
-import services.persistence.StorageService;
+import services.dialog.LoadingService;
+import services.dialog.StorageService;
 import utils.exceptions.DialogCancelledException;
 
 import static org.junit.jupiter.api.Assertions.*;

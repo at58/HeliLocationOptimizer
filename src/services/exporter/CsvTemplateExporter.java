@@ -3,10 +3,10 @@ package services.exporter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.UnsupportedLookAndFeelException;
-import services.persistence.StorageService;
+import services.dialog.StorageService;
 import utils.exceptions.DialogCancelledException;
 import utils.log.Logger;
 
@@ -18,7 +18,7 @@ public class CsvTemplateExporter {
     File storageTarget = null;
 
     try {
-      storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv");
+      storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv", 1);
       FileWriter writer = new FileWriter(storageTarget);
       List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl pro Jahr");
       writeLine(writer, header);
@@ -33,6 +33,28 @@ public class CsvTemplateExporter {
       }
     }
     return storageLocation;
+  }
+
+  public static String saveTable(List<String[]> data) {
+
+    String storagePath = "";
+    File storageTarget = null;
+
+    try {
+      storageTarget = StorageService.getStorageLocation("", 2);
+      FileWriter writer = new FileWriter(storageTarget);
+      for (String[] tuple : data) {
+        writeLine(writer, List.of(tuple));
+      }
+      writer.close();
+    } catch (DialogCancelledException | IOException e) {
+      Logger.log(e.getMessage());
+    } finally {
+      if (storageTarget != null) {
+        storagePath = storageTarget.getAbsolutePath();
+      }
+    }
+    return storagePath;
   }
 
   private static void writeLine(FileWriter writer, List<String> data) throws IOException {
