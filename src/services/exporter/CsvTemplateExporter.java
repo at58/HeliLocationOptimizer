@@ -12,6 +12,11 @@ import utils.log.Logger;
 
 public class CsvTemplateExporter {
 
+  private static final List<String> header = List.of("Ort",
+                                                     "x-Koordinate",
+                                                     "y-Koordinate",
+                                                     "Unfallzahl pro Jahr");
+
   public static String export() {
 
     String storageLocation;
@@ -20,7 +25,6 @@ public class CsvTemplateExporter {
     try {
       storageTarget = StorageService.getStorageLocation("Ski_Gebiet_Daten.csv", 1);
       FileWriter writer = new FileWriter(storageTarget);
-      List<String> header = List.of("Ort", "x-Koordinate", "y-Koordinate", "Unfallzahl pro Jahr");
       writeLine(writer, header);
       writer.close();
     } catch (DialogCancelledException | IOException e) {
@@ -43,6 +47,7 @@ public class CsvTemplateExporter {
     try {
       storageTarget = StorageService.getStorageLocation("", 2);
       FileWriter writer = new FileWriter(storageTarget);
+      writeLine(writer, header);
       for (String[] tuple : data) {
         writeLine(writer, List.of(tuple));
       }
