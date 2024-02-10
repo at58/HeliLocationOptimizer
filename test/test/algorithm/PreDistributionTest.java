@@ -29,7 +29,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(3,0,1));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateAndAssignToSectors(locationList, helicopterNumber);
+    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
@@ -56,7 +56,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(3,0,6));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateAndAssignToSectors(locationList, helicopterNumber);
+    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
@@ -85,7 +85,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(1,7,1));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateAndAssignToSectors(locationList, helicopterNumber);
+    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
