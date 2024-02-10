@@ -4,13 +4,12 @@ import domain.Coordinate;
 import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import services.mapper.LocationMapper;
 import services.mapper.ScaleMapper;
+import utils.CalculationUtils;
 import utils.exceptions.NoLocationDataException;
 
 public class LocationFinder {
@@ -39,13 +38,62 @@ public class LocationFinder {
 
   }
 
-  public static void determinePreDistribution(List<Location> locationList, int helicopterNumber) {
+  /**
+   * Determines the first allocation of locations to helicopters. This is the starting point of the
+   * calculation.
+   *
+   * @param locationList the list with all locations.
+   * @param helicopterList the list of helicopters.
+   */
+  public static void determinePreDistribution(List<Location> locationList,
+                                              List<Helicopter> helicopterList) {
 
-    List<List<Location>> sectoredLocations = generateAndAssignToSectors(locationList, helicopterNumber);
+    int helicopterNumber = helicopterList.size();
+    List<List<Location>> sectoredLocations = generateSectorsAndAssignLocations(locationList, helicopterNumber);
+    int[] helicopterAssignments = getHelicopterAssignmentsPerSector(sectoredLocations, helicopterNumber);
+    Map<Helicopter, Location> helicopterLocationMap = new HashMap<>();
+
+    for (int i = 0; i < helicopterAssignments.length; i++) {
+      int assignments = helicopterAssignments[i];
+      List<Location> l =  CalculationUtils.getRandomLocations()
+    }
 
   }
 
-  public static List<List<Location>> generateAndAssignToSectors(
+  /**
+   * Calculates the proportion of helicopters assigned to a sector based on the relative proportion
+   * of locations in the sectors out of all locations.
+   *
+   * @param sectors The sector list with the amount of location in each sector.
+   * @param helicopterNumber the number of helicopters.
+   * @return An array with the number of helicopters that are assigned to the current sector.
+   */
+  public static int[] getHelicopterAssignmentsPerSector(List<List<Location>> sectors,
+                                                        int helicopterNumber) {
+    int percentageRate = 100 / helicopterNumber;
+    int[] relativeShares = new int[sectors.size()];
+    for (int i = 0; i < sectors.size(); i++) {
+      int locationAmount = sectors.get(i).size();
+      int ratio = (locationAmount / helicopterNumber) * 100;
+      if (ratio < percentageRate) {
+        relativeShares[i] = 0;
+      } else {
+        int shares = ratio / percentageRate;
+        relativeShares[i] = shares;
+      }
+    }
+    return relativeShares;
+  }
+
+  /**
+   * Divides the entire area into sectors of equal size, as many in total as there are helicopters.
+   * The locations are then assigned to the sectors
+   *
+   * @param locationList the list with all locations.
+   * @param helicopterNumber the number of helicopters.
+   * @return list of sectors with a list of locations assigned to the current sector.
+   */
+  public static List<List<Location>> generateSectorsAndAssignLocations(
       List<Location> locationList,
       int helicopterNumber) {
 
