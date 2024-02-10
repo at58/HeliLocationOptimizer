@@ -1,6 +1,5 @@
 package services.calculations;
 
-import controller.TableController;
 import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
@@ -17,6 +16,10 @@ public class LocationFinder {
     if (numberOfHeli.isBlank() || speed.isBlank()) {
       throw new IllegalArgumentException("Missing inputs for number and/or speed of helicopter.");
     }
+    if (data.isEmpty()) {
+      throw new NoLocationDataException("No location data provided.");
+    }
+
     int numberOfHelicopter = Integer.parseInt(numberOfHeli);
     int helicopterSpeed = Integer.parseInt(speed);
 
@@ -25,13 +28,9 @@ public class LocationFinder {
       helicopterList.add(new Helicopter(helicopterSpeed));
     }
 
-    if (data.isEmpty()) {
-      throw new NoLocationDataException("No location data provided.");
-    }
-    data.forEach(d -> Arrays.stream(d).forEach(System.out::println));
-    System.out.println("Location list items:");
     List<Location> locations = LocationMapper.mapToLocationObjects(data);
     locations.forEach(l -> System.out.println(l.getName()));
+
 
   }
 }

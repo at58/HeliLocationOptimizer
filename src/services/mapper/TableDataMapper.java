@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Vector;
 import java.util.regex.Pattern;
 import javax.swing.JTextField;
+import utils.exceptions.ColumnIdentifierException;
 import utils.log.Logger;
 
 public class TableDataMapper {
@@ -17,10 +18,11 @@ public class TableDataMapper {
                                                                   "y koordinate",
                                                                   "unfallzahl"};
 
-  public static Object[][] mapToTableModel(List<String[]> csvTuples) {
+  public static Object[][] mapToTableModel(List<String[]> csvTuples)
+      throws ColumnIdentifierException, NumberFormatException {
 
     String[] columns = extractColumnIdentifiers(csvTuples);
-    int[] legendIndexes = new int[columns.length];
+    Integer[] legendIndexes = new Integer[columns.length];
 
     for (int i = 0; i < legendIndexes.length; i++) {
       String ref = columnIdentifiers[i];
@@ -32,6 +34,12 @@ public class TableDataMapper {
         }
       }
     }
+    for (Integer i : legendIndexes) {
+      if (i == null) {
+        throw new ColumnIdentifierException("Die Spalten der importierten Datei sind inkompatibel!");
+      }
+    }
+
     Object[][] result = new Object[csvTuples.size() - 1][4];
     for (int i = 1; i < csvTuples.size(); i++) {
       Object[] modelTuple = new Object[4];

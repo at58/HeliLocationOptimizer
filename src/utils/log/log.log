@@ -1,3 +1,8 @@
-- Null-Pointer exception occurred.
-- Cannot invoke "java.io.File.getAbsolutePath()" because "file" is null
-- Cannot invoke "java.io.File.getAbsolutePath()" because "file" is null
+- Incomplete or invalid data tuple was submitted.
+- For input string: "4.1"
+- Incomplete or invalid data tuple was submitted.
+- Missing inputs for number and/or speed of helicopter.
+- The csv file located in C:\Users\toy\Documents\Ski_Gebiet_Daten3.csv is completely empty or contains no data except of the header.
+- Missing inputs for number and/or speed of helicopter.
+- No location data provided.
+- Incomplete or invalid data tuple was submitted.

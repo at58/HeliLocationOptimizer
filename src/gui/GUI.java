@@ -98,4 +98,20 @@ public final class GUI extends JFrame {
   public void hideTableInputErrMsg() {
     this.inputPane.hideTableInputErrMsg();
   }
+
+  public void showIncompatibleColumnErrMsg() {
+    this.inputPane.showIncompatibleColumnErrMsg();
+  }
+
+  public void hideIncompatibleColumnErrMsg() {
+    this.inputPane.hideIncompatibleColumnErrMsg();
+  }
+
+  public void showNumberFormatErrMsg() {
+    this.inputPane.showNumberFormatErrMsg();
+  }
+
+  public void hideNumberFormatErrMsg() {
+    this.inputPane.hideNumberFormatErrMsg();
+  }
 }

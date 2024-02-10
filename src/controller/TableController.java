@@ -13,6 +13,7 @@ public class TableController {
 
   public static boolean put(JTextField[] textFields) {
 
+    Controller.hideAllTableErrMsg();
     Object[] newTuple = TableDataMapper.extractTextFieldContent(textFields);
     if (newTuple != null) {
       dataTable.addTuple(newTuple);

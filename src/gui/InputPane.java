@@ -13,6 +13,8 @@ public class InputPane extends JPanel {
   private final JLabel lblInputErrorMsg;
   private final JLabel lblNoTableDataErrMsg;
   private final JLabel lblInvalidTableInputErrMsg;
+  private final JLabel lblIncompatibleColumnErrMsg;
+  private final JLabel lblNumberFormatErrMsg;
 
   public InputPane(Point alignment) {
     setLayout(null);
@@ -68,6 +70,23 @@ public class InputPane extends JPanel {
     lblInvalidTableInputErrMsg.setVisible(false);
     add(this.lblInvalidTableInputErrMsg);
 
+    lblIncompatibleColumnErrMsg = new JLabel("<html>Import fehlgeschlagen! Die Spalten der " +
+                                                 "importierten Datei sind inkompatibel.");
+    lblIncompatibleColumnErrMsg.setForeground(Color.RED);
+    lblIncompatibleColumnErrMsg.setFont(Font.CONSOLAS16.getFont());
+    lblIncompatibleColumnErrMsg.setBounds(625, 370, 700,80);
+    lblIncompatibleColumnErrMsg.setVisible(false);
+    add(this.lblIncompatibleColumnErrMsg);
+
+    lblNumberFormatErrMsg = new JLabel("<html>Import fehlgeschlagen! In eine oder mehrere " +
+                                           "Zahlenwert-Spalten der importierten Datei sind " +
+                                           "Spaltenwerte enthalten, die keine ganze Zahlen sind.");
+    lblNumberFormatErrMsg.setForeground(Color.RED);
+    lblNumberFormatErrMsg.setFont(Font.CONSOLAS16.getFont());
+    lblNumberFormatErrMsg.setBounds(625, 380, 700,80);
+    lblNumberFormatErrMsg.setVisible(false);
+    add(this.lblNumberFormatErrMsg);
+
     DataPanel dataPanel = new DataPanel();
     dataPanel.setBounds(625, 20, 800, 400);
     add(dataPanel);
@@ -106,4 +125,21 @@ public class InputPane extends JPanel {
   public void hideTableInputErrMsg() {
     this.lblInvalidTableInputErrMsg.setVisible(false);
   }
+
+  public void showIncompatibleColumnErrMsg() {
+    this.lblIncompatibleColumnErrMsg.setVisible(true);
+  }
+
+  public void hideIncompatibleColumnErrMsg() {
+    this.lblIncompatibleColumnErrMsg.setVisible(false);
+  }
+
+  public void showNumberFormatErrMsg() {
+    this.lblNumberFormatErrMsg.setVisible(true);
+  }
+
+  public void hideNumberFormatErrMsg() {
+    this.lblNumberFormatErrMsg.setVisible(false);
+  }
+
 }

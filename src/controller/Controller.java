@@ -9,6 +9,7 @@ import services.importer.CsvParser;
 import services.mapper.TableDataMapper;
 import services.dialog.LoadingService;
 import utils.Separator;
+import utils.exceptions.ColumnIdentifierException;
 import utils.exceptions.NoLocationDataException;
 import utils.log.Logger;
 
@@ -24,17 +25,6 @@ public class Controller {
   public static void calculate() {
 
     gui.hideInputErrorMsg();
-
-    // TODO (Ahmet): This is a temporary implementation for control purposes. Delete after implementation.
-    /*List<String[]> dataModel = TableController.getTableData();
-    dataModel.forEach(d -> {
-      Arrays.stream(d).forEach(e -> {
-        System.out.print(e);
-        System.out.print(", ");
-      });
-      System.out.println();
-    });
-    System.out.println("\n-----------------------------\n");*/
 
     // TODO (Ahmet): implement
     try {
@@ -55,12 +45,21 @@ public class Controller {
   }
 
   public static void importCSV() {
+    hideAllTableErrMsg();
     File file;
     try {
-      file = LoadingService.getPath(); // could be null!
+      file = LoadingService.getPath(); // could be null when the dialog frame is canceled!
       List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
       TableController.loadCsvToTableModel(TableDataMapper.mapToTableModel(input));
-    } catch (NullPointerException e) {
+    } catch (NullPointerException |
+             ColumnIdentifierException |
+             NumberFormatException e) {
+      if (e instanceof ColumnIdentifierException) {
+        showIncompatibleColumnErrMsg();
+      }
+      if (e instanceof NumberFormatException) {
+        showNumberFormatErrMsg();
+      }
       Logger.log(e.getMessage());
     }
     gui.hideInputErrorMsg();
@@ -79,6 +78,12 @@ public class Controller {
     String storageLocation = CsvExporter.saveTable(tableData);
   }
 
+  public static void hideAllTableErrMsg() {
+    hideTableInputErrorMsg();
+    hideNumberFormatErrMsg();
+    hideIncompatibleColumnErrMsg();
+  }
+
   public static void hideInputErrorMsg() {
     gui.hideInputErrorMsg();
   }
@@ -89,5 +94,21 @@ public class Controller {
 
   public static void hideTableInputErrorMsg() {
     gui.hideTableInputErrMsg();
+  }
+
+  public static void showIncompatibleColumnErrMsg() {
+    gui.showIncompatibleColumnErrMsg();
+  }
+
+  public static void hideIncompatibleColumnErrMsg() {
+    gui.hideIncompatibleColumnErrMsg();
+  }
+
+  public static void showNumberFormatErrMsg() {
+    gui.showNumberFormatErrMsg();
+  }
+
+  public static void hideNumberFormatErrMsg() {
+    gui.hideNumberFormatErrMsg();
   }
 }
