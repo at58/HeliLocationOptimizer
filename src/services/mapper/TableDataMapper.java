@@ -2,7 +2,6 @@ package services.mapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
@@ -12,16 +11,35 @@ import utils.log.Logger;
 
 public class TableDataMapper {
 
+  // Ort, x, y, Unfallzahlen
+  private static final String[] columnIdentifiers = new String[] {"ort",
+                                                                  "x koordinate",
+                                                                  "y koordinate",
+                                                                  "unfallzahl"};
+
   public static Object[][] mapToTableModel(List<String[]> csvTuples) {
 
+    String[] columns = extractColumnIdentifiers(csvTuples);
+    int[] legendIndexes = new int[columns.length];
+
+    for (int i = 0; i < legendIndexes.length; i++) {
+      String ref = columnIdentifiers[i];
+      Pattern pattern = Pattern.compile(".*" + ref + ".*");
+      for (int j = 0; j < columns.length; j++) {
+        if (columns[j].matches(pattern.pattern())) {
+          legendIndexes[i] = j;
+          break;
+        }
+      }
+    }
     Object[][] result = new Object[csvTuples.size() - 1][4];
     for (int i = 1; i < csvTuples.size(); i++) {
       Object[] modelTuple = new Object[4];
       String[] csvTuple = csvTuples.get(i);
-      modelTuple[0] = csvTuple[0];
-      modelTuple[1] = Integer.parseInt(csvTuple[1]);
-      modelTuple[2] = Integer.parseInt(csvTuple[2]);
-      modelTuple[3] = Integer.parseInt(csvTuple[3]);
+      modelTuple[0] = csvTuple[legendIndexes[0]];
+      modelTuple[1] = Integer.parseInt(csvTuple[legendIndexes[1]]);
+      modelTuple[2] = Integer.parseInt(csvTuple[legendIndexes[2]]);
+      modelTuple[3] = Integer.parseInt(csvTuple[legendIndexes[3]]);
       result[i-1] = modelTuple;
     }
     return result;
@@ -58,9 +76,18 @@ public class TableDataMapper {
     return result;
   }
 
+  public static String[] extractColumnIdentifiers(List<String[]> tupleList) {
+    // the first tuple is the legend of the input, converted to lower-case due to easier processing.
+    String[] columns = Arrays.stream(tupleList.get(0))
+                             .map(String::toLowerCase)
+                             .map(c -> c.replaceAll("-", " "))
+                             .toArray(String[]::new);
+    return columns;
+  }
+
   public static Object[] extractTextFieldContent(JTextField[] textFields) {
 
-    Object[] newTuple = null;
+    Object[] newTuple;
     try {
       Arrays.stream(textFields).forEach(field -> {
         if (Objects.isNull(field) || field.getText().isBlank()) {

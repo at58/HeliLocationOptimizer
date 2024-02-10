@@ -11,7 +11,7 @@ public class LocationMapper {
   public static List<Location> mapToLocationObjects(List<String[]> tupleList) {
     List<Location> locationList = new ArrayList<>();
 
-    // the first tuple is the legend of the input, converted to lower-case due to easier processing.
+/*    // the first tuple is the legend of the input, converted to lower-case due to easier processing.
     String[] columns = Arrays.stream(tupleList.get(0))
                              .map(String::toLowerCase)
                              .map(c -> c.replaceAll("-", " "))
@@ -29,13 +29,13 @@ public class LocationMapper {
           break;
         }
       }
-    }
-    for (int i = 1; i < tupleList.size(); i ++) {
+    }*/
+    for (int i = 0; i < tupleList.size(); i ++) {
       String[] tuple = tupleList.get(i);
-      String locationName = tuple[legendIndexes[0]];
-      int x = Integer.parseInt(tuple[legendIndexes[1]]);
-      int y = Integer.parseInt(tuple[legendIndexes[2]]);
-      int accidents = Integer.parseInt(tuple[legendIndexes[3]]);
+      String locationName = tuple[0];
+      int x = Integer.parseInt(tuple[1]);
+      int y = Integer.parseInt(tuple[2]);
+      int accidents = Integer.parseInt(tuple[3]);
       Location location = new Location(locationName, x, y, accidents);
       locationList.add(location);
     }
