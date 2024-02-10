@@ -12,6 +12,7 @@ public class InputPane extends JPanel {
   private final JTextField txtHeliSpeed;
   private final JLabel lblInputErrorMsg;
   private final JLabel lblNoTableDataErrMsg;
+  private final JLabel lblInvalidTableInputErrMsg;
 
   public InputPane(Point alignment) {
     setLayout(null);
@@ -58,6 +59,15 @@ public class InputPane extends JPanel {
     lblNoTableDataErrMsg.setVisible(false);
     add(this.lblNoTableDataErrMsg);
 
+    this.lblInvalidTableInputErrMsg = new JLabel("<html>Der eingegebene Datensatz ist invalide! " +
+                                                     "Achten Sie auf komplette Eingaben und " +
+                                                     "ganze Zahlen ohne Komma.");
+    lblInvalidTableInputErrMsg.setForeground(Color.RED);
+    lblInvalidTableInputErrMsg.setFont(Font.CONSOLAS16.getFont());
+    lblInvalidTableInputErrMsg.setBounds(625, 380, 700,80);
+    lblInvalidTableInputErrMsg.setVisible(false);
+    add(this.lblInvalidTableInputErrMsg);
+
     DataPanel dataPanel = new DataPanel();
     dataPanel.setBounds(625, 20, 800, 400);
     add(dataPanel);
@@ -76,20 +86,24 @@ public class InputPane extends JPanel {
     this.lblInputErrorMsg.setVisible(true);
   }
 
-  public void hideInputErrorMsg() {
-    if (this.lblInputErrorMsg.isVisible()) {
-      this.lblInputErrorMsg.setVisible(false);
-    }
+  public void hideNoTxtInputErrorMsg() {
+    this.lblInputErrorMsg.setVisible(false);
   }
 
   public void showNoTableDataErrMsg() {
-    hideInputErrorMsg();
+    hideNoTxtInputErrorMsg();
     this.lblNoTableDataErrMsg.setVisible(true);
   }
 
   public void hideTableDataErrorMsg() {
-    if (this.lblNoTableDataErrMsg.isVisible()) {
-      this.lblNoTableDataErrMsg.setVisible(false);
-    }
+    this.lblNoTableDataErrMsg.setVisible(false);
+  }
+
+  public void showTableInputErrMsg() {
+    this.lblInvalidTableInputErrMsg.setVisible(true);
+  }
+
+  public void hideTableInputErrMsg() {
+    this.lblInvalidTableInputErrMsg.setVisible(false);
   }
 }

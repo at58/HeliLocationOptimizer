@@ -1,9 +1,7 @@
 package controller;
 
-import gui.Button;
 import gui.GUI;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import services.calculations.LocationFinder;
 import services.exporter.CsvExporter;
@@ -25,7 +23,7 @@ public class Controller {
 
   public static void calculate() {
 
-    gui.hideErrorMessages();
+    gui.hideInputErrorMsg();
 
     // TODO (Ahmet): This is a temporary implementation for control purposes. Delete after implementation.
     /*List<String[]> dataModel = TableController.getTableData();
@@ -65,7 +63,7 @@ public class Controller {
     } catch (NullPointerException e) {
       Logger.log(e.getMessage());
     }
-    gui.hideErrorMessages();
+    gui.hideInputErrorMsg();
   }
 
   public static void exportCsvTemplate() {
@@ -81,7 +79,15 @@ public class Controller {
     String storageLocation = CsvExporter.saveTable(tableData);
   }
 
-  public static void hideErrorMsg() {
-    gui.hideErrorMessages();
+  public static void hideInputErrorMsg() {
+    gui.hideInputErrorMsg();
+  }
+
+  public static void showTableInputErrMsg() {
+    gui.showTableInputErrMsg();
+  }
+
+  public static void hideTableInputErrorMsg() {
+    gui.hideTableInputErrMsg();
   }
 }

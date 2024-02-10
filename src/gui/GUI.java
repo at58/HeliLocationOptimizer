@@ -86,8 +86,16 @@ public final class GUI extends JFrame {
     this.inputPane.showNoTableDataErrMsg();
   }
 
-  public void hideErrorMessages() {
-    this.inputPane.hideInputErrorMsg();
+  public void hideInputErrorMsg() {
+    this.inputPane.hideNoTxtInputErrorMsg();
     this.inputPane.hideTableDataErrorMsg();
+  }
+
+  public void showTableInputErrMsg() {
+    this.inputPane.showTableInputErrMsg();
+  }
+
+  public void hideTableInputErrMsg() {
+    this.inputPane.hideTableInputErrMsg();
   }
 }

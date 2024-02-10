@@ -1,7 +1,6 @@
 package controller;
 
 import domain.DataTable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JTextField;
@@ -12,13 +11,18 @@ public class TableController {
 
   private static final DataTable dataTable = DataTable.getInstance();
 
-  public static void put(JTextField[] textFields) {
+  public static boolean put(JTextField[] textFields) {
 
     Object[] newTuple = TableDataMapper.extractTextFieldContent(textFields);
     if (newTuple != null) {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
-      Controller.hideErrorMsg();
+      Controller.hideInputErrorMsg();
+      Controller.hideTableInputErrorMsg();
+      return true;
+    } else {
+      Controller.showTableInputErrMsg();
+      return false;
     }
   }
 

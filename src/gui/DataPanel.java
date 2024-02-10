@@ -67,8 +67,10 @@ public class DataPanel extends JPanel {
          new Point(),
          new Dimension(),
          action -> {
-           TableController.put(this.txtTupleInputs);
-           Arrays.stream(txtTupleInputs).forEach(t -> t.setText(""));
+           boolean isValidInput = TableController.put(this.txtTupleInputs);
+           if (isValidInput) {
+             Arrays.stream(txtTupleInputs).forEach(t -> t.setText(""));
+           }
          }
          );
     confirmInputPanel.add(btnConfirmInput, BorderLayout.EAST);

@@ -1,7 +1,6 @@
 package gui;
 
 import controller.TableController;
-import domain.DataTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -33,31 +32,6 @@ public class TablePanel extends JPanel {
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBackground(Color.LIGHT_GRAY);
-
-    // Test tuples
-//    Object[][] data = {
-//        {"Stadt A", 50, 30, 10},
-//        {"Stadt B", 50, 30, 10},
-//        {"Stadt C", 50, 30, 10},
-//        {"Stadt D", 50, 30, 10},
-//        {"Stadt E", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt F", 50, 30, 10},
-//        {"Stadt G", 50, 30, 10}
-//    };
 
     table = new JTable(TableController.getTableModel());
     table.setFillsViewportHeight(true); // TODO (Ahmet): check if necessary
