@@ -24,15 +24,19 @@ public final class Helicopter implements Item {
     return this.coordinate;
   }
 
-  @Override
-  public UUID getUuid() {return this.uuid;}
-
-  public void setHeliCoordinates(int x, int y) {
+  public void setCoordinates(int x, int y) {
     this.coordinate = new Coordinate(x, y);
   }
 
-  public void addLocation(Location location, int distance) {
+  @Override
+  public UUID getUuid() {return this.uuid;}
+
+  public void allocateLocation(Location location, int distance) {
     this.locationHelicopterMap.put(location, distance);
+  }
+
+  public void removeLocation(Location location) {
+    this.locationHelicopterMap.remove(location);
   }
 
   public Map<Location, Integer> getLocationHelicopterMapping() {
