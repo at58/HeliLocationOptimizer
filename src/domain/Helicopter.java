@@ -11,7 +11,7 @@ public final class Helicopter implements Item {
   private int speed;
   private Coordinate coordinate;
   /* Mapping of location and the distance between this helicopter object and the location. */
-  private final Map<Location, Integer> locationHelicopterMap;
+  private final Map<Location, Double> locationHelicopterMap;
 
   public Helicopter(int airSpeed) {
     this.uuid = UUID.randomUUID();
@@ -31,7 +31,7 @@ public final class Helicopter implements Item {
   @Override
   public UUID getUuid() {return this.uuid;}
 
-  public void allocateLocation(Location location, int distance) {
+  public void allocateLocation(Location location, double distance) {
     this.locationHelicopterMap.put(location, distance);
   }
 
@@ -39,7 +39,7 @@ public final class Helicopter implements Item {
     this.locationHelicopterMap.remove(location);
   }
 
-  public Map<Location, Integer> getLocationHelicopterMapping() {
+  public Map<Location, Double> getLocationHelicopterMapping() {
     return this.locationHelicopterMap;
   }
 
