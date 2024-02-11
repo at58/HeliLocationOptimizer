@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import services.mapper.LocationMapper;
 import services.mapper.ScaleMapper;
 import utils.CalculationUtils;
@@ -39,25 +40,55 @@ public class LocationFinder {
   }
 
   /**
-   * Determines the first allocation of locations to helicopters. This is the starting point of the
-   * calculation.
+   * <p>
+   *   Determines the first allocation of locations to helicopters. This is the starting point of the
+   *   calculation. The First step is to divide the entire area into sectors of equal size, one for
+   *   each helicopter. So if there are five helicopters that need to be located, there are five
+   *   sectors. After that, every location in each sector is collected into a list. Then, an array
+   *   with the number of helicopters that need to be placed in each sector is generated. Finally,
+   *   as many helicopters as specified in this array are assigned to the locations of each sector.
+   *   By doing this, the allocation of each helicopter to a locations is selected randomly.
+   * </p>
+   * <br>
+   * <p><b>For example:</b></p>
+   * <p>
+   *   There are 7 locations in sector A and 1 locations in sector B.
+   *   The total amount of helicopters that need to be placed is 2.
+   *   So the relative share of helicopter for sector A is 2 because 7/8 * 100 = 87,5 % since one
+   *   sector receives one helicopter for every 40 % percentage reached, because 8 helicopters
+   *   in total divided by 2 sectors (because 2 helicopters) is 40 %. Consequently sector B gets
+   *   zero helicopters.
+   * </p>
    *
    * @param locationList the list with all locations.
-   * @param helicopterList the list of helicopters.
+   * @param helicopterStack the list of helicopters.
    */
-  public static void determinePreDistribution(List<Location> locationList,
-                                              List<Helicopter> helicopterList) {
+  public static Map<Helicopter, Location> determinePreDistribution(List<Location> locationList,
+                                              Stack<Helicopter> helicopterStack) {
 
-    int helicopterNumber = helicopterList.size();
-    List<List<Location>> sectoredLocations = generateSectorsAndAssignLocations(locationList, helicopterNumber);
-    int[] helicopterAssignments = getHelicopterAssignmentsPerSector(sectoredLocations, helicopterNumber);
+    int helicopterNumber = helicopterStack.size();
+    List<List<Location>> zonedLocations = generateSectorsAndAssignLocations(locationList, helicopterNumber);
+    int[] helicopterAssignments = getHelicopterAssignmentsPerSector(zonedLocations,
+                                                                    locationList.size(),
+                                                                    helicopterNumber);
     Map<Helicopter, Location> helicopterLocationMap = new HashMap<>();
-
+    
     for (int i = 0; i < helicopterAssignments.length; i++) {
       int assignments = helicopterAssignments[i];
-      List<Location> l =  CalculationUtils.getRandomLocations()
+      if (assignments == 0) {
+        continue;
+      }
+      List<Location> randomLocations =  CalculationUtils.getRandomLocations(zonedLocations.get(i), assignments);
+      for (Location location : randomLocations) {
+        Helicopter helicopter = helicopterStack.pop();
+        helicopterLocationMap.put(helicopter, location);
+        /*if (!helicopterStack.isEmpty()) {
+          Helicopter heli = helicopterStack.pop();
+          helicopterLocationMap.put(heli, location);
+        }*/
+      }
     }
-
+    return helicopterLocationMap;
   }
 
   /**
@@ -69,16 +100,21 @@ public class LocationFinder {
    * @return An array with the number of helicopters that are assigned to the current sector.
    */
   public static int[] getHelicopterAssignmentsPerSector(List<List<Location>> sectors,
+                                                        int totalNumberOfLocations,
                                                         int helicopterNumber) {
-    int percentageRate = 100 / helicopterNumber;
+    double allocationKey = (double) 100 / helicopterNumber; // average share per sector
     int[] relativeShares = new int[sectors.size()];
     for (int i = 0; i < sectors.size(); i++) {
       int locationAmount = sectors.get(i).size();
-      int ratio = (locationAmount / helicopterNumber) * 100;
-      if (ratio < percentageRate) {
+      double ratio = (((double) locationAmount) / totalNumberOfLocations) * 100;
+      if (ratio < (allocationKey / 2)) {
         relativeShares[i] = 0;
       } else {
-        int shares = ratio / percentageRate;
+        int shares = (int) (ratio / allocationKey);
+        double decimal = (ratio / allocationKey) - shares;
+        if (decimal >= 0.5) {
+          shares = shares + 1;
+        }
         relativeShares[i] = shares;
       }
     }
@@ -97,8 +133,9 @@ public class LocationFinder {
       List<Location> locationList,
       int helicopterNumber) {
 
+    // initialize sector lists
     List<List<Location>> distributionSectors = new ArrayList<>();
-    for (int i = 0; i < helicopterNumber; i++) {
+    for (int i = 1; i <= helicopterNumber; i++) {
       distributionSectors.add(new ArrayList<Location>());
     }
     int[][] dimension = ScaleMapper.determineAxisDimensions(locationList);
