@@ -1,4 +1,4 @@
-package test;
+package test.mapper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package test;
+package test.io;
 
 import org.junit.jupiter.api.Test;
 import utils.Separator;
