@@ -18,7 +18,7 @@ public class CalculationUtils {
       List<Integer> alreadyAssignedLocations = new ArrayList<>();
       result = new ArrayList<>();
       random = new Random();
-      for (int i = 0; i < locationSize; i++) {
+      while (result.size() < amount) {
         int nextIndex = random.nextInt(0, locationSize);
         if (!alreadyAssignedLocations.contains(nextIndex)) {
           result.add(locations.get(nextIndex));
