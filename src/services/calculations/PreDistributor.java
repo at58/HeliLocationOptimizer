@@ -8,36 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import services.mapper.LocationMapper;
 import services.mapper.ScaleMapper;
 import utils.CalculationUtils;
-import utils.exceptions.NoLocationDataException;
 
-public class LocationFinder {
-
-  public static void findOptimalPositions(String numberOfHeli, String speed, List<String[]> data)
-      throws NumberFormatException, NoLocationDataException {
-
-    if (numberOfHeli.isBlank() || speed.isBlank()) {
-      throw new IllegalArgumentException("Missing inputs for number and/or speed of helicopter.");
-    }
-    if (data.isEmpty()) {
-      throw new NoLocationDataException("No location data provided.");
-    }
-
-    int numberOfHelicopter = Integer.parseInt(numberOfHeli);
-    int helicopterSpeed = Integer.parseInt(speed);
-
-    List<Helicopter> helicopterList = new ArrayList<>();
-    for (int i = 0; i < numberOfHelicopter; i++) {
-      helicopterList.add(new Helicopter(helicopterSpeed));
-    }
-
-    List<Location> locations = LocationMapper.mapToLocationObjects(data);
-    locations.forEach(l -> System.out.println(l.getName()));
-
-
-  }
+public class PreDistributor {
 
   /**
    * <p>
@@ -45,9 +19,11 @@ public class LocationFinder {
    *   calculation. The First step is to divide the entire area into sectors of equal size, one for
    *   each helicopter. So if there are five helicopters that need to be located, there are five
    *   sectors. After that, every location in each sector is collected into a list. Then, an array
-   *   with the number of helicopters that need to be placed in each sector is generated. Finally,
-   *   as many helicopters as specified in this array are assigned to the locations of each sector.
-   *   By doing this, the allocation of each helicopter to a locations is selected randomly.
+   *   with the number of helicopters that need to be placed in each sector is generated. The
+   *   allocation logic of helicopters is described in
+   *   {@link PreDistributor#getHelicopterAssignmentsPerSector(List, int, int)}.
+   *   Finally, as many helicopters as specified in this array are assigned to the locations of each
+   *   sector. By doing this, the allocation of each helicopter to a locations is selected randomly.
    * </p>
    * <br>
    * <p><b>For example:</b></p>
@@ -55,16 +31,15 @@ public class LocationFinder {
    *   There are 7 locations in sector A and 1 locations in sector B.
    *   The total amount of helicopters that need to be placed is 2.
    *   So the relative share of helicopter for sector A is 2 because 7/8 * 100 = 87,5 % since one
-   *   sector receives one helicopter for every 40 % percentage reached, because 8 helicopters
-   *   in total divided by 2 sectors (because 2 helicopters) is 40 %. Consequently sector B gets
-   *   zero helicopters.
+   *   sector receives one helicopter for every 50 % percentage reached, because 100 % divided by
+   *   2 sectors (because 2 helicopters) is 50 % per sector. Consequently sector B gets zero helicopters.
    * </p>
    *
    * @param locationList the list with all locations.
    * @param helicopterStack the list of helicopters.
    */
   public static Map<Helicopter, Location> determinePreDistribution(List<Location> locationList,
-                                              Stack<Helicopter> helicopterStack) {
+                                                                   Stack<Helicopter> helicopterStack) {
 
     int helicopterNumber = helicopterStack.size();
     List<List<Location>> zonedLocations = generateSectorsAndAssignLocations(locationList, helicopterNumber);
@@ -72,7 +47,7 @@ public class LocationFinder {
                                                                     locationList.size(),
                                                                     helicopterNumber);
     Map<Helicopter, Location> helicopterLocationMap = new HashMap<>();
-    
+
     for (int i = 0; i < helicopterAssignments.length; i++) {
       int assignments = helicopterAssignments[i];
       if (assignments == 0) {
@@ -82,10 +57,6 @@ public class LocationFinder {
       for (Location location : randomLocations) {
         Helicopter helicopter = helicopterStack.pop();
         helicopterLocationMap.put(helicopter, location);
-        /*if (!helicopterStack.isEmpty()) {
-          Helicopter heli = helicopterStack.pop();
-          helicopterLocationMap.put(heli, location);
-        }*/
       }
     }
     return helicopterLocationMap;
@@ -164,5 +135,4 @@ public class LocationFinder {
     }
     return distributionSectors;
   }
-
 }

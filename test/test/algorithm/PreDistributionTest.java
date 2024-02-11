@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import org.junit.jupiter.api.Test;
-import services.calculations.LocationFinder;
+import services.calculations.Locator;
+import services.calculations.PreDistributor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +35,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(3,0,1));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
+    List<List<Location>> actual = PreDistributor.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
@@ -61,7 +62,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(3,0,6));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
+    List<List<Location>> actual = PreDistributor.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
@@ -90,7 +91,7 @@ public class PreDistributionTest {
     List<Integer> expected = new ArrayList<>(List.of(1,7,1));
 
     // act
-    List<List<Location>> actual = LocationFinder.generateSectorsAndAssignLocations(locationList, helicopterNumber);
+    List<List<Location>> actual = PreDistributor.generateSectorsAndAssignLocations(locationList, helicopterNumber);
     List<Integer> actualOccurrences = new ArrayList<>();
     actual.forEach(list -> actualOccurrences.add(list.size()));
 
@@ -123,7 +124,7 @@ public class PreDistributionTest {
     }
 
     // act
-    Map<Helicopter,Location> helicopterLocationMap = LocationFinder.determinePreDistribution(
+    Map<Helicopter,Location> helicopterLocationMap = PreDistributor.determinePreDistribution(
         locations, helicopterStack);
 
     // assert
@@ -164,7 +165,7 @@ public class PreDistributionTest {
     List<Helicopter> helicopterList = new ArrayList<>(helicopterSet);
 
     // act
-    Map<Helicopter,Location> helicopterLocationMap = LocationFinder.determinePreDistribution(
+    Map<Helicopter,Location> helicopterLocationMap = PreDistributor.determinePreDistribution(
         locations, helicopterStack);
 
     // assert

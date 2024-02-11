@@ -3,7 +3,7 @@ package controller;
 import gui.GUI;
 import java.io.File;
 import java.util.List;
-import services.calculations.LocationFinder;
+import services.calculations.Locator;
 import services.exporter.CsvExporter;
 import services.importer.CsvParser;
 import services.mapper.TableDataMapper;
@@ -28,9 +28,9 @@ public class Controller {
 
     // TODO (Ahmet): implement
     try {
-      LocationFinder.findOptimalPositions(gui.getHeliNumberFieldInput(),
-                                          gui.getSpeedFieldInput(),
-                                          TableController.getTableData());
+      Locator.findOptimalPositions(gui.getHeliNumberFieldInput(),
+                                   gui.getSpeedFieldInput(),
+                                   TableController.getTableData());
     } catch (IllegalArgumentException e) {
       Logger.log(e.getMessage());
       gui.showInputErrorMsg();
