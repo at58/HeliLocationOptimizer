@@ -1,8 +1,13 @@
 package test.algorithm;
 
+import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 import org.junit.jupiter.api.Test;
 import services.calculations.LocationFinder;
 
@@ -95,5 +100,78 @@ public class PreDistributionTest {
     for (int i = 0; i < expected.size(); i++) {
       assertEquals(expected.get(i), actualOccurrences.get(i));
     }
+  }
+
+  @Test
+  void determinePreDistributionSizeTest() {
+    // arrange
+    List<Location> locations = new ArrayList<>(List.of(
+        new Location("A", 5,10,20),
+        new Location("B", 50,10,20),
+        new Location("C", 51,10,20),
+        new Location("D", 52,10,20),
+        new Location("F", 53,10,20),
+        new Location("G", 54,10,20),
+        new Location("H", 55,10,20),
+        new Location("I", 56,10,20)
+    ));
+    int helicopterNumber = 2;
+    int expectedLocations = 2;
+    Stack<Helicopter> helicopterStack = new Stack<>();
+    for (int i = 1; i <= helicopterNumber; i++) {
+      helicopterStack.add(new Helicopter(1));
+    }
+
+    // act
+    Map<Helicopter,Location> helicopterLocationMap = LocationFinder.determinePreDistribution(
+        locations, helicopterStack);
+
+    // assert
+    assertEquals(expectedLocations, helicopterLocationMap.size());
+
+  }
+
+  @Test
+  void executeDeterminePreDistributionTest() {
+
+    for (int i = 0; i < 10; i++) {
+      determinePreDistributionTest("D");
+    }
+  }
+
+  private void determinePreDistributionTest(String name) {
+    // arrange
+    List<Location> locations = new ArrayList<>(List.of(
+        new Location("A", 5,10,20),
+        new Location("B", 50,10,20),
+        new Location("C", 51,10,20),
+        new Location("D", 52,10,20),
+        new Location("F", 53,10,20),
+        new Location("G", 54,10,20),
+        new Location("H", 55,10,20),
+        new Location("I", 56,10,20)
+    ));
+    int helicopterNumber = 2;
+    Stack<Helicopter> helicopterStack = new Stack<>();
+    for (int i = 1; i <= helicopterNumber; i++) {
+      helicopterStack.add(new Helicopter(1));
+    }
+    Map<Helicopter, Location> expected = new HashMap<>(Map.of(
+        helicopterStack.get(0), locations.get(3),
+        helicopterStack.get(1), locations.get(5)
+    ));
+    Set<Helicopter> helicopterSet = expected.keySet();
+    List<Helicopter> helicopterList = new ArrayList<>(helicopterSet);
+
+    // act
+    Map<Helicopter,Location> helicopterLocationMap = LocationFinder.determinePreDistribution(
+        locations, helicopterStack);
+
+    // assert
+    String l2 = helicopterLocationMap.get(helicopterList.get(0)).getName();
+
+    System.out.println("Expected: " + name);
+    System.out.println("Actual: " + l2);
+    System.out.println("\n");
   }
 }
