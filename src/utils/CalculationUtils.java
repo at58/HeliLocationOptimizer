@@ -4,6 +4,7 @@ import domain.Location;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class CalculationUtils {
 
@@ -29,10 +30,10 @@ public class CalculationUtils {
     return result;
   }
 
-  public static int accumulateTotalOfAccidents(List<Location> locationList) {
+  public static int accumulateTotalOfAccidents(Set<Location> locationSet) {
 
     int sum = 0;
-    for (Location location : locationList) {
+    for (Location location : locationSet) {
       int accidents = location.getAccidents();
       sum += accidents;
     }
