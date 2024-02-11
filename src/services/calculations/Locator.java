@@ -34,11 +34,27 @@ public class Locator {
     }
 
     List<Location> locations = LocationMapper.mapToLocationObjects(data);
-    // locations.forEach(l -> System.out.println(l.getName()));
+    List<Helicopter> initialHelicopterPositions = PreDistributor.determinePreDistribution(locations, helicopterStack);
 
-    Map<Helicopter, Location> firstMapping = PreDistributor.determinePreDistribution(locations, helicopterStack);
+    for (Location location : locations) {
+      Coordinate locationCoordinate = location.getCoordinate();
+      Helicopter closestSpot = null;
+      double minimalDistance = Double.MAX_VALUE;
+      for (Helicopter helicopter : initialHelicopterPositions) {
+        Coordinate helicopterCoordinate = helicopter.getCoordinate();
+        double distance = Euclid.calculateDistance(locationCoordinate, helicopterCoordinate);
+        if (distance < minimalDistance) {
+          minimalDistance = distance;
+          closestSpot = helicopter;
+        }
+      }
+      closestSpot.allocateLocation(location, minimalDistance);
+    }
+  }
 
+  public static double getWeight(List<Location> locations, int accidents) {
 
+    return (double) accidents / CalculationUtils.accumulateTotalOfAccidents(locations);
   }
 
 

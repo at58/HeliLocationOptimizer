@@ -38,7 +38,7 @@ public class PreDistributor {
    * @param locationList the list with all locations.
    * @param helicopterStack the list of helicopters.
    */
-  public static Map<Helicopter, Location> determinePreDistribution(List<Location> locationList,
+  public static List<Helicopter> determinePreDistribution(List<Location> locationList,
                                                                    Stack<Helicopter> helicopterStack) {
 
     int helicopterNumber = helicopterStack.size();
@@ -46,7 +46,7 @@ public class PreDistributor {
     int[] helicopterAssignments = getHelicopterAssignmentsPerSector(zonedLocations,
                                                                     locationList.size(),
                                                                     helicopterNumber);
-    Map<Helicopter, Location> helicopterLocationMap = new HashMap<>();
+    List<Helicopter> initialHelicopterPositions = new ArrayList<>();
 
     for (int i = 0; i < helicopterAssignments.length; i++) {
       int assignments = helicopterAssignments[i];
@@ -55,11 +55,13 @@ public class PreDistributor {
       }
       List<Location> randomLocations =  CalculationUtils.getRandomLocations(zonedLocations.get(i), assignments);
       for (Location location : randomLocations) {
+        Coordinate locationCoordinate = location.getCoordinate();
         Helicopter helicopter = helicopterStack.pop();
-        helicopterLocationMap.put(helicopter, location);
+        helicopter.setCoordinates(locationCoordinate.x(), locationCoordinate.y());
+        initialHelicopterPositions.add(helicopter);
       }
     }
-    return helicopterLocationMap;
+    return initialHelicopterPositions;
   }
 
   /**

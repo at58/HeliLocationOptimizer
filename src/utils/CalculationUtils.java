@@ -28,4 +28,14 @@ public class CalculationUtils {
     }
     return result;
   }
+
+  public static int accumulateTotalOfAccidents(List<Location> locationList) {
+
+    int sum = 0;
+    for (Location location : locationList) {
+      int accidents = location.getAccidents();
+      sum += accidents;
+    }
+    return sum;
+  }
 }
