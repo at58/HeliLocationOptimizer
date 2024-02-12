@@ -4,14 +4,11 @@ import domain.Coordinate;
 import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 import org.junit.jupiter.api.Test;
-import services.calculations.Locator;
 import services.calculations.PreDistributor;
+import utils.TestData;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -130,7 +127,53 @@ public class PreDistributionTest {
 
     // assert
     assertEquals(expectedLocations, helicopters.size());
+  }
 
+  @Test
+  void determinePreDistributionSizeTest_2() {
+    // arrange
+    List<Location> locations = TestData.getLocations_24();
+    // total helicopters = 24
+    // relative share per helicopter = 1/24 = 0.04166 (4,166 %)
+    // range = max - min = 351
+    // allocation key = 100 % 5 = 20 %
+    int helicopterNumber = 5;
+    int expectedLocations = 5;
+    Stack<Helicopter> helicopterStack = new Stack<>();
+    for (int i = 1; i <= helicopterNumber; i++) {
+      helicopterStack.add(new Helicopter(1));
+    }
+
+    // act
+    List<Helicopter> helicopters = PreDistributor.determinePreDistribution(
+        locations, helicopterStack);
+
+    // assert
+    assertEquals(expectedLocations, helicopters.size());
+  }
+
+  /**
+   * This test shows that the initial positioning of helicopters works as expected.
+   */
+  @Test
+  void initialHelicopterPositionsTest() {
+    // arrange
+    List<Location> locations = TestData.getLocations_24();
+    // total helicopters = 24
+    // relative share per helicopter = 1/24 = 0.04166 (4,166 %)
+    // range = max - min = 351
+    // range of each sector = 70
+    // allocation key = 100 % 5 = 20 %
+    Stack<Helicopter> helicopterStack = TestData.getHelicopterStack(5);
+    // act
+    List<Helicopter> initialHeliPositions = PreDistributor.determinePreDistribution(locations, helicopterStack);
+    // assert
+    initialHeliPositions.forEach(helicopter -> {
+      System.out.println("Coordinates of Helicopter "
+                             + initialHeliPositions.indexOf(helicopter) + ": ("
+                             + helicopter.getCoordinate().x() + " | "
+                             + helicopter.getCoordinate().y() + ")");
+    });
   }
 
   @Test
