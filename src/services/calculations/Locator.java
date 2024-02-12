@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
 import services.mapper.LocationMapper;
@@ -38,6 +39,10 @@ public class Locator {
     List<Helicopter> helicopterList = PreDistributor.determinePreDistribution(locations, helicopterStack);
 
     allocateClosestLocations(locations, helicopterList);
+    determinePseudoFocus(helicopterList);
+  }
+
+  public static void determinePseudoFocus(List<Helicopter> helicopterList) {
 
     double weightSum = 0;
     double[] weightedPointSum = new double[] {0, 0}; // {x,y} -coordinates
@@ -56,14 +61,26 @@ public class Locator {
         weightSum += weight;
       }
       helicopter.setCoordinates((int) weightedPointSum[0], (int) weightedPointSum[1]);
-      System.out.println(weightSum);
+      System.out.println("weighted sum: " + weightSum);
       weightSum = 0;
       weightedPointSum[0] = 0;
       weightedPointSum[1] = 0;
     }
   }
 
+  /**
+   * This method assigns each helicopter the locations that are closest to the coordinates of the
+   * respective helicopter.
+   *
+   * @param locations list of all locations
+   * @param helicopters list of all helicopters that needs to be placed.
+   */
   public static void allocateClosestLocations(List<Location> locations, List<Helicopter> helicopters) {
+
+    /* first of all, clear all allocated locations to a helicopter to beginn a re-allocation of
+    location objects.
+    */
+    clearAssignedLocations(helicopters);
 
     for (Location location : locations) {
       Coordinate locationCoordinate = location.getCoordinate();
@@ -77,14 +94,27 @@ public class Locator {
           closestSpot = helicopter;
         }
       }
-      closestSpot.allocateLocation(location, minimalDistance);
+      if (Objects.nonNull(closestSpot)) {
+        closestSpot.allocateLocation(location, minimalDistance);
+      }
     }
   }
 
+  private static void clearAssignedLocations(List<Helicopter> helicopterList) {
+
+    helicopterList.forEach(helicopter -> helicopter.getLocationHelicopterMapping().clear());
+  }
+
+  /**
+   * Calculates the weighting according to the relative share of accidents at a location in relation
+   * to the total number of accidents.
+   *
+   * @param totalAccidents total number of accidents.
+   * @param accidents current accidents in one location.
+   * @return the weighting.
+   */
   public static double getWeight(int totalAccidents, int accidents) {
 
     return (double) accidents / totalAccidents;
   }
-
-
 }
