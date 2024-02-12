@@ -1,5 +1,6 @@
 package controller;
 
+import domain.Helicopter;
 import gui.GUI;
 import java.io.File;
 import java.util.List;
@@ -13,7 +14,7 @@ import utils.exceptions.ColumnIdentifierException;
 import utils.exceptions.NoLocationDataException;
 import utils.log.Logger;
 
-public class Controller {
+public class MainController {
 
   private static final CsvParser csvParser = new CsvParser();
   private static GUI gui;
@@ -25,18 +26,26 @@ public class Controller {
   public static void calculate() {
 
     gui.hideInputErrorMsg();
+    Logger.log("The calculation of the optimum positions for helicopter bases has been started.");
 
-    // TODO (Ahmet): implement
+    List<Helicopter> helicopterList = null;
     try {
-      Locator.findOptimalPositions(gui.getHeliNumberFieldInput(),
-                                   gui.getSpeedFieldInput(),
-                                   TableController.getTableData());
+      helicopterList = Locator.findOptimalPositions(gui.getHeliNumberFieldInput(),
+                                                    gui.getSpeedFieldInput(),
+                                                    TableController.getTableData());
     } catch (IllegalArgumentException e) {
       Logger.log(e.getMessage());
       gui.showInputErrorMsg();
     } catch (NoLocationDataException e) {
       Logger.log(e.getMessage());
       gui.showNoLocationDataMsg();
+    }
+    Logger.log("Calculation of optimal helicopter postions was executed successfully.");
+    if (helicopterList != null) {
+      MapController.drawHelicopterPositions(helicopterList);
+    } else {
+      Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
+      // TODO (Ahmet): implement error dialog in gui
     }
   }
 

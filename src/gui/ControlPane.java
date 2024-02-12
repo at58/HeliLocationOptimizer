@@ -1,6 +1,6 @@
 package gui;
 
-import controller.Controller;
+import controller.MainController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -27,7 +27,7 @@ public class ControlPane extends JPanel {
         "Details der berechneten Optimierung als CSV herunterladen",
         new Point(alignment.x + 50, alignment.y + 5),
         new Dimension(300, 60),
-        action -> Controller.exportSolution()
+        action -> MainController.exportSolution()
     ));
 
     add(new Button(
@@ -38,7 +38,7 @@ public class ControlPane extends JPanel {
         "Struktur-Vorlage als CSV-Datei herunterladen.",
         new Point(alignment.x + 50,alignment.y + 100),
         new Dimension(300,60),
-        action -> Controller.exportCsvTemplate()
+        action -> MainController.exportCsvTemplate()
     ));
 
     add(new Button(
@@ -49,7 +49,7 @@ public class ControlPane extends JPanel {
         "CSV-Datei hochladen, die der Struktur-Vorlage entspricht.",
         new Point(alignment.x + 400,alignment.y + 5),
         new Dimension(300,60),
-        action -> Controller.importCSV()
+        action -> MainController.importCSV()
     ));
 
     add(new Button(
@@ -60,7 +60,7 @@ public class ControlPane extends JPanel {
         "Aktuelle Tabellendaten speichern",
         new Point(alignment.x + 400, alignment.y + 100),
         new Dimension(300,60),
-        action -> Controller.saveTable()
+        action -> MainController.saveTable()
     ));
 
     btnCalc = new Button("Berechnen",
@@ -70,7 +70,7 @@ public class ControlPane extends JPanel {
                                 "Ermittlung der optimalen Stationierungen.",
                                 new Point(alignment.x + 750,alignment.y + 5),
                                 new Dimension(300,60),
-                                action -> Controller.calculate());
+                                action -> MainController.calculate());
     // btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
     add(btnCalc);
 
@@ -82,7 +82,7 @@ public class ControlPane extends JPanel {
         "Beenden des Programmes.",
         new Point(alignment.x + 750,alignment.y + 100),
         new Dimension(300,60),
-        action -> Controller.closeApp()
+        action -> MainController.closeApp()
     ));
   }
 }

@@ -13,16 +13,16 @@ public class TableController {
 
   public static boolean put(JTextField[] textFields) {
 
-    Controller.hideAllTableErrMsg();
+    MainController.hideAllTableErrMsg();
     Object[] newTuple = TableDataMapper.extractTextFieldContent(textFields);
     if (newTuple != null) {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
-      Controller.hideInputErrorMsg();
-      Controller.hideTableInputErrorMsg();
+      MainController.hideInputErrorMsg();
+      MainController.hideTableInputErrorMsg();
       return true;
     } else {
-      Controller.showTableInputErrMsg();
+      MainController.showTableInputErrMsg();
       return false;
     }
   }

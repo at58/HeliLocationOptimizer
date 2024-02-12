@@ -3,32 +3,46 @@ package services.calculations;
 import domain.Coordinate;
 import domain.Helicopter;
 import domain.Location;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import services.mapper.LocationMapper;
-import services.mapper.ScaleMapper;
 import utils.CalculationUtils;
 import utils.exceptions.NoLocationDataException;
+import utils.log.Logger;
 
 public class Locator {
 
-  public static void findOptimalPositions(String numberOfHeli, String speed, List<String[]> data)
+  public static List<Helicopter> findOptimalPositions(String numberOfHeli, String speed, List<String[]> data)
       throws NumberFormatException, NoLocationDataException {
 
+    //-- Exception handling
     if (numberOfHeli.isBlank() || speed.isBlank()) {
       throw new IllegalArgumentException("Missing inputs for number and/or speed of helicopter.");
     }
     if (data.isEmpty()) {
       throw new NoLocationDataException("No location data provided.");
     }
-
-    int numberOfHelicopter = Integer.parseInt(numberOfHeli);
-    int helicopterSpeed = Integer.parseInt(speed);
+    int numberOfHelicopter;
+    int helicopterSpeed;
+    try {
+      numberOfHelicopter = Integer.parseInt(numberOfHeli);
+      helicopterSpeed = Integer.parseInt(speed);
+    } catch (NumberFormatException e) {
+      Logger.log("Non-numeric values were entered in the text filed for helicopter number or speed.");
+      throw e;
+    }
+    if (numberOfHelicopter <= 0) {
+      throw new IllegalArgumentException("Negative value or zero was entered for number of helicopter.");
+    }
+    if (helicopterSpeed <= 0) {
+      throw new IllegalArgumentException("Negative value or zero was entered for the helicopter speed.");
+    } //-- End of Exception handling
 
     Stack<Helicopter> helicopterStack = new Stack<>();
     for (int i = 0; i < numberOfHelicopter; i++) {
@@ -36,10 +50,66 @@ public class Locator {
     }
 
     List<Location> locations = LocationMapper.mapToLocationObjects(data);
+
+    // initial positioning of helicopters resp. initial determination of coordinates.
     List<Helicopter> helicopterList = PreDistributor.determinePreDistribution(locations, helicopterStack);
 
-    allocateClosestLocations(locations, helicopterList);
-    determinePseudoFocus(helicopterList);
+    Map<UUID, Coordinate> currentHelicopterCoordinates = new HashMap<>();
+    /* save the first coordinates of each helicopter to proceed a comparison between old and new
+    coordinate of pseudo-focuses.
+    */
+    memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
+
+    while (true) {
+
+      allocateClosestLocations(locations, helicopterList);
+      determinePseudoFocus(helicopterList);
+      boolean locationChanged = relocationOccurred(helicopterList, currentHelicopterCoordinates);
+      if (locationChanged) {
+        break;
+      } else {
+        memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
+      }
+    }
+    return helicopterList;
+  }
+
+  /**
+   * Checks if the helicopter coordinates changed after calculating the new pseudo-focuses of the
+   * helicopter positions. See {@link Locator#determinePseudoFocus(List)}
+   *
+   * @param helicopterList the helicopter list with the current states.
+   * @param currentCoordinates the latest stored coordinate values of each helicopter.
+   * @return true, if the coordinates changed, otherwise false.
+   */
+  public static boolean relocationOccurred(List<Helicopter> helicopterList,
+                                           Map<UUID,Coordinate> currentCoordinates) {
+
+    AtomicBoolean result = new AtomicBoolean(false);
+    helicopterList.forEach(helicopter -> {
+      Coordinate current = helicopter.getCoordinate();
+      Coordinate latest = currentCoordinates.get(helicopter.getUuid());
+      if (current.x() != latest.x() || current.y() != latest.y()) {
+        result.set(true);
+      }
+    });
+    return result.get();
+  }
+
+  /**
+   * Saves the current coordinates in the provided Map.
+   *
+   * @param helicopterList the list of helicopters.
+   * @param currentCoordinates The map that stores the UUID of each helicopter and the corresponding
+   *                           coordinates.
+   */
+  private static void memorizeLatestHelicopterCoordinates(List<Helicopter> helicopterList,
+                                                        Map<UUID, Coordinate> currentCoordinates) {
+    helicopterList.forEach(helicopter -> {
+      UUID uuid = helicopter.getUuid();
+      Coordinate coordinate = helicopter.getCoordinate();
+      currentCoordinates.put(uuid, coordinate);
+    });
   }
 
   public static void determinePseudoFocus(List<Helicopter> helicopterList) {
@@ -100,6 +170,11 @@ public class Locator {
     }
   }
 
+  /**
+   * Deletes all elements of the map that contains assigned locations to a current helicopter.
+   *
+   * @param helicopterList the list of helicopters that needs to be placed.
+   */
   private static void clearAssignedLocations(List<Helicopter> helicopterList) {
 
     helicopterList.forEach(helicopter -> helicopter.getLocationHelicopterMapping().clear());
