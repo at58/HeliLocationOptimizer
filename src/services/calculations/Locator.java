@@ -60,15 +60,21 @@ public class Locator {
     */
     memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
 
+    int loopCounter = 0;
     while (true) {
 
       allocateClosestLocations(locations, helicopterList);
       determinePseudoFocus(helicopterList);
       boolean locationChanged = relocationOccurred(helicopterList, currentHelicopterCoordinates);
-      if (locationChanged) {
+      System.out.println("Location changed ? -> " + locationChanged);
+      if (!locationChanged) {
         break;
       } else {
         memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
+        loopCounter++;
+      }
+      if (loopCounter >= 100) {
+        break;
       }
     }
     return helicopterList;
@@ -131,7 +137,7 @@ public class Locator {
         weightSum += weight;
       }
       helicopter.setCoordinates((int) weightedPointSum[0], (int) weightedPointSum[1]);
-      System.out.println("weighted sum: " + weightSum);
+      // System.out.println("weighted sum: " + weightSum);
       weightSum = 0;
       weightedPointSum[0] = 0;
       weightedPointSum[1] = 0;
