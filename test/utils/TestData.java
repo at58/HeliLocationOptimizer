@@ -4,6 +4,7 @@ import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class TestData {
@@ -37,7 +38,31 @@ public class TestData {
         new Location("Z", 71,10,20)));
   }
 
-  public static Stack<Helicopter> getHelicopterStack(int number) {
+  public static List<Location> getLocationsWithRandomCoordinatesAndAccidents(int numberOfLocations, int xBound, int yBound) {
+    List<Location> locations = new ArrayList<>();
+    Random random = new Random();
+    for (int i = 0; i < numberOfLocations; i++) {
+      locations.add(new Location("Dummy " + i,
+                                 random.nextInt(0, xBound+1),
+                                 random.nextInt(0, yBound + 1),
+                                 random.nextInt(1, 200)));
+    }
+    return locations;
+  }
+
+  public static List<String[]> getStringArraysWithRandomCoordinatesAndAccidents(int numberOfLocations, int xBound, int yBound) {
+    List<String[]> locations = new ArrayList<>();
+    Random random = new Random();
+    for (int i = 0; i < numberOfLocations; i++) {
+      locations.add(new String[] {"Location " + (i + 1),
+                                  String.valueOf(random.nextInt(0, xBound+1)),
+                                  String.valueOf(random.nextInt(0, yBound + 1)),
+                                  String.valueOf(random.nextInt(1, 200))});
+    }
+    return locations;
+  }
+
+  public static Stack<Helicopter> generateHelicopterStack(int number) {
 
     Stack<Helicopter> helicopterList = new Stack<>();
     for (int i = 0; i < number; i++) {
