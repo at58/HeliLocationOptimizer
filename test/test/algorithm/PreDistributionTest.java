@@ -164,7 +164,7 @@ public class PreDistributionTest {
     // range = max - min = 351
     // range of each sector = 70
     // allocation key = 100 % 5 = 20 %
-    Stack<Helicopter> helicopterStack = TestData.getHelicopterStack(5);
+    Stack<Helicopter> helicopterStack = TestData.generateHelicopterStack(5);
     // act
     List<Helicopter> initialHeliPositions = PreDistributor.determinePreDistribution(locations, helicopterStack);
     // assert
