@@ -24,7 +24,7 @@ public class Scheduler {
     for (Location location : distances.keySet()) {
       double distance = distances.get(location);
       double t = (distance / speed);
-      int minutes = (int) t * 60;
+      int minutes = (int) (t * 60) + 1;
       flightTimes.put(location, minutes);
     }
     return flightTimes;
