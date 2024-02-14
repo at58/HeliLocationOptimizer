@@ -1,4 +1,4 @@
-package services.persistence;
+package services.dialog;
 
 import java.io.File;
 import java.util.Objects;
@@ -31,5 +31,9 @@ public class LoadingService {
   static void setStoragePath(File path) {
     // TODO (Ahmet): Check if it is possible to avoid the omission of the file name
     storagePath = path.getAbsolutePath().replace(path.getName(), "");
+  }
+
+  static String getStoragePath() {
+    return storagePath;
   }
 }

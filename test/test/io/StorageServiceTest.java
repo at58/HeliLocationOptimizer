@@ -1,8 +1,8 @@
-package test;
+package test.io;
 
 import java.io.File;
 import org.junit.jupiter.api.Test;
-import services.persistence.StorageService;
+import services.dialog.StorageService;
 import utils.exceptions.DialogCancelledException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +14,7 @@ public class StorageServiceTest {
     // arrange
     String expected = "C:\\Users\\toy\\Desktop\\Ortsdaten.csv";
     // act
-    File actual = StorageService.getStorageLocation("Ortsdaten.csv");
+    File actual = StorageService.getStorageLocation("Ortsdaten.csv", 1);
     // assert
     assertEquals(expected, actual.getAbsolutePath());
   }
@@ -24,7 +24,7 @@ public class StorageServiceTest {
     // arrange
     String expected = "C:\\Users\\toy\\Downloads\\Beispiel.csv";
     // act
-    File actual = StorageService.getStorageLocation("Beispiel.csv");
+    File actual = StorageService.getStorageLocation("Beispiel.csv", 1);
     // assert
     assertEquals(expected, actual.getAbsolutePath());
   }

@@ -1,17 +1,17 @@
 package test;
 
-import controller.Controller;
+import controller.MainController;
 import controller.TableController;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class TableControllerTest {
+public class TableMainControllerTest {
 
   @Test
   void tableControllerTest() {
 
-    Controller.importCSV();
+    MainController.importCSV();
     List<String[]> dataModel = TableController.getTableData();
     dataModel.forEach(d -> {
       Arrays.stream(d).forEach(e -> {

@@ -1,4 +1,4 @@
-package test;
+package test.mapper;
 
 import domain.Axis;
 import domain.Dimension;

@@ -16,6 +16,8 @@ import javax.swing.ToolTipManager;
  */
 public final class GUI extends JFrame {
 
+  private final InputPane inputPane;
+
   public GUI(Dimension dimension) {
 
     setTitle("Helicopter Location Optimizer");
@@ -43,7 +45,7 @@ public final class GUI extends JFrame {
     GridBagConstraints gbc;
 
     // Obere Hälfte des Data Frames
-    InputPane inputPane = new InputPane(new Point(1, 1));
+    inputPane = new InputPane(new Point(1, 1));
     gbc = new GridBagConstraints(); // Zurücksetzen der GridBagConstraints
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -66,5 +68,58 @@ public final class GUI extends JFrame {
 
     add(tabbedPane);
     setVisible(true);
+  }
+
+  public String getHeliNumberFieldInput() {
+    return this.inputPane.getNumberOfHelicopter();
+  }
+
+  public String getSpeedFieldInput() {
+    return this.inputPane.getHelicopterSpeed();
+  }
+
+  public void showInputErrorMsg() {
+    this.inputPane.showInputErrorMsg();
+  }
+
+  public void showNoLocationDataMsg() {
+    this.inputPane.showNoTableDataErrMsg();
+  }
+
+  public void hideInputErrorMsg() {
+    this.inputPane.hideNoTxtInputErrorMsg();
+    this.inputPane.hideTableDataErrorMsg();
+  }
+
+  public void showTableInputErrMsg() {
+    this.inputPane.showTableInputErrMsg();
+  }
+
+  public void hideTableInputErrMsg() {
+    this.inputPane.hideTableInputErrMsg();
+  }
+
+  public void showIncompatibleColumnErrMsg() {
+    this.inputPane.showIncompatibleColumnErrMsg();
+  }
+
+  public void hideIncompatibleColumnErrMsg() {
+    this.inputPane.hideIncompatibleColumnErrMsg();
+  }
+
+  public void showNumberFormatErrMsg() {
+    this.inputPane.showNumberFormatErrMsg();
+  }
+
+  public void hideNumberFormatErrMsg() {
+    this.inputPane.hideNumberFormatErrMsg();
+  }
+
+  public void showUnexpectedErrMsg() {
+    this.inputPane.showUnexpectedErrMsg();
+  }
+
+  public void hideUnexpectedErrMsg() {
+    this.inputPane.hideUnexpectedErrMsg();
   }
 }

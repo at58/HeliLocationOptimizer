@@ -5,7 +5,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Table Data Model
+ * Table Data Model.
+ * Singleton implementation.
  */
 public class DataTable {
 
@@ -36,12 +37,12 @@ public class DataTable {
 
   /**
    * Inserts all tuples into the table model. If there is already data exists, all data will be
-   * replaced by the tuples come from uploading a csv file.
+   * replaced by the tuples come from the current upload of a csv file.
    *
    * @param tuples the uploaded tuples.
    */
   public void pushDataBase(Object[][] tuples) {
-    tableModel.setRowCount(0);
+    tableModel.setRowCount(0); // At first, delete the data in the table then insert the new data
     this.tuples = tuples;
     Arrays.stream(tuples).forEach(tableModel::addRow);
     refresh();
@@ -55,7 +56,7 @@ public class DataTable {
     this.tableModel.removeRow(row);
   }
 
-  public Vector<Vector> pullDataBase() {
+  public Vector pullDataBase() {
     return this.tableModel.getDataVector();
   }
 

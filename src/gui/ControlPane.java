@@ -1,6 +1,6 @@
 package gui;
 
-import controller.Controller;
+import controller.MainController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ControlPane extends JPanel {
+
+  private final Button btnCalc;
 
   public ControlPane(Point alignment) {
     setLayout(null);
@@ -25,7 +27,7 @@ public class ControlPane extends JPanel {
         "Details der berechneten Optimierung als CSV herunterladen",
         new Point(alignment.x + 50, alignment.y + 5),
         new Dimension(300, 60),
-        action -> Controller.exportSolution()
+        action -> MainController.exportSolution()
     ));
 
     add(new Button(
@@ -36,7 +38,7 @@ public class ControlPane extends JPanel {
         "Struktur-Vorlage als CSV-Datei herunterladen.",
         new Point(alignment.x + 50,alignment.y + 100),
         new Dimension(300,60),
-        action -> Controller.exportCsvTemplate()
+        action -> MainController.exportCsvTemplate()
     ));
 
     add(new Button(
@@ -47,18 +49,29 @@ public class ControlPane extends JPanel {
         "CSV-Datei hochladen, die der Struktur-Vorlage entspricht.",
         new Point(alignment.x + 400,alignment.y + 5),
         new Dimension(300,60),
-        action -> Controller.importCSV()
+        action -> MainController.importCSV()
     ));
 
-    Button btnCalc = new Button("Berechnen",
+    add(new Button(
+        "Tabelle speichern",
+        Color.WHITE,
+        Color.BLACK,
+        Font.CONSOLAS18,
+        "Aktuelle Tabellendaten speichern",
+        new Point(alignment.x + 400, alignment.y + 100),
+        new Dimension(300,60),
+        action -> MainController.saveTable()
+    ));
+
+    btnCalc = new Button("Berechnen",
                                 Color.GREEN,
                                 Color.BLACK,
                                 Font.CONSOLAS20,
                                 "Ermittlung der optimalen Stationierungen.",
                                 new Point(alignment.x + 750,alignment.y + 5),
                                 new Dimension(300,60),
-                                action -> System.out.println());
-    btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
+                                action -> MainController.calculate());
+    // btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
     add(btnCalc);
 
     add(new Button(
@@ -69,7 +82,7 @@ public class ControlPane extends JPanel {
         "Beenden des Programmes.",
         new Point(alignment.x + 750,alignment.y + 100),
         new Dimension(300,60),
-        action -> Controller.closeApp()
+        action -> MainController.closeApp()
     ));
   }
 }

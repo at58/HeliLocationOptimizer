@@ -8,5 +8,6 @@ public class Application {
   public static void start() {
 
     GUI gui = new GUI(Toolkit.getDefaultToolkit().getScreenSize());
+    MainController.startGUI(gui);
   }
 }
