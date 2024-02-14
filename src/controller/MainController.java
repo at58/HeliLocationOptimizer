@@ -27,6 +27,7 @@ public class MainController {
   public static void calculate() {
 
     gui.hideInputErrorMsg();
+    gui.hideUnexpectedErrMsg();
     Logger.log("The calculation of the optimum positions for helicopter bases has been started.");
 
     List<Helicopter> helicopterList = null;
@@ -87,14 +88,16 @@ public class MainController {
   }
 
   public static void saveTable() {
-    List<String[]> tableData = TableController.getTableData();
-    String storageLocation = CsvExporter.saveTable(tableData);
+    showUnexpectedErrMsg();
+    /*List<String[]> tableData = TableController.getTableData();
+    String storageLocation = CsvExporter.saveTable(tableData);*/
   }
 
   public static void hideAllTableErrMsg() {
-    hideTableInputErrorMsg();
-    hideNumberFormatErrMsg();
-    hideIncompatibleColumnErrMsg();
+    gui.hideTableInputErrMsg();
+    gui.hideNumberFormatErrMsg();
+    gui.hideIncompatibleColumnErrMsg();
+    gui.hideUnexpectedErrMsg();
   }
 
   public static void hideInputErrorMsg() {
@@ -123,5 +126,9 @@ public class MainController {
 
   public static void hideNumberFormatErrMsg() {
     gui.hideNumberFormatErrMsg();
+  }
+
+  public static void showUnexpectedErrMsg() {
+    gui.showUnexpectedErrMsg();
   }
 }

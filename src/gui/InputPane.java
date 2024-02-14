@@ -15,6 +15,7 @@ public class InputPane extends JPanel {
   private final JLabel lblInvalidTableInputErrMsg;
   private final JLabel lblIncompatibleColumnErrMsg;
   private final JLabel lblNumberFormatErrMsg;
+  private final JLabel lblUnexpectedErrMsg;
 
   public InputPane(Point alignment) {
     setLayout(null);
@@ -87,6 +88,14 @@ public class InputPane extends JPanel {
     lblNumberFormatErrMsg.setVisible(false);
     add(this.lblNumberFormatErrMsg);
 
+    this.lblUnexpectedErrMsg = new JLabel("<html>Ein unerwarteter Fehler ist aufgetreten! " +
+                                              "Bitte starten Sie das Programm neu oder geben andere Daten ein.");
+    lblUnexpectedErrMsg.setForeground(Color.RED);
+    lblUnexpectedErrMsg.setFont(Font.CONSOLAS16.getFont());
+    lblUnexpectedErrMsg.setBounds(625, 380, 700,80);
+    lblUnexpectedErrMsg.setVisible(false);
+    add(this.lblUnexpectedErrMsg);
+
     DataPanel dataPanel = new DataPanel();
     dataPanel.setBounds(625, 20, 800, 400);
     add(dataPanel);
@@ -140,6 +149,14 @@ public class InputPane extends JPanel {
 
   public void hideNumberFormatErrMsg() {
     this.lblNumberFormatErrMsg.setVisible(false);
+  }
+
+  public void showUnexpectedErrMsg() {
+    this.lblUnexpectedErrMsg.setVisible(true);
+  }
+
+  public void hideUnexpectedErrMsg() {
+    this.lblUnexpectedErrMsg.setVisible(false);
   }
 
 }

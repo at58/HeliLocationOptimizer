@@ -114,4 +114,12 @@ public final class GUI extends JFrame {
   public void hideNumberFormatErrMsg() {
     this.inputPane.hideNumberFormatErrMsg();
   }
+
+  public void showUnexpectedErrMsg() {
+    this.inputPane.showUnexpectedErrMsg();
+  }
+
+  public void hideUnexpectedErrMsg() {
+    this.inputPane.hideUnexpectedErrMsg();
+  }
 }
