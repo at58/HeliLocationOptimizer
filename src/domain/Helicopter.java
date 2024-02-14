@@ -10,7 +10,7 @@ public final class Helicopter implements Item {
   private final UUID uuid;
   private int speed;
   private Coordinate coordinate;
-  /* Mapping of location and the distance between this helicopter object and the location. */
+  /* Mapping of location and the distance between this helicopter object and the assigned location.*/
   private final Map<Location, Double> locationHelicopterMap;
 
   public Helicopter(int airSpeed) {

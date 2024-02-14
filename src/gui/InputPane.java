@@ -32,17 +32,17 @@ public class InputPane extends JPanel {
     add(lblHeliNumber);
 
     this.txtHeliNumber = new JTextField();
-    txtHeliNumber.setBounds(430,100, 100,40);
+    txtHeliNumber.setBounds(440,100, 100,40);
     txtHeliNumber.setFont(Font.CONSOLAS20.getFont());
     add(txtHeliNumber);
 
-    JLabel lblHeliSpeed = new JLabel("*Helikopter-Geschwindigkeit:");
+    JLabel lblHeliSpeed = new JLabel("*Helikopter-Geschwindigkeit (km/h):");
     lblHeliSpeed.setBounds(50, 170, 400, 50);
     lblHeliSpeed.setFont(Font.CONSOLAS18.getFont());
     add(lblHeliSpeed);
 
     this.txtHeliSpeed = new JTextField();
-    txtHeliSpeed.setBounds(430,170, 100,40);
+    txtHeliSpeed.setBounds(440,170, 100,40);
     txtHeliSpeed.setFont(Font.CONSOLAS20.getFont());
     add(txtHeliSpeed);
 
@@ -97,7 +97,7 @@ public class InputPane extends JPanel {
     add(this.lblUnexpectedErrMsg);
 
     DataPanel dataPanel = new DataPanel();
-    dataPanel.setBounds(625, 20, 800, 400);
+    dataPanel.setBounds(620, 20, 800, 400);
     add(dataPanel);
   }
 
