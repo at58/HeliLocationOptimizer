@@ -47,7 +47,7 @@ public class InputPane extends JPanel {
     add(txtHeliSpeed);
 
     this.lblInputErrorMsg = new JLabel("<html>Die Eingaben sind invalide! Tragen Sie in die " +
-                                           "mit * markierten Felder eine Ganzzahl ein.");
+                                           "mit * markierten Felder eine positive Ganzzahl > 0 ein.");
     lblInputErrorMsg.setForeground(Color.RED);
     lblInputErrorMsg.setFont(Font.CONSOLAS18.getFont());
     lblInputErrorMsg.setBounds(50, 250, 450, 80);

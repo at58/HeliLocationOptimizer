@@ -30,7 +30,7 @@ public class MainController {
     gui.hideUnexpectedErrMsg();
     Logger.log("The calculation of the optimum positions for helicopter bases has been started.");
 
-    List<Helicopter> helicopterList = null;
+    List<Helicopter> helicopterList;
     try {
       helicopterList = Locator.findOptimalPositions(gui.getHeliNumberFieldInput(),
                                                     gui.getSpeedFieldInput(),
@@ -38,19 +38,23 @@ public class MainController {
     } catch (IllegalArgumentException e) {
       Logger.log(e.getMessage());
       gui.showInputErrorMsg();
+      return;
     } catch (NoLocationDataException e) {
       Logger.log(e.getMessage());
       gui.showNoLocationDataMsg();
+      return;
     }
     Logger.log("Calculation of optimal helicopter postions was executed successfully.");
-    if (helicopterList != null) {
-      MapController.drawHelicopterPositions(helicopterList);
-      JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
-          + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
-          + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
-    } else {
+
+    MapController.drawHelicopterPositions(helicopterList);
+    JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
+        + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
+        + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
+
+    if (helicopterList.isEmpty()
+        || helicopterList.size() != Integer.parseInt(gui.getHeliNumberFieldInput())) {
       Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
-      // TODO (Ahmet): implement error dialog in gui
+      showUnexpectedErrMsg();
     }
   }
 
@@ -69,10 +73,10 @@ public class MainController {
              ColumnIdentifierException |
              NumberFormatException e) {
       if (e instanceof ColumnIdentifierException) {
-        showIncompatibleColumnErrMsg();
+        gui.showIncompatibleColumnErrMsg();
       }
       if (e instanceof NumberFormatException) {
-        showNumberFormatErrMsg();
+        gui.showNumberFormatErrMsg();
       }
       Logger.log(e.getMessage());
     }
@@ -88,9 +92,8 @@ public class MainController {
   }
 
   public static void saveTable() {
-    showUnexpectedErrMsg();
-    /*List<String[]> tableData = TableController.getTableData();
-    String storageLocation = CsvExporter.saveTable(tableData);*/
+    List<String[]> tableData = TableController.getTableData();
+    String storageLocation = CsvExporter.saveTable(tableData);
   }
 
   public static void hideAllTableErrMsg() {
@@ -112,23 +115,8 @@ public class MainController {
     gui.hideTableInputErrMsg();
   }
 
-  public static void showIncompatibleColumnErrMsg() {
-    gui.showIncompatibleColumnErrMsg();
-  }
-
-  public static void hideIncompatibleColumnErrMsg() {
-    gui.hideIncompatibleColumnErrMsg();
-  }
-
-  public static void showNumberFormatErrMsg() {
-    gui.showNumberFormatErrMsg();
-  }
-
-  public static void hideNumberFormatErrMsg() {
-    gui.hideNumberFormatErrMsg();
-  }
-
   public static void showUnexpectedErrMsg() {
+    hideAllTableErrMsg();
     gui.showUnexpectedErrMsg();
   }
 }
