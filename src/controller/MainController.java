@@ -4,6 +4,7 @@ import domain.Helicopter;
 import gui.GUI;
 import java.io.File;
 import java.util.List;
+import javax.swing.JOptionPane;
 import services.calculations.Locator;
 import services.exporter.CsvExporter;
 import services.importer.CsvParser;
@@ -43,6 +44,9 @@ public class MainController {
     Logger.log("Calculation of optimal helicopter postions was executed successfully.");
     if (helicopterList != null) {
       MapController.drawHelicopterPositions(helicopterList);
+      JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
+          + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
+          + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
     } else {
       Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
       // TODO (Ahmet): implement error dialog in gui
