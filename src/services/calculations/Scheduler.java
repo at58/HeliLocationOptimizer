@@ -4,7 +4,6 @@ import domain.Helicopter;
 import domain.Location;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Scheduler {
 

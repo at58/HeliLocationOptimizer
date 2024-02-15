@@ -86,11 +86,10 @@ public class TableDataMapper {
 
   public static String[] extractColumnIdentifiers(List<String[]> tupleList) {
     // the first tuple is the legend of the input, converted to lower-case due to easier processing.
-    String[] columns = Arrays.stream(tupleList.get(0))
-                             .map(String::toLowerCase)
-                             .map(c -> c.replaceAll("-", " "))
-                             .toArray(String[]::new);
-    return columns;
+    return Arrays.stream(tupleList.get(0))
+                 .map(String::toLowerCase)
+                 .map(c -> c.replaceAll("-", " "))
+                 .toArray(String[]::new);
   }
 
   public static Object[] extractTextFieldContent(JTextField[] textFields) {

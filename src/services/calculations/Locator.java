@@ -119,7 +119,6 @@ public class Locator {
 
   public static void determinePseudoFocus(List<Helicopter> helicopterList) {
 
-    double weightSum = 0;
     double[] weightedPointSum = new double[] {0, 0}; // {x,y} -coordinates
 
     for (Helicopter helicopter : helicopterList) {
@@ -133,11 +132,9 @@ public class Locator {
         double weighted_Y = locationCoordinate.y() * weight;
         weightedPointSum[0] = weightedPointSum[0] + weighted_X;
         weightedPointSum[1] = weightedPointSum[1] + weighted_Y;
-        weightSum += weight;
       }
       helicopter.setCoordinates((int) weightedPointSum[0], (int) weightedPointSum[1]);
       // System.out.println("weighted sum: " + weightSum);
-      weightSum = 0;
       weightedPointSum[0] = 0;
       weightedPointSum[1] = 0;
     }
