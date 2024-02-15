@@ -44,17 +44,17 @@ public class MainController {
       gui.showNoLocationDataMsg();
       return;
     }
-    Logger.log("Calculation of optimal helicopter postions was executed successfully.");
-
-    MapController.drawHelicopterPositions(helicopterList);
-    JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
-        + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
-        + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
-
     if (helicopterList.isEmpty()
         || helicopterList.size() != Integer.parseInt(gui.getHeliNumberFieldInput())) {
       Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
       showUnexpectedErrMsg();
+    } else {
+      Logger.log("Calculation of optimal helicopter postions was executed successfully.");
+
+      MapController.drawHelicopterPositions(helicopterList);
+      JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
+          + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
+          + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
     }
   }
 

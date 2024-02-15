@@ -53,7 +53,6 @@ public class Locator {
 
     // initial positioning of helicopters resp. initial determination of coordinates.
     List<Helicopter> helicopterList = PreDistributor.determinePreDistribution(locations, helicopterStack);
-
     Map<UUID, Coordinate> currentHelicopterCoordinates = new HashMap<>();
     /* save the first coordinates of each helicopter to proceed a comparison between old and new
     coordinate of pseudo-focuses.
