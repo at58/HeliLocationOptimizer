@@ -4,9 +4,7 @@ import domain.Coordinate;
 import domain.Helicopter;
 import domain.Location;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 import services.mapper.ScaleMapper;
 import utils.CalculationUtils;
@@ -110,6 +108,10 @@ public class PreDistributor {
     List<List<Location>> distributionSectors = new ArrayList<>();
     for (int i = 1; i <= helicopterNumber; i++) {
       distributionSectors.add(new ArrayList<Location>());
+    }
+    if (locationList.size() < 2) {
+      distributionSectors.set(0, locationList);
+      return distributionSectors;
     }
     int[][] dimension = ScaleMapper.determineAxisDimensions(locationList);
     int[] xPosition = new int[2];

@@ -20,7 +20,7 @@ public class StorageService {
       errorMessage = "Das Dialogfenster zum Speichern der Tabellen-Daten wurde abgebrochen.";
     }
 
-    File selectedFile = null;
+    File selectedFile;
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setFileFilter(DialogUtils.getCsvFilter());
     fileChooser.setDialogTitle(frameTitle);

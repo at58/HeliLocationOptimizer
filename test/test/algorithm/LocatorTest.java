@@ -119,4 +119,69 @@ public class LocatorTest {
     assertEquals(15, helicopterCoordinate.x());
     assertEquals(10, helicopterCoordinate.y());*/
   }
+
+  @Test
+  void OneLocationOneHelicopterTest() {
+    // arrange
+    List<Helicopter> helicopterList;
+    List<String[]> data = new ArrayList<>();
+    data.add(new String[] {"A", "5", "5", "5"});
+
+    // act
+    try {
+      helicopterList  = Locator.findOptimalPositions("1","10", data);
+    } catch (NoLocationDataException e) {
+      throw new RuntimeException(e);
+    }
+    // assert
+    assertEquals(1, helicopterList.size());
+    assertEquals(1, helicopterList.get(0).getAssignedLocations().size());
+    List<Location> assigned = new ArrayList<>(helicopterList.get(0).getAssignedLocations());
+    assertEquals("A", assigned.get(0).getName());
+    assertTrue(assigned.size() == 1);
+  }
+
+  @Test
+  void OneLocationTwoHelicopterTest() {
+    // arrange
+    List<Helicopter> helicopterList;
+    List<String[]> data = new ArrayList<>();
+    data.add(new String[] {"A", "5", "5", "5"});
+
+    // act
+    try {
+      helicopterList  = Locator.findOptimalPositions("2","10", data);
+    } catch (NoLocationDataException e) {
+      throw new RuntimeException(e);
+    }
+    // assert
+    assertEquals(1, helicopterList.size());
+    assertEquals(1, helicopterList.get(0).getAssignedLocations().size());
+    List<Location> assigned = new ArrayList<>(helicopterList.get(0).getAssignedLocations());
+    assertEquals("A", assigned.get(0).getName());
+    assertTrue(assigned.size() == 1);
+  }
+
+  @Test
+  void TwoLocationOneHelicopterTest() {
+    // arrange
+    List<Helicopter> helicopterList;
+    List<String[]> data = new ArrayList<>();
+    data.add(new String[] {"A", "5", "5", "5"});
+    data.add(new String[] {"B", "10", "5", "5"});
+
+    // act
+    try {
+      helicopterList  = Locator.findOptimalPositions("1","10", data);
+    } catch (NoLocationDataException e) {
+      throw new RuntimeException(e);
+    }
+    // assert
+    assertEquals(1, helicopterList.size());
+    assertEquals(2, helicopterList.get(0).getAssignedLocations().size());
+    List<Location> assigned = new ArrayList<>(helicopterList.get(0).getAssignedLocations());
+    assertEquals("B", assigned.get(0).getName());
+    assertEquals("A", assigned.get(1).getName());
+    assertTrue(assigned.size() == 2);
+  }
 }

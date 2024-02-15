@@ -53,7 +53,6 @@ public class Locator {
 
     // initial positioning of helicopters resp. initial determination of coordinates.
     List<Helicopter> helicopterList = PreDistributor.determinePreDistribution(locations, helicopterStack);
-
     Map<UUID, Coordinate> currentHelicopterCoordinates = new HashMap<>();
     /* save the first coordinates of each helicopter to proceed a comparison between old and new
     coordinate of pseudo-focuses.
@@ -120,7 +119,6 @@ public class Locator {
 
   public static void determinePseudoFocus(List<Helicopter> helicopterList) {
 
-    double weightSum = 0;
     double[] weightedPointSum = new double[] {0, 0}; // {x,y} -coordinates
 
     for (Helicopter helicopter : helicopterList) {
@@ -134,11 +132,9 @@ public class Locator {
         double weighted_Y = locationCoordinate.y() * weight;
         weightedPointSum[0] = weightedPointSum[0] + weighted_X;
         weightedPointSum[1] = weightedPointSum[1] + weighted_Y;
-        weightSum += weight;
       }
       helicopter.setCoordinates((int) weightedPointSum[0], (int) weightedPointSum[1]);
       // System.out.println("weighted sum: " + weightSum);
-      weightSum = 0;
       weightedPointSum[0] = 0;
       weightedPointSum[1] = 0;
     }

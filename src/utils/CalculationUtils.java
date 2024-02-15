@@ -12,7 +12,7 @@ public class CalculationUtils {
 
     Random random;
     List<Location> result;
-    int locationSize = locations.size();;
+    int locationSize = locations.size();
     if (amount >= locationSize) {
       return locations;
     } else {
