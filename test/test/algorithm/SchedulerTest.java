@@ -2,6 +2,7 @@ package test.algorithm;
 
 import domain.Helicopter;
 import domain.Location;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import services.calculations.Locator;
 import services.calculations.Scheduler;
 import utils.TestData;
 import utils.exceptions.NoLocationDataException;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SchedulerTest {
 
@@ -39,9 +41,17 @@ public class SchedulerTest {
     helicopter.setCoordinates(100,10);
     helicopter.allocateLocation(new Location("A", 5, 10, 5), 95.0);
     helicopter.allocateLocation(new Location("B", 150, 10, 5), 50.0);
+    int expected_A = 32;
+    int expected_B = 17;
+    // act
     Map<Location, Integer> flightTimes = Scheduler.calcFlightTime(helicopter);
     for (Location location : flightTimes.keySet()) {
       System.out.println(location.getName() + ", time: " + flightTimes.get(location) + " minutes.");
     }
+
+    // assert
+    List<Location> locationList= new ArrayList<>(flightTimes.keySet());
+    assertEquals(expected_A, flightTimes.get(locationList.get(1)));
+    assertEquals(expected_B, flightTimes.get(locationList.get(0)));
   }
 }
