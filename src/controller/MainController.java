@@ -44,8 +44,7 @@ public class MainController {
       gui.showNoLocationDataMsg();
       return;
     }
-    if (helicopterList.isEmpty()
-        || helicopterList.size() != Integer.parseInt(gui.getHeliNumberFieldInput())) {
+    if (helicopterList.isEmpty()) {
       Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
       showUnexpectedErrMsg();
     } else {
