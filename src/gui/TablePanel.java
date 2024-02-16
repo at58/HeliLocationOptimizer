@@ -39,6 +39,7 @@ public class TablePanel extends JPanel {
     table = new JTable(TableController.getTableModel());
     table.setFillsViewportHeight(true); // TODO (Ahmet): check if necessary
     table.setFont(Font.CONSOLAS14.getFont());
+    table.setToolTipText("Mit rechtem Mausklick eine Zeile entfernen.");
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseReleased(MouseEvent e) {
