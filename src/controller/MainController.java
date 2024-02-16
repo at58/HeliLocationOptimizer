@@ -2,6 +2,7 @@ package controller;
 
 import domain.Helicopter;
 import gui.GUI;
+import java.awt.Dimension;
 import java.io.File;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -20,8 +21,8 @@ public class MainController {
   private static final CsvParser csvParser = new CsvParser();
   private static GUI gui;
 
-  public static void startGUI(GUI userInterface) {
-    gui = userInterface;
+  public static void startGUI(Dimension dimension) {
+    gui = new GUI(dimension);
   }
 
   public static void calculate() {
