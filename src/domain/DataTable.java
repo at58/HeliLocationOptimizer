@@ -24,6 +24,10 @@ public class DataTable {
     this.tableModel.setColumnIdentifiers(columns);
   }
 
+  /**
+   * Getter for singleton object.
+   * @return the data table object.
+   */
   public static DataTable getInstance() {
     if (dataTable == null) {
       dataTable = new DataTable();

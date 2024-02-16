@@ -10,6 +10,9 @@ import utils.Separator;
 import utils.ParserUtils;
 import utils.log.Logger;
 
+/**
+ * The csv parser is a parser for parsing csv files.
+ */
 public class CsvParser implements Parser <String, List<String[]>> {
 
   @Override

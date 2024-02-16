@@ -10,6 +10,9 @@ import javax.swing.JTextField;
 import utils.exceptions.ColumnIdentifierException;
 import utils.log.Logger;
 
+/**
+ * Mapper from or to the table model into another data structure.
+ */
 public class TableDataMapper {
 
   // Ort, x, y, Unfallzahlen

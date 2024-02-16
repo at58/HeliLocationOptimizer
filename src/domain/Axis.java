@@ -1,5 +1,8 @@
 package domain;
 
+/**
+ * Domain class for the axis of the coordinate system.
+ */
 public class Axis {
 
   private double scale;

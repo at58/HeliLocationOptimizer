@@ -4,8 +4,17 @@ import domain.Location;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mapper for location objects.
+ */
 public class LocationMapper {
 
+  /**
+   * Maps the parsed csv data to objects of {@link Location}.
+   *
+   * @param tupleList The parsed list of string arrays.
+   * @return A list of locations.
+   */
   public static List<Location> mapToLocationObjects(List<String[]> tupleList) {
     List<Location> locationList = new ArrayList<>();
 

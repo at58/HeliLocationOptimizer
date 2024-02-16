@@ -7,6 +7,10 @@ import java.awt.Point;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * The control pain gui element contains all buttons in the gui. The control pain itself is nested
+ * in the gui class.
+ */
 public class ControlPane extends JPanel {
 
   private final Button btnCalc;

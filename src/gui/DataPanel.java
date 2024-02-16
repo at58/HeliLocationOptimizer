@@ -12,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * The data panel is a gui element that contains all elements of the data table. The {@link TablePanel}
+ * is nested into the data panel. The data panel itself is nested in {@link InputPane}.
+ */
 public class DataPanel extends JPanel {
 
   private final JTextField[] txtTupleInputs;
