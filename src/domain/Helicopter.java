@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Domain class for the helicopter base.
+ */
 public final class Helicopter implements Item {
 
   private final UUID uuid;

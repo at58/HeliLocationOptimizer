@@ -2,6 +2,9 @@ package domain;
 
 import java.util.UUID;
 
+/**
+ * Domain class for Location objects.
+ */
 public final class Location implements Item {
 
   private final UUID uuid;

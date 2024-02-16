@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mapper for the axis scales of the coordinate map embedded in the gui.
+ */
 public class ScaleMapper {
 
   /**

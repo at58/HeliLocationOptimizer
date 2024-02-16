@@ -12,6 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
+/**
+ * The table panel is a dedicated panel for the data table which is nested in it.
+ */
 public class TablePanel extends JPanel {
 
   /* Singleton instance */

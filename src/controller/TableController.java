@@ -7,6 +7,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import services.mapper.TableDataMapper;
 
+/**
+ * The table controller is responsible for writing and reading data to resp. from the data table model.
+ */
 public class TableController {
 
   private static final DataTable dataTable = DataTable.getInstance();

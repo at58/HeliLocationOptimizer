@@ -1,5 +1,8 @@
 package gui;
 
+/**
+ * This class declares some font configurations for the gui font style.
+ */
 public enum Font {
 
   CONSOLAS14(new java.awt.Font("Consolas", java.awt.Font.BOLD, 14)),

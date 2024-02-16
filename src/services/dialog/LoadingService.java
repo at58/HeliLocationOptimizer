@@ -5,6 +5,9 @@ import java.util.Objects;
 import javax.swing.JFileChooser;
 import utils.DialogUtils;
 
+/**
+ * Opens a dialog window to get the selected path of the file location.
+ */
 public class LoadingService {
 
   private static String storagePath;

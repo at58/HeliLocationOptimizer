@@ -6,6 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * The input pane is the main panel for all gui elements that receiving user inputs, such as text
+ * fields or the data table. The {@link DataPanel} is nested in this pane.
+ */
 public class InputPane extends JPanel {
 
   private final JTextField txtHeliNumber;

@@ -16,20 +16,33 @@ import utils.exceptions.ColumnIdentifierException;
 import utils.exceptions.NoLocationDataException;
 import utils.log.Logger;
 
+/**
+ * The main controller is responsible for any user inputs via the user interface clicks, especially
+ * for the button actions.
+ */
 public class MainController {
 
   private static final CsvParser csvParser = new CsvParser();
   private static GUI gui;
 
+  /**
+   * Initialize the GUI.
+   *
+   * @param dimension the screen dimension users desktop.
+   */
   public static void startGUI(Dimension dimension) {
     gui = new GUI(dimension);
   }
 
+  /**
+   * Calculates the optimum placements of helicopter bases.
+   */
   public static void calculate() {
 
     gui.hideInputErrorMsg();
     gui.hideUnexpectedErrMsg();
     Logger.log("The calculation of the optimum positions for helicopter bases has been started.");
+    long start = System.currentTimeMillis();
 
     List<Helicopter> helicopterList;
     try {
@@ -49,7 +62,9 @@ public class MainController {
       Logger.log("An unexpected error occurred during the calculation of the optimum helicopter positions");
       showUnexpectedErrMsg();
     } else {
-      Logger.log("Calculation of optimal helicopter postions was executed successfully.");
+      long end = System.currentTimeMillis();
+      long runtime = end - start;
+      Logger.log("Calculation of optimal helicopter postions was executed successfully in " + runtime + " ms.");
 
       MapController.drawHelicopterPositions(helicopterList);
       JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
@@ -58,10 +73,16 @@ public class MainController {
     }
   }
 
+  /**
+   * Closes the application.
+   */
   public static void closeApp() {
     System.exit(0);
   }
 
+  /**
+   * Import of csv data consisting of accidents and location information.
+   */
   public static void importCSV() {
     hideAllTableErrMsg();
     File file;
@@ -83,14 +104,24 @@ public class MainController {
     gui.hideInputErrorMsg();
   }
 
+  /**
+   * Export of a template table with the desired columns as a csv file.
+   */
   public static void exportCsvTemplate() {
     String storageLocation = CsvExporter.exportTemplate();
   }
 
+  /**
+   * Export of the solution containing detailed information about the optimum placements of
+   * helicopters.
+   */
   public static void exportSolution() {
     // TODO (Ahmet): implement
   }
 
+  /**
+   * Storage of the current table data on the system.
+   */
   public static void saveTable() {
     List<String[]> tableData = TableController.getTableData();
     String storageLocation = CsvExporter.saveTable(tableData);

@@ -5,6 +5,9 @@ import javax.swing.JFileChooser;
 import utils.DialogUtils;
 import utils.exceptions.DialogCancelledException;
 
+/**
+ * Opens a dialog window to get the path of directory for saving a file.
+ */
 public class StorageService {
 
   public static File getStorageLocation(String defaultFileName, int context)

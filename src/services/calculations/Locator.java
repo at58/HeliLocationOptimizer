@@ -16,8 +16,27 @@ import utils.CalculationUtils;
 import utils.exceptions.NoLocationDataException;
 import utils.log.Logger;
 
+/**
+ * This class defines some operations to determine the optimum solution for the positioning of
+ * helicopters.
+ */
 public class Locator {
 
+  /**
+   * This method calculates the optimum positions of the available helicopters by assigning the locations
+   * to those helicopter bases that are closest to the current location. After that, the pseudo focus
+   * is calculated and the assignment of the closest locations to each helicopter is repeated. The
+   * repetition is performed as long as the calculated pseudo focuses of the helicopter bases change.
+   * Once the pseudo focuses are no longer change, the real optimum positions for helicopter bases
+   * are found.
+   *
+   * @param numberOfHeli the number of helicopters that need to be placed.
+   * @param speed the speed of the helicopters.
+   * @param data the parsed accident data.
+   * @return list of helicopter.
+   * @throws NumberFormatException caused by invalid input for number fields
+   * @throws NoLocationDataException caused by empty data.
+   */
   public static List<Helicopter> findOptimalPositions(String numberOfHeli, String speed, List<String[]> data)
       throws NumberFormatException, NoLocationDataException {
 
@@ -117,6 +136,13 @@ public class Locator {
     });
   }
 
+  /**
+   * Calculates the pseudo focus respectively the final focuses once the coordinates of helicopter
+   * bases no longer change. The focus is the minimum of the gradient field which originates from
+   * the cloud of coordinate points.
+   *
+   * @param helicopterList the list of helicopters
+   */
   public static void determinePseudoFocus(List<Helicopter> helicopterList) {
 
     double[] weightedPointSum = new double[] {0, 0}; // {x,y} -coordinates
