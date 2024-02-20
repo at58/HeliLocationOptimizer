@@ -43,9 +43,9 @@ public class TestData {
     Random random = new Random();
     for (int i = 0; i < numberOfLocations; i++) {
       locations.add(new Location("Dummy " + i,
-                                 random.nextInt(0, xBound+1),
-                                 random.nextInt(0, yBound + 1),
-                                 random.nextInt(1, 200)));
+                                 random.nextInt(xBound + 1),
+                                 random.nextInt(yBound + 1),
+                                 random.nextInt(200) + 1));
     }
     return locations;
   }
@@ -55,9 +55,9 @@ public class TestData {
     Random random = new Random();
     for (int i = 0; i < numberOfLocations; i++) {
       locations.add(new String[] {"Location " + (i + 1),
-                                  String.valueOf(random.nextInt(0, xBound+1)),
-                                  String.valueOf(random.nextInt(0, yBound + 1)),
-                                  String.valueOf(random.nextInt(1, 200))});
+                                  String.valueOf(random.nextInt(xBound + 1)),
+                                  String.valueOf(random.nextInt(yBound + 1)),
+                                  String.valueOf(random.nextInt(200) + 1)});
     }
     return locations;
   }

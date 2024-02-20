@@ -20,7 +20,7 @@ public class CalculationUtils {
       result = new ArrayList<>();
       random = new Random();
       while (result.size() < amount) {
-        int nextIndex = random.nextInt(0, locationSize);
+        int nextIndex = random.nextInt(locationSize);
         if (!alreadyAssignedLocations.contains(nextIndex)) {
           result.add(locations.get(nextIndex));
           alreadyAssignedLocations.add(nextIndex);
