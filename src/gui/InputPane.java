@@ -27,10 +27,10 @@ public class InputPane extends JPanel {
 
     JLabel lblTopic = new JLabel("Eingaben:");
     lblTopic.setBounds(50,25,350,50);
-    lblTopic.setFont(Font.CONSOLAS20.getFont());
+    lblTopic.setFont(Font.CONSOLAS22.getFont());
     add(lblTopic);
 
-    JLabel lblHeliNumber = new JLabel("*Anzahl vorhandener Helikopter:");
+    JLabel lblHeliNumber = new JLabel(" *Anzahl vorhandener Helikopter:");
     lblHeliNumber.setBounds(50, 100, 400, 50);
     lblHeliNumber.setFont(Font.CONSOLAS18.getFont());
     add(lblHeliNumber);
@@ -40,7 +40,7 @@ public class InputPane extends JPanel {
     txtHeliNumber.setFont(Font.CONSOLAS20.getFont());
     add(txtHeliNumber);
 
-    JLabel lblHeliSpeed = new JLabel("*Helikopter-Geschwindigkeit (km/h):");
+    JLabel lblHeliSpeed = new JLabel(" *Helikopter-Geschwindigkeit (km/h):");
     lblHeliSpeed.setBounds(50, 170, 400, 50);
     lblHeliSpeed.setFont(Font.CONSOLAS18.getFont());
     add(lblHeliSpeed);
@@ -50,7 +50,7 @@ public class InputPane extends JPanel {
     txtHeliSpeed.setFont(Font.CONSOLAS20.getFont());
     add(txtHeliSpeed);
 
-    this.lblInputErrorMsg = new JLabel("<html>Die Eingaben sind invalide! Tragen Sie in die " +
+    this.lblInputErrorMsg = new JLabel("<html>Die Eingaben sind ungueltig! Tragen Sie in die " +
                                            "mit * markierten Felder eine positive Ganzzahl > 0 ein.");
     lblInputErrorMsg.setForeground(Color.RED);
     lblInputErrorMsg.setFont(Font.CONSOLAS18.getFont());
@@ -66,7 +66,7 @@ public class InputPane extends JPanel {
     lblNoTableDataErrMsg.setVisible(false);
     add(this.lblNoTableDataErrMsg);
 
-    this.lblInvalidTableInputErrMsg = new JLabel("<html>Der eingegebene Datensatz ist invalide! " +
+    this.lblInvalidTableInputErrMsg = new JLabel("<html>Der eingegebene Datensatz ist ungueltig! " +
                                                      "Achten Sie auf komplette Eingaben und " +
                                                      "ganze Zahlen ohne Komma.");
     lblInvalidTableInputErrMsg.setForeground(Color.RED);

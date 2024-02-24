@@ -7,10 +7,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * The table panel is a dedicated panel for the data table which is nested in it.
@@ -39,7 +41,15 @@ public class TablePanel extends JPanel {
     table = new JTable(TableController.getTableModel());
     table.setFillsViewportHeight(true); // TODO (Ahmet): check if necessary
     table.setFont(Font.CONSOLAS14.getFont());
+    table.getTableHeader().setFont(Font.CONSOLAS16.getFont());
     table.setToolTipText("Mit rechtem Mausklick eine Zeile entfernen.");
+    
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+    renderer.setHorizontalAlignment(JLabel.CENTER);
+    table.getColumnModel().getColumn(1).setCellRenderer(renderer);
+    table.getColumnModel().getColumn(2).setCellRenderer(renderer);
+    table.getColumnModel().getColumn(3).setCellRenderer(renderer);
+    
     table.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseReleased(MouseEvent e) {

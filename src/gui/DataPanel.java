@@ -11,6 +11,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.Component;
 
 /**
  * The data panel is a gui element that contains all elements of the data table. The {@link TablePanel}
@@ -24,11 +26,10 @@ public class DataPanel extends JPanel {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setVisible(true);
 
-    JLabel headerLabel = new JLabel("                               Unfalldaten");
+    JLabel headerLabel = new JLabel("Unfalldaten", SwingConstants.CENTER);
+    headerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     headerLabel.setFont(Font.CONSOLAS18.getFont());
     headerLabel.setForeground(Color.DARK_GRAY);
-    headerLabel.setLayout(null);
-    headerLabel.setFont(Font.CONSOLAS16.getFont());
     add(headerLabel);
 
     add(TablePanel.getInstance());

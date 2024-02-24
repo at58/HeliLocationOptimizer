@@ -22,8 +22,11 @@ public final class GUI extends JFrame {
 
     setTitle("Helicopter Location Optimizer");
     int width = (int) dimension.getWidth();
-    int height = (int) dimension.getHeight() - 50;
+    int height = (int) dimension.getHeight() - 50;   
+    
     setSize(width, height);
+    
+    
     setLocation((int) (dimension.getWidth() - width)/2,5);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(true);
@@ -56,6 +59,7 @@ public final class GUI extends JFrame {
 
     // Untere Hälfte des Data Frames
     ControlPane controlPane = new ControlPane(new Point(150, 40));
+    gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.weightx = 1.0; // Horizontales Gewicht für die erste Zeile
@@ -66,7 +70,7 @@ public final class GUI extends JFrame {
     tabbedPane.addTab("Daten", null, dataTab, "Daten-Verwaltung");
     tabbedPane.addTab("Karte", null, mapTab, "Karten-Ansicht");
 
-    add(tabbedPane);
+    getContentPane().add(tabbedPane);
     setVisible(true);
   }
 
