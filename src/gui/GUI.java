@@ -11,12 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
 
+import controller.TableController;
+import services.mapper.LocationMapper;
+
+import javax.swing.BoxLayout;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
 /**
  * Interactive GUI of the application.
  */
 public final class GUI extends JFrame {
 
   private final InputPane inputPane;
+  private final DrawPane drawPane;
 
   public GUI(Dimension dimension) {
 
@@ -25,7 +33,6 @@ public final class GUI extends JFrame {
     int height = (int) dimension.getHeight() - 50;   
     
     setSize(width, height);
-    
     
     setLocation((int) (dimension.getWidth() - width)/2,5);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,17 +44,26 @@ public final class GUI extends JFrame {
     manager.setReshowDelay(1);
 
     JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addChangeListener(new ChangeListener() {
+    	public void stateChanged(ChangeEvent e) {
+    		if (tabbedPane.getSelectedIndex() == 1)
+    			drawLocations();
+    	}
+    });
     tabbedPane.setBackground(Color.WHITE);
     tabbedPane.setFont(Font.CONSOLAS20.getFont());
 
     JPanel mapTab = new JPanel();
-    mapTab.add(new JLabel("Elemente von Tab 1..."));
+    mapTab.setLayout(new BoxLayout(mapTab, BoxLayout.X_AXIS));
+    
+    drawPane = new DrawPane();
+    mapTab.add(drawPane);
 
     JPanel dataTab = new JPanel(new GridBagLayout());
 
     GridBagConstraints gbc;
 
-    // Obere Hälfte des Data Frames
+    // Obere Hälfte des Data Frames //TODO (Ahmet): fix typo
     inputPane = new InputPane(new Point(1, 1));
     gbc = new GridBagConstraints(); // Zurücksetzen der GridBagConstraints
     gbc.gridx = 0;
@@ -125,5 +141,9 @@ public final class GUI extends JFrame {
 
   public void hideUnexpectedErrMsg() {
     this.inputPane.hideUnexpectedErrMsg();
+  }
+  
+  public void drawLocations() {
+	this.drawPane.drawLocations(LocationMapper.mapToLocationObjects(TableController.getTableData()));  
   }
 }
