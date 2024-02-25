@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Comparator;
 import java.util.Objects;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -13,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * The table panel is a dedicated panel for the data table which is nested in it.
@@ -75,6 +79,17 @@ public class TablePanel extends JPanel {
         }
       }
     });
+   
+    // enable and configure sorting for table
+    DefaultTableModel model = (DefaultTableModel) table.getModel();    
+    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    table.setRowSorter(sorter);
+    
+    Comparator<Integer> integerComparator = Comparator.comparingInt(Integer::intValue);
+    sorter.setComparator(1, integerComparator);
+    sorter.setComparator(2, integerComparator); 
+    sorter.setComparator(3, integerComparator);     
+    
 
     JScrollPane scrollPane = new JScrollPane(table);
     add(scrollPane, BorderLayout.CENTER);
