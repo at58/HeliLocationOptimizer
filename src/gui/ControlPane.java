@@ -68,20 +68,19 @@ public class ControlPane extends JPanel {
     ));
 
     btnCalc = new Button("Berechnen",
-                                Color.GREEN,
-                                Color.BLACK,
+                                Color.WHITE,
+                                Color.BLUE,
                                 Font.CONSOLAS20,
                                 "Ermittlung der optimalen Stationierungen.",
                                 new Point(alignment.x + 750,alignment.y + 5),
                                 new Dimension(300,60),
                                 action -> MainController.calculate());
-    // btnCalc.offerActionListener(e -> Controller.calculate(btnCalc));
     add(btnCalc);
 
     add(new Button(
         "Beenden",
-        Color.RED,
         Color.WHITE,
+        Color.RED,
         Font.CONSOLAS18,
         "Beenden des Programmes.",
         new Point(alignment.x + 750,alignment.y + 100),
