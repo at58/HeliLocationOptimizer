@@ -26,9 +26,9 @@ public class Locator {
    * This method calculates the optimum positions of the available helicopters by assigning the locations
    * to those helicopter bases that are closest to the current location. After that, the pseudo focus
    * is calculated and the assignment of the closest locations to each helicopter is repeated. The
-   * repetition is performed as long as the calculated pseudo focuses of the helicopter bases change.
-   * Once the pseudo focuses are no longer change, the real optimum positions for helicopter bases
-   * are found.
+   * pseudo focus is the minimum of the gradient field. The repetition is performed as long as the
+   * calculated pseudo focuses of the helicopter bases change. Once the pseudo focuses are no longer
+   * change, the real optimum positions for helicopter bases are found.
    *
    * @param numberOfHeli the number of helicopters that need to be placed.
    * @param speed the speed of the helicopters.
@@ -40,7 +40,7 @@ public class Locator {
   public static List<Helicopter> findOptimalPositions(String numberOfHeli, String speed, List<String[]> data)
       throws NumberFormatException, NoLocationDataException {
 
-    //-- Exception handling
+    //-- Begin Exception handling
     if (numberOfHeli.isBlank() || speed.isBlank()) {
       throw new IllegalArgumentException("Missing inputs for number and/or speed of helicopter.");
     }
@@ -63,14 +63,16 @@ public class Locator {
       throw new IllegalArgumentException("Negative value or zero was entered for the helicopter speed.");
     } //-- End of Exception handling
 
+    // Create as many helicopter objects as the number specified from the user
     Stack<Helicopter> helicopterStack = new Stack<>();
     for (int i = 0; i < numberOfHelicopter; i++) {
       helicopterStack.add(new Helicopter(helicopterSpeed));
     }
 
+    // Create a list of location objects (data model class) by mapping the parsed csv.
     List<Location> locations = LocationMapper.mapToLocationObjects(data);
 
-    // initial positioning of helicopters resp. initial determination of coordinates.
+    // Proceed with the initial positioning of helicopters resp. initial determination of coordinates.
     List<Helicopter> helicopterList = PreDistributor.determinePreDistribution(locations, helicopterStack);
     Map<UUID, Coordinate> currentHelicopterCoordinates = new HashMap<>();
     /* save the first coordinates of each helicopter to proceed a comparison between old and new
@@ -79,6 +81,7 @@ public class Locator {
     memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
 
     int loopCounter = 0;
+    // Loop until the calculated positions of the helicopters doesn't change anymore.
     while (true) {
 
       allocateClosestLocations(locations, helicopterList);
@@ -86,11 +89,14 @@ public class Locator {
       boolean locationChanged = relocationOccurred(helicopterList, currentHelicopterCoordinates);
       System.out.println("Location changed ? -> " + locationChanged);
       if (!locationChanged) {
+        // if locations don't change, the final solution is found and the loop will terminate
         break;
       } else {
+        // save the new coordinates from each helicopter for comparison proposes in the next loop.
         memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
         loopCounter++;
       }
+      // If the loop reaches more than a hundred repetitions, break this process to ensure an acceptable runtime.
       if (loopCounter >= 100) {
         break;
       }
@@ -160,7 +166,6 @@ public class Locator {
         weightedPointSum[1] = weightedPointSum[1] + weighted_Y;
       }
       helicopter.setCoordinates((int) weightedPointSum[0], (int) weightedPointSum[1]);
-      // System.out.println("weighted sum: " + weightSum);
       weightedPointSum[0] = 0;
       weightedPointSum[1] = 0;
     }

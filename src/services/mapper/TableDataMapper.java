@@ -15,7 +15,7 @@ import utils.log.Logger;
  */
 public class TableDataMapper {
 
-  // Ort, x, y, Unfallzahlen
+  // Location, x-coordinate, y-coordinate, number of accidents
   private static final String[] columnIdentifiers = new String[] {"ort",
                                                                   "x koordinate",
                                                                   "y koordinate",

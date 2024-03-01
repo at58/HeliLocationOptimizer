@@ -33,7 +33,6 @@ public class StorageService {
       fileChooser.setSelectedFile(new File(defaultFileName));
     } else {
       fileChooser.setCurrentDirectory(new File(LoadingService.getStoragePath()));
-      // fileChooser.setSelectedFile(new File(fileChooser.getSelectedFile().getName()));
     }
     int result = fileChooser.showSaveDialog(null);
 

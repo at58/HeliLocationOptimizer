@@ -44,7 +44,7 @@ public final class GUI extends JFrame {
 
     GridBagConstraints gbc;
 
-    // Obere Hälfte des Data Frames
+    // Upper half of the data frame
     inputPane = new InputPane(new Point(1, 1));
     gbc = new GridBagConstraints(); // Zurücksetzen der GridBagConstraints
     gbc.gridx = 0;
@@ -54,7 +54,7 @@ public final class GUI extends JFrame {
     gbc.fill = GridBagConstraints.BOTH; // Füllt den verfügbaren Platz in beiden Richtungen
     dataTab.add(inputPane, gbc);
 
-    // Untere Hälfte des Data Frames
+    // Lower half of the data frame
     ControlPane controlPane = new ControlPane(new Point(150, 40));
     gbc.gridx = 0;
     gbc.gridy = 1;
