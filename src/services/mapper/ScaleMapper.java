@@ -2,20 +2,19 @@ package services.mapper;
 
 import domain.Axis;
 import domain.Coordinate;
+import domain.CoordinateSystem;
 import domain.Location;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Mapper for the axis scales of the coordinate map embedded in the gui.
  */
 public class ScaleMapper {
 
-  	/**
+	/**
 	 * Scales the range of the locations to the axes of the map. The number of
 	 * partitions is a fix number of 10.
 	 *
@@ -23,14 +22,13 @@ public class ScaleMapper {
 	 * @return Map of String-key consisting of the axis with the conversion key and
 	 *         the list of intervals
 	 */
-	public static Map<Axis, List<Integer>> specifyAxisScales(List<Location> locationList) {
+	public static void specifyAxisScales(CoordinateSystem cs, List<Location> locationList) {
 
 		if (locationList == null)
-			return null;
+			return;
 		else if (locationList.size() == 0)
-			return null;
-		
-		Map<Axis, List<Integer>> axisScales = new HashMap<>();
+			return;
+
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		int[][] ranges = determineAxisDimensions(locationList);
@@ -75,14 +73,14 @@ public class ScaleMapper {
 //	    System.out.println("\nY-SCALES:");
 //	    y_scales.forEach(System.out::println);
 
-		Axis xAxis = new Axis(domain.Dimension.X);
-		xAxis.setScale(x_conversionKey);
-		Axis yAxis = new Axis(domain.Dimension.Y);
-		yAxis.setScale(y_conversionKey);
-		axisScales.put(xAxis, x_scales);
-		axisScales.put(yAxis, y_scales);
+		Axis x_Axis = cs.getXAxis();
+		Axis y_Axis = cs.getYAxis();
 
-		return axisScales;
+		x_Axis.setScale(x_conversionKey);
+		x_Axis.setValues(x_scales);
+
+		y_Axis.setScale(y_conversionKey);
+		y_Axis.setValues(y_scales);
 	}
 
 	public static int[][] determineAxisDimensions(List<Location> locationList) {
@@ -113,9 +111,7 @@ public class ScaleMapper {
 		return new int[][] { { x_min, x_max }, { y_min, y_max } };
 	}
 
-	public static List<Coordinate> scaleCoordinates(List<Coordinate> coordinates, int panelWidth, int panelHeight,
-			List<Integer> x_axis, List<Integer> y_axis) {
-
+	private static void calcScale(CoordinateSystem cs, List<Coordinate> coordinates) {
 		// find min and max values
 		int minX = Integer.MAX_VALUE;
 		int maxX = Integer.MIN_VALUE;
@@ -130,37 +126,86 @@ public class ScaleMapper {
 			maxY = Math.max(maxY, coordinate.y());
 		}
 
-		minX -= 50;
-		maxX += 50;
-		minY -= 50;
-		maxY += 50;
+		Axis x_Axis = cs.getXAxis();
+		Axis y_Axis = cs.getYAxis();
+
+		for (int value : x_Axis.getValues()) {
+			minX = Math.min(minX, value);
+			maxX = Math.max(maxX, value);
+		}
+
+		for (int value : y_Axis.getValues()) {
+			minY = Math.min(minY, value);
+			maxY = Math.max(maxY, value);
+		}
+
+		int spacing = cs.getBorderSpacing();
+		minX -= spacing;
+		maxX += spacing;
+		minY -= spacing;
+		maxY += spacing;
 
 		int rangeX = maxX - Math.abs(minX);
 		int rangeY = maxY - Math.abs(minY);
 
 		// calc scale factors
-		double scaleX = (double) (panelWidth - 100) / rangeX;
-		double scaleY = (double) (panelHeight - 100) / rangeY;
+		double scaleX = (double) (cs.getParentWidth() - (spacing * 2)) / rangeX;
+		double scaleY = (double) (cs.getParentHeight() - (spacing * 2)) / rangeY;
+
+		x_Axis.setScale(scaleX);
+		y_Axis.setScale(scaleY);
+	}
+
+	public static List<Coordinate> scaleCoordinatesAndAxisValues(CoordinateSystem cs, List<Coordinate> coordinates,
+			List<Integer> x_axisValues, List<Integer> y_axisValues) {
+
+		calcScale(cs, coordinates);
+
+		Axis x_Axis = cs.getXAxis();
+		Axis y_Axis = cs.getYAxis();
+
+		double scaleX = x_Axis.getScale();
+		double scaleY = y_Axis.getScale();
+		int spacing = cs.getBorderSpacing();
 
 		List<Coordinate> scaledCoordinates = new ArrayList<>();
 		// scale coordinates
 		for (Coordinate coordinate : coordinates) {
-			int scaledX = (int) ((coordinate.x()) * scaleX) + 50;
-			int scaledY = (int) (panelHeight - ((coordinate.y()) * scaleY)) - 50;
+			int scaledX = (int) ((coordinate.x()) * scaleX) + spacing;
+			int scaledY = (int) (cs.getParentHeight() - ((coordinate.y()) * scaleY)) - spacing;
 
 			scaledCoordinates.add(new Coordinate(scaledX, scaledY));
 		}
 
 		// scale x-axis values
-		for (int i = 0; i < x_axis.size(); i++) {
-			x_axis.set(i, (int) ((x_axis.get(i)) * scaleX) + 50);
+		for (int i = 0; i < x_axisValues.size(); i++) {
+			x_axisValues.set(i, (int) ((x_axisValues.get(i)) * scaleX) + spacing);
 		}
 
 		// scale y-axis values
-		for (int i = 0; i < y_axis.size(); i++) {
-			y_axis.set(i, (int) (panelHeight - (y_axis.get(i) * scaleY)) - 50);
+		for (int i = 0; i < y_axisValues.size(); i++) {
+			y_axisValues.set(i, (int) (cs.getParentHeight() - (y_axisValues.get(i) * scaleY)) - spacing);
 		}
 
+		return scaleCoordinates(cs, coordinates);
+	}
+
+	public static List<Coordinate> scaleCoordinates(CoordinateSystem cs, List<Coordinate> coordinates) {
+		Axis x_Axis = cs.getXAxis();
+		Axis y_Axis = cs.getYAxis();
+		double scaleX = x_Axis.getScale();
+		double scaleY = y_Axis.getScale();
+		int spacing = cs.getBorderSpacing();
+
+		List<Coordinate> scaledCoordinates = new ArrayList<>();
+		// scale coordinates
+		for (Coordinate coordinate : coordinates) {
+			int scaledX = (int) ((coordinate.x()) * scaleX) + spacing;
+			int scaledY = (int) (cs.getParentHeight() - ((coordinate.y()) * scaleY)) - spacing;
+
+			scaledCoordinates.add(new Coordinate(scaledX, scaledY));
+		}
+		
 		return scaledCoordinates;
 	}
 
