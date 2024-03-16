@@ -67,9 +67,11 @@ public class MainController {
       Logger.log("Calculation of optimal helicopter postions was executed successfully in " + runtime + " ms.");
 
       MapController.drawHelicopterPositions(helicopterList);
+  	
       JOptionPane.showMessageDialog(gui, "Berechnung erfolgreich abgeschlossen!"
           + System.lineSeparator() + "Optimale Helikopter-Standorte wurden auf der Karte eingezeichnet."
-          + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.");
+          + System.lineSeparator() + "Eine CSV-Datei mit den Ergebnis-Details kann heruntergeladen werden.", "Berechnung abgeschlossen", JOptionPane.INFORMATION_MESSAGE);
+      gui.drawSolution(helicopterList);
     }
   }
 
@@ -87,8 +89,10 @@ public class MainController {
     hideAllTableErrMsg();
     File file;
     try {
-      file = LoadingService.getPath(); // could be null when the dialog frame is canceled!
-      List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
+//      file = LoadingService.getPath(); // could be null when the dialog frame is canceled!      
+//      List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
+    	
+      List<String[]> input = csvParser.parse("C:/Users/Christoph/eclipse-workspace/HeliLocationOptimizer/test/resources/validCsvFile.csv", Separator.SEMICOLON);
       TableController.loadCsvToTableModel(TableDataMapper.mapToTableModel(input));
     } catch (NullPointerException |
              ColumnIdentifierException |
