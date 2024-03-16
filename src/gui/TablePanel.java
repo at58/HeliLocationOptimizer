@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -59,7 +58,9 @@ public class TablePanel extends JPanel {
       public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
           int r = table.rowAtPoint(e.getPoint());
-          int c = table.columnAtPoint(e.getPoint());
+          r = table.convertRowIndexToModel(r);
+          int c = table.columnAtPoint(e.getPoint());          
+          
           if (r == row && c == col) {
             editLock = true;
           } else {
@@ -71,6 +72,7 @@ public class TablePanel extends JPanel {
         if (SwingUtilities.isRightMouseButton(e) && !editLock) {
           int row = table.rowAtPoint(e.getPoint());
           int col = table.columnAtPoint(e.getPoint());
+          row = table.convertRowIndexToModel(row);
 
           if (row >= 0 && col >= 0) {
             // remove the row from table
@@ -80,9 +82,8 @@ public class TablePanel extends JPanel {
       }
     });
    
-    // enable and configure sorting for table
-    DefaultTableModel model = (DefaultTableModel) table.getModel();    
-    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    // enable and configure sorting for table   
+    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
     table.setRowSorter(sorter);
     
     Comparator<Integer> integerComparator = Comparator.comparingInt(Integer::intValue);
