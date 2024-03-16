@@ -84,7 +84,7 @@ public class Locator {
       allocateClosestLocations(locations, helicopterList);
       determinePseudoFocus(helicopterList);
       boolean locationChanged = relocationOccurred(helicopterList, currentHelicopterCoordinates);
-      System.out.println("Location changed ? -> " + locationChanged);
+//      System.out.println("Location changed ? -> " + locationChanged);
       if (!locationChanged) {
         break;
       } else {

@@ -54,9 +54,12 @@ public class PreDistributor {
       List<Location> randomLocations =  CalculationUtils.getRandomLocations(zonedLocations.get(i), assignments);
       for (Location location : randomLocations) {
         Coordinate locationCoordinate = location.getCoordinate();
-        Helicopter helicopter = helicopterStack.pop();
-        helicopter.setCoordinates(locationCoordinate.x(), locationCoordinate.y());
-        initialHelicopterPositions.add(helicopter);
+        
+        if (!helicopterStack.empty()) {
+	        Helicopter helicopter = helicopterStack.pop();
+	        helicopter.setCoordinates(locationCoordinate.x(), locationCoordinate.y());
+	        initialHelicopterPositions.add(helicopter);
+        }
       }
     }
     return initialHelicopterPositions;
