@@ -13,7 +13,7 @@ public class LoadingServiceTest {
   @Test
   void LoadingLocationTest() throws DialogCancelledException {
     // Arrange
-    File storageLocation = StorageService.getStorageLocation("Ortsdaten.csv", 1);
+    File storageLocation = StorageService.getStorageLocation("Ortsdaten.csv", 1, "csv");
     String expected = storageLocation.getAbsolutePath().replaceAll("\\\\", "/");
     System.out.println(expected);
     String fileName = storageLocation.getName();

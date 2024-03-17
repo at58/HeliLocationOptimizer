@@ -3,8 +3,8 @@ package utils;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DialogUtils {
-
-  public static FileNameExtensionFilter getCsvFilter() {
-    return new FileNameExtensionFilter("CSV-Dateien (*.csv)", "csv");
+  
+  public static FileNameExtensionFilter getFileNameExtensionFilter(String extension) {
+	  return new FileNameExtensionFilter(extension.toUpperCase() + "-Dateien (*." + extension + ")", extension);  
   }
 }
