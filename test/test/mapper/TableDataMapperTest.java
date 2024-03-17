@@ -27,7 +27,7 @@ public class TableDataMapperTest {
     ));
 
     // act
-    List<String[]> actual = TableDataMapper.mapToStringArrayList(model.getDataVector());
+    List<String[]> actual = TableDataMapper.vectorToStringList(model.getDataVector());
 
     // assert
     assertEquals(expected.size(), actual.size());
