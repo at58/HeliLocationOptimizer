@@ -21,7 +21,7 @@ public class TableDataMapper {
                                                                   "y koordinate",
                                                                   "unfallzahl"};
 
-  public static Object[][] mapToTableModel(List<String[]> csvTuples)
+  public static Object[][] stringListToTableModel(List<String[]> csvTuples)
       throws ColumnIdentifierException, NumberFormatException {
 
     String[] columns = extractColumnIdentifiers(csvTuples);
@@ -56,7 +56,7 @@ public class TableDataMapper {
     return result;
   }
 
-  public static List<String[]> mapToStringArrayList(Vector dataVector) {
+  public static List<String[]> vectorToStringList(Vector dataVector) {
 
     List<String[]> result = new ArrayList<>();
     Object[] outerArray = dataVector.toArray();

@@ -31,7 +31,7 @@ public final class Logger {
 
   private static void exportToLogFile() {
     try {
-      writer = new FileWriter("C:/Users/toy/IdeaProjects/HeliLocationOptimizer/src/utils/log/log.log");
+      writer = new FileWriter("src/utils/log/log.txt");
       for (String message : logMessages) {
         writer.write(message + System.lineSeparator());
       }
