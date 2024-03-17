@@ -46,6 +46,6 @@ public class TableController {
   public static List<String[]> getTableData() {
 
     Vector dataVector =  dataTable.pullDataBase();
-    return TableDataMapper.mapToStringArrayList(dataVector);
+    return TableDataMapper.vectorToStringList(dataVector);
   }
 }

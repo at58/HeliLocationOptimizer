@@ -50,7 +50,7 @@ public final class GUI extends JFrame {
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (tabbedPane.getSelectedIndex() == 1)
-					drawLocations();
+					showLocations();
 			}
 		});
 		tabbedPane.setBackground(Color.WHITE);
@@ -147,11 +147,11 @@ public final class GUI extends JFrame {
 		this.inputPane.hideUnexpectedErrMsg();
 	}
 
-	public void drawLocations() {
+	public void showLocations() {
 		this.drawPane.drawLocations(LocationMapper.mapToLocationObjects(TableController.getTableData()));
 	}
 
-	public void drawSolution(List<Helicopter> helicopters) {
+	public void showSolution(List<Helicopter> helicopters) {
 		this.drawPane.drawHelicopterPositions(helicopters);
 	}
 }
