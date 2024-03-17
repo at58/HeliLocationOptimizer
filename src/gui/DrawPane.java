@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
@@ -96,24 +95,24 @@ public class DrawPane extends JPanel {
 		int g;
 		int b;
 
-		//smaller than avg-range
+		// smaller than avg-range
 		if (accidents <= (accidentHalfMax * 0.75)) {
 			// Calculate g between 135 and 200
 			g = 200 - (int) (65 * accidents / accidentHalfMax);
-	        g = Math.max(0, Math.min(255, g));
-	        return new Color(255, g, 0);
-		//bigger than avg-range
+			g = Math.max(0, Math.min(255, g));
+			return new Color(255, g, 0);
+			// bigger than avg-range
 		} else if (accidents >= (accidentHalfMax * 1.25)) {
 			// Calculate b between 0 and 100
 			b = (int) (100 * accidents / accidentHalfMax);
-	        b = Math.max(0, Math.min(100, b));
-	        return new Color(215, 0, b);
-		// in avg range
+			b = Math.max(0, Math.min(100, b));
+			return new Color(215, 0, b);
+			// in avg range
 		} else {
 			// Calculate g between 0 and 135
 			g = 135 - (int) (135 * accidents / accidentHalfMax);
-	        g = Math.max(0, Math.min(255, g));
-	        return new Color(255, g, 0);
+			g = Math.max(0, Math.min(255, g));
+			return new Color(255, g, 0);
 		}
 	}
 
@@ -124,15 +123,13 @@ public class DrawPane extends JPanel {
 		if (locationList != null) {
 			ScaleMapper.specifyAxisScales(cs, locationList);
 
+			// exit if no coordinate system or no locations
 			if ((cs == null) || (locationList.size() == 0)) {
 				locationList = null;
 				return;
 			}
 
-			List<Coordinate> scaledCoordinates = drawAxes(g);
-
-			int accidentCount = CalculationUtils.accumulateTotalOfAccidents(locationList);
-			int accidentAvg = accidentCount / locationList.size();
+			List<Coordinate> scaledCoordinates = drawAxes(g);			
 			int accidentMax = CalculationUtils.getAccidentsMax(locationList);
 
 			// draw locations
@@ -142,63 +139,12 @@ public class DrawPane extends JPanel {
 				g.fillOval(coord.x() - 5, coord.y() - 5, 10, 10);
 			}
 
-			int rectW = 400;
-			Rectangle rect = new Rectangle(getWidth() - rectW - 20, 10, rectW, 25);
-
-			Color startColor = new Color(255, 200, 0);
-//			Color endColor = new Color(255, 0, 0);
-			Color endColor = new Color(210, 0, 100);
-
-			GradientPaint gradient = new GradientPaint((float) rect.getX(), (float) rect.getY(), startColor,
-					(float) (rect.getWidth() + rect.getX()), (float) rect.getY(), endColor, false);
-
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setPaint(gradient);
-			g2d.fill(rect);			
-
-			// Draw black triangles below the rectangle
-			int triangleHeight = 10; // Height of the triangles
-			int triangleBase = 10; // Base of the triangles
-
-			// Calculate the positions for the triangles
-			int leftX = (int) rect.getX();
-			int middleX = (int) (rect.getX() + rect.getWidth() / 2);
-			int rightX = (int) (rect.getX() + rect.getWidth()) - triangleBase;
-
-			int triangleY = (int) (rect.getY() + rect.getHeight()); // Y position for all triangles
-			int stringY = triangleY + triangleHeight + 12;
-			
-			// Draw left triangle
-			int[] leftXPoints = { leftX, leftX + triangleBase, leftX + triangleBase / 2 };
-			int[] leftYPoints = { triangleY, triangleY, triangleY + triangleHeight };
-			g2d.setColor(Color.BLACK);
-			g2d.fillPolygon(leftXPoints, leftYPoints, 3);
-			g2d.drawString("0", leftX + triangleBase / 2 - 3, stringY);
-
-			// Draw middle triangle
-			String avg = Integer.toString(accidentAvg);
-			int[] middleXPoints = { middleX, middleX + triangleBase, middleX + triangleBase / 2 };
-			int[] middleYPoints = { triangleY, triangleY, triangleY + triangleHeight };
-			g2d.fillPolygon(middleXPoints, middleYPoints, 3);
-			g2d.drawString(avg, middleX + triangleBase / 2 - g.getFontMetrics().stringWidth(avg) / 2,
-					stringY);
-
-			// Draw right triangle
-			String max = Integer.toString(accidentMax);
-			int[] rightXPoints = { rightX, rightX + triangleBase, rightX + triangleBase / 2 };
-			int[] rightYPoints = { triangleY, triangleY, triangleY + triangleHeight };
-			g2d.fillPolygon(rightXPoints, rightYPoints, 3);
-			g2d.drawString(max, rightX - g.getFontMetrics().stringWidth(max) + triangleBase / 2 + 3,
-					stringY);
-			
-			java.awt.Font f = g2d.getFont();
-			g2d.setFont(new java.awt.Font(f.getFontName(), f.getStyle(), 18));
-			g2d.drawString("Unfallzahlen", (int)(rect.getX() + 5), (int) (rect.getY() + rect.getHeight() / 2) + 7);
+			drawColoredAccidentScale(g, accidentMax);
 		}
 
 		if (helicopterList != null) {
 
-			List<Coordinate> scaledCoordinates = ScaleMapper.scaleCoordinates(cs, getCoordinates(null, helicopterList));
+			// try get image of helicopter
 			Image image = null;
 			try {
 				// <a href="https://de.vecteezy.com/gratis-vektor/helicopter">Helicopter
@@ -207,26 +153,32 @@ public class DrawPane extends JPanel {
 				image = makeColorTransparent(image, Color.white);
 
 			} catch (IOException e) {
-				// TODO Automatisch generierter Erfassungsblock
-				e.printStackTrace();
+				image = null;
 			}
+
+			// get scaled coordinates for solution (helicopter postions)
+			List<Coordinate> scaledCoordinates = ScaleMapper.scaleCoordinates(cs, getCoordinates(null, helicopterList));
 
 			for (Coordinate coord : scaledCoordinates) {
 				g.setColor(Color.blue);
-				// draw helicopter
-//				g.fillOval(coord.x() - 5, coord.y() - 5, 10, 10);
 
+				// get assigned locations and scale them
 				Helicopter heli = helicopterList.get(scaledCoordinates.indexOf(coord));
 				Map<Location, Double> locationHelicopterMap = heli.getLocationHelicopterMapping();
 				List<Coordinate> scaledHeliLocations = ScaleMapper.scaleCoordinates(cs,
 						getCoordinates(new ArrayList<Location>(locationHelicopterMap.keySet()), null));
 				g.setColor(Color.MAGENTA);
 
+				// draw lines from locations to assigned helicopter
 				for (Coordinate coord2 : scaledHeliLocations) {
 					g.drawLine(coord.x(), coord.y(), coord2.x(), coord2.y());
 				}
 
-				g.drawImage(image, coord.x() - 25, coord.y() - 25, 50, 50, null);
+				// draw helicopter
+				if (image == null)
+					g.fillOval(coord.x() - 5, coord.y() - 5, 10, 10);
+				else
+					g.drawImage(image, coord.x() - 25, coord.y() - 25, 50, 50, null);
 			}
 		}
 	}
@@ -240,6 +192,7 @@ public class DrawPane extends JPanel {
 		List<Integer> scaled_xAxisValues = new ArrayList<>(xAxisValues);
 		List<Integer> scaled_yAxisValues = new ArrayList<>(yAxisValues);
 
+		// get scaled coordinates from locations and scale for axes
 		List<Coordinate> scaledCoordinates = ScaleMapper.scaleCoordinatesAndAxisValues(cs,
 				getCoordinates(locationList, null), scaled_xAxisValues, scaled_yAxisValues);
 
@@ -253,11 +206,10 @@ public class DrawPane extends JPanel {
 		for (int i = 0; i < scaled_xAxisValues.size(); i++) {
 			int x = scaled_xAxisValues.get(i);
 
+			// draw value and line on axis
 			g.fillRect(x - 3, y, 5, 10);
-
 			String scaleStr = Integer.toString(xAxisValues.get(i));
 			int strWidth = g.getFontMetrics().stringWidth(scaleStr);
-
 			g.drawString(scaleStr, x - (strWidth / 2) - 1, y + 25);
 
 			// draw bisector between two main axis-points
@@ -273,11 +225,10 @@ public class DrawPane extends JPanel {
 		for (int i = 0; i < scaled_yAxisValues.size(); i++) {
 			y = scaled_yAxisValues.get(i);
 
+			// draw value and line on axis
 			g.fillRect(x, y - 3, 10, 5);
-
 			String scaleStr = Integer.toString(yAxisValues.get(i));
 			int strWidth = g.getFontMetrics().stringWidth(scaleStr);
-
 			g.drawString(scaleStr, x - strWidth - 5, y + 5);
 
 			// draw bisector between two main axis-points
@@ -289,5 +240,62 @@ public class DrawPane extends JPanel {
 		}
 
 		return scaledCoordinates;
+	}
+
+	private void drawColoredAccidentScale(Graphics g, int accidentMax) {
+		int accidentCount = CalculationUtils.accumulateTotalOfAccidents(locationList);
+		int accidentAvg = accidentCount / locationList.size();
+		
+		// draw rectangle with colored gradient for accident numbers
+		int rectW = 400;
+		Rectangle rect = new Rectangle(getWidth() - rectW - 20, 10, rectW, 25);
+
+		Color startColor = new Color(255, 200, 0);
+		Color endColor = new Color(210, 0, 100);
+
+		GradientPaint gradient = new GradientPaint((float) rect.getX(), (float) rect.getY(), startColor,
+				(float) (rect.getWidth() + rect.getX()), (float) rect.getY(), endColor, false);
+
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setPaint(gradient);
+		g2d.fill(rect);
+
+		// draw black triangles below the rectangle
+		int triangleHeight = 10;
+		int triangleWidth = 10;
+
+		// calculate the positions for the triangles
+		int leftX = (int) rect.getX();
+		int middleX = (int) (rect.getX() + rect.getWidth() / 2);
+		int rightX = (int) (rect.getX() + rect.getWidth()) - triangleWidth;
+
+		int triangleY = (int) (rect.getY() + rect.getHeight());
+		int stringY = triangleY + triangleHeight + 12;
+
+		// draw left triangle
+		int[] leftXPoints = { leftX, leftX + triangleWidth, leftX + triangleWidth / 2 };
+		int[] leftYPoints = { triangleY, triangleY, triangleY + triangleHeight };
+		g2d.setColor(Color.BLACK);
+		g2d.fillPolygon(leftXPoints, leftYPoints, 3);
+		g2d.drawString("0", leftX + triangleWidth / 2 - 3, stringY);
+
+		// draw middle triangle
+		String avg = Integer.toString(accidentAvg);
+		int[] middleXPoints = { middleX, middleX + triangleWidth, middleX + triangleWidth / 2 };
+		int[] middleYPoints = { triangleY, triangleY, triangleY + triangleHeight };
+		g2d.fillPolygon(middleXPoints, middleYPoints, 3);
+		g2d.drawString(avg, middleX + triangleWidth / 2 - g.getFontMetrics().stringWidth(avg) / 2, stringY);
+
+		// draw right triangle
+		String max = Integer.toString(accidentMax);
+		int[] rightXPoints = { rightX, rightX + triangleWidth, rightX + triangleWidth / 2 };
+		int[] rightYPoints = { triangleY, triangleY, triangleY + triangleHeight };
+		g2d.fillPolygon(rightXPoints, rightYPoints, 3);
+		g2d.drawString(max, rightX - g.getFontMetrics().stringWidth(max) + triangleWidth / 2 + 3, stringY);
+
+		// draw scale caption
+		java.awt.Font f = g2d.getFont();
+		g2d.setFont(new java.awt.Font(f.getFontName(), f.getStyle(), 18));
+		g2d.drawString("Unfallzahlen", (int) (rect.getX() + 5), (int) (rect.getY() + rect.getHeight() / 2) + 7);
 	}
 }
