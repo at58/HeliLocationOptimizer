@@ -83,6 +83,13 @@ public class ScaleMapper {
 		y_Axis.setValues(y_scales);
 	}
 
+	/**
+	 * determines the dimensions of the axis based on the given list of locations.
+	 * 
+	 * @param locationList The list of locations.
+	 * @return A 2D array representing the axis dimensions: {{x_min, x_max}, {y_min,
+	 *         y_max}}.
+	 */
 	public static int[][] determineAxisDimensions(List<Location> locationList) {
 
 		int x_min = Integer.MAX_VALUE;
@@ -111,6 +118,13 @@ public class ScaleMapper {
 		return new int[][] { { x_min, x_max }, { y_min, y_max } };
 	}
 
+	/**
+	 * calculates the scale factors for the coordinate system based on the given
+	 * coordinates and assigns them to the coordinate system.
+	 * 
+	 * @param cs          The coordinate system.
+	 * @param coordinates The list of coordinates.
+	 */
 	private static void calcScale(CoordinateSystem cs, List<Coordinate> coordinates) {
 		// find min and max values
 		int minX = Integer.MAX_VALUE;
@@ -156,26 +170,28 @@ public class ScaleMapper {
 		y_Axis.setScale(scaleY);
 	}
 
-	public static List<Coordinate> scaleCoordinatesAndAxisValues(CoordinateSystem cs, List<Coordinate> coordinates,
+	/**
+	 * scales the coordinates and axis values based on the coordinate system and the
+	 * given lists of coordinates, x-axis values, and y-axis values.
+	 * 
+	 * @param cs           The coordinate system.
+	 * @param coordinates  The list of coordinates to be scaled.
+	 * @param x_axisValues The list of x-axis values to be scaled.
+	 * @param y_axisValues The list of y-axis values to be scaled.
+	 * @return The scaled coordinates.
+	 */
+	public static List<Coordinate> scaleAxisValuesAndCoordinates(CoordinateSystem cs, List<Coordinate> coordinates,
 			List<Integer> x_axisValues, List<Integer> y_axisValues) {
 
 		calcScale(cs, coordinates);
 
+		// get calculated scales
 		Axis x_Axis = cs.getXAxis();
 		Axis y_Axis = cs.getYAxis();
 
 		double scaleX = x_Axis.getScale();
 		double scaleY = y_Axis.getScale();
 		int spacing = cs.getBorderSpacing();
-
-		List<Coordinate> scaledCoordinates = new ArrayList<>();
-		// scale coordinates
-		for (Coordinate coordinate : coordinates) {
-			int scaledX = (int) ((coordinate.x()) * scaleX) + spacing;
-			int scaledY = (int) (cs.getParentHeight() - ((coordinate.y()) * scaleY)) - spacing;
-
-			scaledCoordinates.add(new Coordinate(scaledX, scaledY));
-		}
 
 		// scale x-axis values
 		for (int i = 0; i < x_axisValues.size(); i++) {
@@ -190,6 +206,14 @@ public class ScaleMapper {
 		return scaleCoordinates(cs, coordinates);
 	}
 
+	/**
+	 * scales the coordinates based on the coordinate system and the given list of
+	 * coordinates.
+	 * 
+	 * @param cs          The coordinate system.
+	 * @param coordinates The list of coordinates to be scaled.
+	 * @return The scaled coordinates.
+	 */
 	public static List<Coordinate> scaleCoordinates(CoordinateSystem cs, List<Coordinate> coordinates) {
 		Axis x_Axis = cs.getXAxis();
 		Axis y_Axis = cs.getYAxis();
@@ -198,14 +222,14 @@ public class ScaleMapper {
 		int spacing = cs.getBorderSpacing();
 
 		List<Coordinate> scaledCoordinates = new ArrayList<>();
-		// scale coordinates
+		// scale coordinates with factors
 		for (Coordinate coordinate : coordinates) {
 			int scaledX = (int) ((coordinate.x()) * scaleX) + spacing;
 			int scaledY = (int) (cs.getParentHeight() - ((coordinate.y()) * scaleY)) - spacing;
 
 			scaledCoordinates.add(new Coordinate(scaledX, scaledY));
 		}
-		
+
 		return scaledCoordinates;
 	}
 

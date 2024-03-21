@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class DataTable {
 
   private final DefaultTableModel tableModel;
-  private Object[][] tuples = new Object[][] {};
+  private Object[][] tuples;
   private final Object[] columns = new Object[]
       { "Ort",
        "X - Koordinate",

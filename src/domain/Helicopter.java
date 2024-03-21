@@ -72,6 +72,14 @@ public final class Helicopter implements Item {
 		this.speed = velocity;
 	}
 
+	/**
+	 * retrieves summarized data for a helicopter at the specified index, data
+	 * includes index, x-coordinate, y-coordinate, total accidents, average
+	 * accidents per location, and a comma-separated list of location names.
+	 * 
+	 * @param index index of the helicopter.
+	 * @return List containing summarized data for the helicopter.
+	 */
 	public List<String> getSummarizedData(int index) {
 		List<String> data = new ArrayList<>();
 
@@ -92,6 +100,14 @@ public final class Helicopter implements Item {
 		return data;
 	}
 
+	/**
+	 * retrieves detailed data for a helicopter at the specified index, data
+	 * includes index, location name, distance to location, and travel time to
+	 * location.
+	 * 
+	 * @param index index of the helicopter.
+	 * @return List containing arrays of detailed data for the helicopter.
+	 */
 	public List<String[]> getDetailedData(int index) {
 		List<String[]> data = new ArrayList<>();
 
