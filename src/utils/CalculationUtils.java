@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.poi.xwpf.usermodel.LineSpacingRule;
-
 public class CalculationUtils {
 
 	public static List<Location> getRandomLocations(List<Location> locations, int amount) {

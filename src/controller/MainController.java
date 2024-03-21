@@ -44,7 +44,7 @@ public class MainController {
 		gui.hideUnexpectedErrMsg();
 		Logger.log("The calculation of the optimum positions for helicopter bases has been started.");
 		long start = System.currentTimeMillis();
-		
+
 		try {
 			helicopterList = Locator.findOptimalPositions(gui.getHeliNumberFieldInput(), gui.getSpeedFieldInput(),
 					TableController.getTableData());
@@ -87,15 +87,10 @@ public class MainController {
 		hideAllTableErrMsg();
 		File file;
 		try {
-//      file = LoadingService.getPath(); // could be null when the dialog frame is canceled!      
-//      List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
-
-//      List<String[]> input = csvParser.parse("C:/Users/Christoph/eclipse-workspace/HeliLocationOptimizer/test/resources/validCsvFile.csv", Separator.SEMICOLON);
-//      List<String[]> input = csvParser.parse("D:/Ausbildung/LF13/HeliLocationOptimizer/test/resources/validCsvFile.csv", Separator.SEMICOLON);
-//      List<String[]> input = csvParser.parse("C:/Users/Admin/Desktop/Test HeliOptmz/Ski_Gebiet_Daten_valide.csv", Separator.SEMICOLON);
-			List<String[]> input = csvParser.parse("C:/Users/Admin/Desktop/Test HeliOptmz/Skigebiete Südtirol.csv",
-					Separator.SEMICOLON);
+			file = LoadingService.getPath(); // could be null when the dialog frame is canceled!
+			List<String[]> input = csvParser.parse(file.getAbsolutePath(), Separator.SEMICOLON);
 			TableController.loadCsvToTableModel(TableDataMapper.stringListToTableModel(input));
+			
 		} catch (NullPointerException | ColumnIdentifierException | NumberFormatException e) {
 			if (e instanceof ColumnIdentifierException) {
 				gui.showIncompatibleColumnErrMsg();

@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
@@ -25,6 +24,8 @@ import javax.swing.event.ChangeEvent;
  * Interactive GUI of the application.
  */
 public final class GUI extends JFrame {
+
+	private static final long serialVersionUID = -6567007278067172602L;
 
 	private final InputPane inputPane;
 	private final DrawPane drawPane;
