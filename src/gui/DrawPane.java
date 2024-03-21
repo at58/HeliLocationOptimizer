@@ -28,6 +28,10 @@ import domain.Location;
 import services.mapper.ScaleMapper;
 import utils.CalculationUtils;
 
+/**
+ * DrawPane is a custom JPanel that provides various visual elements for
+ * displaying helicopter positions and accident locations.
+ */
 public class DrawPane extends JPanel {
 
 	private static final long serialVersionUID = 5416885486769951018L;
@@ -43,18 +47,38 @@ public class DrawPane extends JPanel {
 		cs.setBorderSpacing(50);
 	}
 
+	/**
+	 * draws the positions of the helicopters passed in.
+	 * 
+	 * @param helicopterList List of helicopters whose positions are to be drawn.
+	 */
 	public void drawHelicopterPositions(List<Helicopter> helicopterList) {
 		this.helicopterList = helicopterList;
 		cs.setWidthAndHeight(getWidth(), getHeight());
 		repaint();
 	}
 
+	/**
+	 * draws the given accident locations.
+	 * 
+	 * @param locationList List of accident locations to be drawn.
+	 */
 	public void drawLocations(List<Location> locationList) {
 		this.locationList = locationList;
 		cs.setWidthAndHeight(getWidth(), getHeight());
 		repaint();
 	}
 
+	/**
+	 * retrieves a list of coordinates from either the list of locations or
+	 * helicopters.
+	 * 
+	 * @param locations   List of locations to retrieve coordinates from. Can be
+	 *                    null.
+	 * @param helicopters List of helicopters to retrieve coordinates from. Can be
+	 *                    null.
+	 * @return List of coordinates extracted from the locations or helicopters.
+	 */
 	private static List<Coordinate> getCoordinates(List<Location> locations, List<Helicopter> helicopters) {
 		List<Coordinate> coordinates = new ArrayList<>();
 
@@ -70,7 +94,14 @@ public class DrawPane extends JPanel {
 		return coordinates;
 	}
 
-	public static Image makeColorTransparent(Image im, final Color color) {
+	/**
+	 * makes a specific color transparent in the given image.
+	 * 
+	 * @param im    The image to make transparent.
+	 * @param color The color to make transparent.
+	 * @return Image with the specified color made transparent.
+	 */
+	public static Image makeColorTransparent(Image img, final Color color) {
 		ImageFilter filter = new RGBImageFilter() {
 			// the color we are looking for... Alpha bits are set to opaque
 			public int markerRGB = color.getRGB() | 0xFF000000;
@@ -86,10 +117,18 @@ public class DrawPane extends JPanel {
 			}
 		};
 
-		ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
+		ImageProducer ip = new FilteredImageSource(img.getSource(), filter);
 		return Toolkit.getDefaultToolkit().createImage(ip);
 	}
 
+	/**
+	 * calculates the color for representing accident intensity based on the number
+	 * of accidents.
+	 * 
+	 * @param accidents       Number of accidents.
+	 * @param accidentHalfMax Half of the maximum accident count.
+	 * @return Color representing the accident intensity.
+	 */
 	private Color getAccidentColor(int accidents, int accidentHalfMax) {
 
 		int g;
@@ -129,7 +168,7 @@ public class DrawPane extends JPanel {
 				return;
 			}
 
-			List<Coordinate> scaledCoordinates = drawAxes(g);			
+			List<Coordinate> scaledCoordinates = drawAxes(g);
 			int accidentMax = CalculationUtils.getAccidentsMax(locationList);
 
 			// draw locations
@@ -175,14 +214,25 @@ public class DrawPane extends JPanel {
 				}
 
 				// draw helicopter
-				if (image == null)
-					g.fillOval(coord.x() - 5, coord.y() - 5, 10, 10);
-				else
+				if (image == null) {
+					g.setColor(Color.BLUE);
+					g.fillOval(coord.x() - 8, coord.y() - 8, 16, 16);
+				} else
 					g.drawImage(image, coord.x() - 25, coord.y() - 25, 50, 50, null);
+
+				//draw helicopter index
+				g.setColor(Color.BLACK);
+				g.drawString(Integer.toString(helicopterList.indexOf(heli) + 1), coord.x() - 5, coord.y() - 15);
 			}
 		}
 	}
 
+	/**
+	 * draws the axes on the graphics context and returns scaled coordinates.
+	 * 
+	 * @param g Graphics context.
+	 * @return List of scaled coordinates.
+	 */
 	private List<Coordinate> drawAxes(Graphics g) {
 		Axis x_Axis = cs.getXAxis();
 		Axis y_Axis = cs.getYAxis();
@@ -193,13 +243,15 @@ public class DrawPane extends JPanel {
 		List<Integer> scaled_yAxisValues = new ArrayList<>(yAxisValues);
 
 		// get scaled coordinates from locations and scale for axes
-		List<Coordinate> scaledCoordinates = ScaleMapper.scaleCoordinatesAndAxisValues(cs,
+		List<Coordinate> scaledCoordinates = ScaleMapper.scaleAxisValuesAndCoordinates(cs,
 				getCoordinates(locationList, null), scaled_xAxisValues, scaled_yAxisValues);
 
 		// draw x-axis
 		g.drawLine(50, getHeight() - 50, getWidth() - 50, getHeight() - 50);
+		g.drawString("X", getWidth() - 40, getHeight() - 45);
 		// draw y-axis
 		g.drawLine(50, getHeight() - 50, 50, 50);
+		g.drawString("Y", 47, 40);
 
 		// draw x-axis values
 		int y = getHeight() - 55;
@@ -242,10 +294,16 @@ public class DrawPane extends JPanel {
 		return scaledCoordinates;
 	}
 
+	/**
+	 * draws the colored accident scale on the graphics context.
+	 * 
+	 * @param g           Graphics context.
+	 * @param accidentMax Maximum number of accidents.
+	 */
 	private void drawColoredAccidentScale(Graphics g, int accidentMax) {
 		int accidentCount = CalculationUtils.accumulateTotalOfAccidents(locationList);
 		int accidentAvg = accidentCount / locationList.size();
-		
+
 		// draw rectangle with colored gradient for accident numbers
 		int rectW = 400;
 		Rectangle rect = new Rectangle(getWidth() - rectW - 20, 10, rectW, 25);
@@ -269,6 +327,9 @@ public class DrawPane extends JPanel {
 		int middleX = (int) (rect.getX() + rect.getWidth() / 2);
 		int rightX = (int) (rect.getX() + rect.getWidth()) - triangleWidth;
 
+		// calculate the position for the average triangle
+		int avgX = (int) (rect.getX() + (accidentAvg / (float) accidentMax) * rect.getWidth()) - triangleWidth / 2;
+
 		int triangleY = (int) (rect.getY() + rect.getHeight());
 		int stringY = triangleY + triangleHeight + 12;
 
@@ -280,11 +341,11 @@ public class DrawPane extends JPanel {
 		g2d.drawString("0", leftX + triangleWidth / 2 - 3, stringY);
 
 		// draw middle triangle
-		String avg = Integer.toString(accidentAvg);
+		String half = Integer.toString(accidentMax / 2);
 		int[] middleXPoints = { middleX, middleX + triangleWidth, middleX + triangleWidth / 2 };
 		int[] middleYPoints = { triangleY, triangleY, triangleY + triangleHeight };
 		g2d.fillPolygon(middleXPoints, middleYPoints, 3);
-		g2d.drawString(avg, middleX + triangleWidth / 2 - g.getFontMetrics().stringWidth(avg) / 2, stringY);
+		g2d.drawString(half, middleX + triangleWidth / 2 - g.getFontMetrics().stringWidth(half) / 2, stringY);
 
 		// draw right triangle
 		String max = Integer.toString(accidentMax);
@@ -293,9 +354,17 @@ public class DrawPane extends JPanel {
 		g2d.fillPolygon(rightXPoints, rightYPoints, 3);
 		g2d.drawString(max, rightX - g.getFontMetrics().stringWidth(max) + triangleWidth / 2 + 3, stringY);
 
+		// draw triangle for average
+		String avg = "⌀";
+		int[] avgXPoints = { avgX, avgX + triangleWidth, avgX + triangleWidth / 2 };
+		int[] avgYPoints = { triangleY, triangleY, triangleY + triangleHeight };
+		g2d.fillPolygon(avgXPoints, avgYPoints, 3);
+		g2d.drawString(avg, avgX + triangleWidth / 2 - g.getFontMetrics().stringWidth(avg) / 2, stringY);
+
 		// draw scale caption
 		java.awt.Font f = g2d.getFont();
 		g2d.setFont(new java.awt.Font(f.getFontName(), f.getStyle(), 18));
-		g2d.drawString("Unfallzahlen", (int) (rect.getX() + 5), (int) (rect.getY() + rect.getHeight() / 2) + 7);
+		g2d.drawString("Unfallzahlen pro Jahr", (int) (rect.getX() + 5),
+				(int) (rect.getY() + rect.getHeight() / 2) + 7);
 	}
 }
