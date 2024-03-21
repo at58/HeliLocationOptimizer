@@ -82,7 +82,8 @@ public class Locator {
 
     int loopCounter = 0;
     // Loop until the calculated positions of the helicopters doesn't change anymore.
-    while (true) {
+    // If the loop reaches more than loopCounter, break this process to ensure an acceptable runtime.
+    while (loopCounter < 500) {
 
       allocateClosestLocations(locations, helicopterList);
       determinePseudoFocus(helicopterList);
@@ -95,10 +96,6 @@ public class Locator {
         // save the new coordinates from each helicopter for comparison proposes in the next loop.
         memorizeLatestHelicopterCoordinates(helicopterList, currentHelicopterCoordinates);
         loopCounter++;
-      }
-      // If the loop reaches more than a hundred repetitions, break this process to ensure an acceptable runtime.
-      if (loopCounter >= 100) {
-        break;
       }
     }
     return helicopterList;
