@@ -1,36 +1,32 @@
 package controller;
 
 import domain.DataTable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import services.mapper.TableDataMapper;
-import utils.log.Logger;
 
+/**
+ * The table controller is responsible for writing and reading data to resp. from the data table model.
+ */
 public class TableController {
 
   private static final DataTable dataTable = DataTable.getInstance();
 
-  public static void put(JTextField[] textFields) {
+  public static boolean put(JTextField[] textFields) {
 
-    try {
-      Arrays.stream(textFields).forEach(field -> {
-        if (field.getText().isBlank()) {
-          throw new IllegalArgumentException();
-        }
-      });
-      Object[] newTuple = new Object[4];
-      newTuple[0] = textFields[0].getText();
-      newTuple[1] = Integer.parseInt(textFields[1].getText());
-      newTuple[2] = Integer.parseInt(textFields[2].getText());
-      newTuple[3] = Integer.parseInt(textFields[3].getText());
-
+    MainController.hideAllTableErrMsg();
+    Object[] newTuple = TableDataMapper.extractTextFieldContent(textFields);
+    if (newTuple != null) {
       dataTable.addTuple(newTuple);
       dataTable.refresh();
-    } catch (IllegalArgumentException e) {
-      Logger.log(e.getMessage());
+      MainController.hideInputErrorMsg();
+      MainController.hideTableInputErrorMsg();
+      return true;
+    } else {
+      MainController.showTableInputErrMsg();
+      return false;
     }
   }
 
@@ -49,7 +45,7 @@ public class TableController {
 
   public static List<String[]> getTableData() {
 
-    Vector<Vector> dataVector =  dataTable.pullDataBase();
-    return TableDataMapper.mapToStringArrayList(dataVector);
+    Vector dataVector =  dataTable.pullDataBase();
+    return TableDataMapper.vectorToStringList(dataVector);
   }
 }

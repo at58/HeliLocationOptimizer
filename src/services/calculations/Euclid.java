@@ -4,6 +4,13 @@ import domain.Coordinate;
 
 public class Euclid {
 
+  /**
+   * Calculates the Euclidean distance between two points in the coordinate system.
+   *
+   * @param a the first point
+   * @param b the second point
+   * @return the distance between these points.
+   */
   public static double calculateDistance(Coordinate a, Coordinate b) {
 
     double xDistance = Math.abs(a.x() - b.x());

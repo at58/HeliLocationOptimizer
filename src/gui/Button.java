@@ -8,29 +8,25 @@ import javax.swing.JButton;
 
 public class Button extends JButton {
 
-  public Button(String label,
-                Color background,
-                Color foreGround,
-                Font font,
-                String toolTip,
-                Point coordinate,
-                Dimension dimension,
-                ActionListener listener) {
+	private static final long serialVersionUID = 2804258571488862132L;
 
-    super(label);
-    setBackground(background);
-    setForeground(foreGround);
-    setFont(font.getFont());
-    setToolTipText(toolTip);
-    setBounds(coordinate.x, coordinate.y, dimension.width, dimension.height);
-    addActionListener(listener);
-  }
+	public Button(String label, Color background, Color foreGround, Font font, String toolTip, Point coordinate,
+			Dimension dimension, ActionListener listener) {
 
-  public void offerActionListener(ActionListener listener) {
-    addActionListener(listener);
-  }
+		super(label);
+		setBackground(background);
+		setForeground(foreGround);
+		setFont(font.getFont());
+		setToolTipText(toolTip);
+		setBounds(coordinate.x, coordinate.y, dimension.width, dimension.height);
+		addActionListener(listener);
+	}
 
-  public JButton getJButton() {
-    return this;
-  }
+	public void offerActionListener(ActionListener listener) {
+		addActionListener(listener);
+	}
+
+	public JButton getJButton() {
+		return this;
+	}
 }
